@@ -8,8 +8,10 @@ const Header = () => {
     <Wrapper>
       <Name>Made Locally</Name>
       <Events>Events</Events>
+      {/* it will show message icon as well if current user exist display - none right now */}
       <Message>MessageIcon</Message>
       <SignIn>SignIn</SignIn>
+      {/* if current user exist it will show profile */}
     </Wrapper>
   );
 };

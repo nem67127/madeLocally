@@ -11,7 +11,7 @@ export default createGlobalStyle`
 
 html, body {
     max-width: 100vw;
-    height: 100%;
+    height: 100vh;
 }
 body {
     line-height: 1.5;
