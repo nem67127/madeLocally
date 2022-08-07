@@ -1,8 +1,16 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 const SignIn = () => {
   //will get posted to their mongodb user
+  //get current user based on {user} from auth0
   // once submit redirect to either homepage or profileform
   //create onClick that will fetch POST into
+  const navigate = useNavigate();
+
+  const onSumbit = () => {
+    //navigate to profile form of person
+    navigate("/profile-f");
+  };
   return (
     <Wrapper>
       <Form>
@@ -17,7 +25,7 @@ const SignIn = () => {
             no
           </Div>
         </Span>
-        <Button>Confirm</Button>
+        <Button onClcik={(ev) => onSumbit(ev)}>Confirm</Button>
       </Form>
     </Wrapper>
   );
