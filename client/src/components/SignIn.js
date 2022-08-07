@@ -1,9 +1,7 @@
 import styled from "styled-components";
 const SignIn = () => {
-  //this is where people who have to sign up will be redirected to, to chose what userType they are
   //will get posted to their mongodb user
   // once submit redirect to either homepage or profileform
-  //it will post to user - backend will have to check if user exist if so front end will navigate tohomepage, if not and is make will create profile
   //create onClick that will fetch POST into
   return (
     <Wrapper>
