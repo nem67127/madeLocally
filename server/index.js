@@ -1,8 +1,16 @@
 const express = require("express");
+const cors = require("cors");
 
 const PORT = 8000;
 
 express()
+  // enable CORS
+  .use(cors())
+  // parse requests of content-type - application/json
+  .use(express.json())
+  // parse requests of content-type - application/x-www-form-urlencoded
+  .use(express.urlencoded({ extended: true }))
+
   .get("/", (req, res) => {
     res.status(200).json({ status: 200, message: "Hello World!" });
   })
