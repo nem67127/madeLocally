@@ -13,7 +13,7 @@ const getUser = async (req, res) => {
   const userId = req.params.userId;
   try {
     await client.connect();
-    const db = client.db("MadeLocally");
+    const db = await client.db("MadeLocally");
     const user = await db.collection("users").findOne({ _id: userId });
     return res
       .status(200)
@@ -30,10 +30,11 @@ const getUser = async (req, res) => {
 //adding artisan value to particular user
 const setArtisan = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
+  //might need to be an object?
   const userId = req.params.userId;
   try {
     await client.connect();
-    const db = client.db("MadeLocally");
+    const db = await client.db("MadeLocally");
     const data = await db
       .collection("users")
       .updateOne({ _id: userId }, { $set: { artisan } });

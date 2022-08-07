@@ -7,9 +7,13 @@ const Header = () => {
   // where logo, events link, profile link (if artisan), sign in, message icon live
   //sign in only shows up if theres no current user
   // and profile replaces it when there is a current user
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user, isLoading } = useAuth0();
+
   //check if signed in user has created a profile before of not
   //create a post fetch that send sthe users sub (specific id) to the backend to check has account if not add email/sub to create new users
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
 
   return (
     <Wrapper>
