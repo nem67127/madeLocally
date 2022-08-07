@@ -10,11 +10,12 @@ const options = {
 // get a user based on the userId in params
 const getUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  const userId = req.params.userId;
+  const _id = req.params.userId;
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
-    const user = await db.collection("users").findOne({ _id: userId });
+    //return null every time ? not sure why
+    const user = await db.collection("users").findOne({ _id: `${_id}` });
     return res
       .status(200)
       .json({ status: 200, data: user, message: "user found" });
@@ -30,14 +31,16 @@ const getUser = async (req, res) => {
 //adding artisan value to particular user
 const setArtisan = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  //might need to be an object?
-  const userId = req.params.userId;
+  //might need to be an object?- not finding the person
+  const _id = req.params.userId;
+  const { artisan } = req.body;
+
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
     const data = await db
       .collection("users")
-      .updateOne({ _id: userId }, { $set: { artisan } });
+      .updateOne({ _id }, { $set: { artisan } });
 
     return res
       .status(200)

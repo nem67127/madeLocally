@@ -7,6 +7,17 @@ const { auth } = require("express-openid-connect");
 const { getUser, setArtisan } = require("./handlers/userHandler");
 
 express()
+  .use(function (req, res, next) {
+    res.header(
+      "Access-Control-Allow-Methods",
+      "OPTIONS, HEAD, GET, PUT, POST, DELETE"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  })
   // enable CORS
   .use(cors())
 
@@ -19,7 +30,7 @@ express()
   //get a single user based on their userId = _id
   .get("/api/users/:userId", getUser)
 
-  //add the key value paor of aritsan to a specific user
+  //add the key value pair of aritsan to a specific user
   .patch("/api/users/:userId", setArtisan)
 
   .get("/sign-up", (req, res) => {
