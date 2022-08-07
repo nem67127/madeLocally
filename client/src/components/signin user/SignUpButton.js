@@ -9,6 +9,8 @@ const SignupButton = () => {
       onClick={() =>
         loginWithRedirect({
           screen_hint: "signup",
+          //i want to return to the sign-in page
+          returnTo: "/sign-in",
         })
       }
     >

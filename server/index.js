@@ -4,6 +4,7 @@ const PORT = 8000;
 const cors = require("cors");
 const path = require("path");
 const { auth } = require("express-openid-connect");
+const { getUser, setArtisan } = require("./handlers/userHandler");
 
 express()
   // enable CORS
@@ -15,10 +16,11 @@ express()
   // parse requests of content-type - application/x-www-form-urlencoded
   .use(express.urlencoded({ extended: true }))
 
-  // simple route
-  .get("/", (req, res) => {
-    res.json({ message: "Welcome!!🥳" });
-  })
+  //get a single user based on their userId = _id
+  .get("/api/users/:userId", getUser)
+
+  //add the key value paor of aritsan to a specific user
+  .patch("/api/users/:userId", setArtisan)
 
   .get("/sign-up", (req, res) => {
     res.oidc.login({
@@ -35,8 +37,6 @@ express()
   //signout PATCH? DELETE? rmeoves user from current user
 
   // GET for profile to get the information based on userId params to show correct profile
-
-  //PUT/PATCH to take info from if they are an artisan and add it to user
 
   // PUT/PATCH for profile takes infor from profile form and creates a new profile with usersID
 
