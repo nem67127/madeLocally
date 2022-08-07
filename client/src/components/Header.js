@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import AuthNav from "./signin user/AuthNav";
 
 const Header = () => {
   // where logo, events link, profile link (if artisan), sign in, message icon live
   //sign in only shows up if theres no current user
   // and profile replaces it when there is a current user
-  const { loginWithRedirect, logout, user } = useAuth0();
-  //checkif user is signed in will return treu or false
-  const userSignedIn = JSON.stringify(user, null, 2);
-
+  const { isAuthenticated, user } = useAuth0();
   //check if signed in user has created a profile before of not
+  //create a post fetch that send sthe users sub (specific id) to the backend to check has account if not add email/sub to create new users
 
   return (
     <Wrapper>
@@ -18,18 +17,11 @@ const Header = () => {
         <h1>Made Locally</h1>
       </Link>
       <Link to="/events">Events</Link>
-      {/* it will show message icon as well if current user exist display - none right now */}
-      <Link to="/messages">MessageIcon</Link>
-      {userSignedIn ? (
-        <>
-          {/* make this a dropdown */}
-          <SignOut onClick={() => logout()}>SignOut</SignOut>
-          {/* make it the profile of the current user  */}
-          <Link to="/profile">Profile</Link>
-        </>
-      ) : (
-        <SignIn onClick={() => loginWithRedirect()}>SignIn</SignIn>
-      )}
+      {/* if a user is signed in it will show the message icon */}
+      {isAuthenticated ? <Link to="">MessageIcon</Link> : <div></div>}
+
+      <AuthNav />
+      {isAuthenticated && <Link to={`/profile/${user.sub}`}>Profile</Link>}
     </Wrapper>
   );
 };
@@ -47,13 +39,4 @@ const Wrapper = styled.div`
 const Link = styled(NavLink)`
   text-decoration: none;
   color: black;
-`;
-
-const SignIn = styled.button`
-  border: none;
-  background-color: transparent;
-`;
-const SignOut = styled.button`
-  border: none;
-  background-color: transparent;
 `;
