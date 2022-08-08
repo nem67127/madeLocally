@@ -2,11 +2,13 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthNav from "./signin user/AuthNav";
+import { useContext } from "react";
+import { CurrentUserContext } from "./contexts/CurrentUserContext";
 
 const Header = () => {
-  const { isAuthenticated, user, isLoading } = useAuth0();
+  const { isLoading } = useAuth0();
   //maybe fetch user after login to check if they are a user or artisan to either disable link to profile or not
-
+  const { currentUser } = useContext(CurrentUserContext);
   //check if signed in user has created a profile before of not
   //create a post fetch that send sthe users sub (specific id) to the backend to check has account if not add email/sub to create new users
   if (isLoading) {
@@ -20,9 +22,15 @@ const Header = () => {
       </Link>
       <Link to="/events">Events</Link>
       {/* if a user is signed in it will show the message icon */}
-      {isAuthenticated ? <Link to="">MessageIcon</Link> : <div></div>}
+      {currentUser ? <Link to="">MessageIcon</Link> : <div></div>}
       <AuthNav />
-      {isAuthenticated && <Link to={`/profile/`}>Profile</Link>}
+      {currentUser && currentUser.artisan ? (
+        <Link to={`/profile/`}>Profile</Link>
+      ) : currentUser && currentUser.artisan === null ? (
+        <div>Profile</div>
+      ) : (
+        <></>
+      )}
     </Wrapper>
   );
 };

@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { useLoadScript, GoogleMap, Marker } from "@react-google-maps/api";
 import mapStyles from "./mapStyles";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "./contexts/CurrentUserContext";
 
 const HomePage = () => {
   //not sure how to implement search bar function
@@ -11,9 +12,11 @@ const HomePage = () => {
   //set state for markers and fetch locations and set array to markers
   const [markers, setMarkers] = useState(null);
   const [error, setError] = useState(null);
-  //get user
+  // //get user
   const { user } = useAuth0();
   const navigate = useNavigate();
+
+  const { setCurrentUser, currentUser } = useContext(CurrentUserContext);
 
   //check if user is in users collection
   useEffect(() => {
@@ -27,14 +30,15 @@ const HomePage = () => {
           if (data.data.artisan === undefined) {
             //if user does not have artisan attritube navigate to form
             navigate("/sign-in");
-            console.log(data.data.artisan);
           }
+          setCurrentUser(data.data);
         })
         .catch((err) => {
           setError(err);
         });
     }
   }, [user]);
+  console.log(currentUser);
 
   //get all the locations - should depend on if another profile is made
   useEffect(() => {
