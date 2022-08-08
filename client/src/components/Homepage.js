@@ -1,21 +1,55 @@
 import styled from "styled-components";
-import { useJsApiLoader, GoogleMap } from "@react-google-maps/api";
+import { useLoadScript, GoogleMap, Marker } from "@react-google-maps/api";
+import mapStyles from "./mapStyles";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
   //not sure how to implement search bar function
-  //popup for address
 
-  const { isLoaded } = useJsApiLoader({
+  //set state for markers and fetch locations and set array to markers
+  const [markers, setMarkers] = useState(null);
+  const [error, setError] = useState(null);
+  //get all the locations - should depend on if another profile is made
+  useEffect(() => {
+    fetch("api/locations")
+      .then((res) => res.json())
+      .then((data) => {
+        setMarkers(data.data);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  }, []);
+
+  //get the user on the location clicked to show information
+
+  //for the map
+  const libraries = ["places"];
+  const mapContainerStyle = { width: "100%", height: "100%" };
+  const options = {
+    //styling from snazzymaps: https://snazzymaps.com/style/77/clean-cut
+    styles: mapStyles,
+    disableDefaultUI: true,
+    zoomControl: true,
+  };
+  //where the map will populate at the start
+  const center = {
+    lat: 48.528525,
+    lng: -123.39876,
+  };
+  //checking if map is loaded or if there was an error
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries,
   });
+
+  if (loadError || error) {
+    return <div>ErrorLoading Maps{error}</div>;
+  }
 
   if (!isLoaded) {
     return <div>Loading Map</div>;
   }
-  const center = {
-    lat: 48.407326,
-    lng: -123.329773,
-  };
 
   return (
     <Wrapper>
@@ -23,9 +57,23 @@ const HomePage = () => {
         <GoogleMap
           center={center}
           zoom={10}
-          mapContainerStyle={{ width: "100%", height: "100%" }}
+          mapContainerStyle={mapContainerStyle}
+          options={options}
         >
-          {/* displaying markers */}
+          {markers
+            ? markers.map((marker) => {
+                return (
+                  <Marker
+                    key={marker._id}
+                    //put in address as lat and lng or can markers use addresses
+                    position={{
+                      lat: Number(marker.lat),
+                      lng: Number(marker.lng),
+                    }}
+                  />
+                );
+              })
+            : null}
         </GoogleMap>
       </Map>
     </Wrapper>
@@ -43,4 +91,6 @@ const Wrapper = styled.div`
 const Map = styled.div`
   height: 70%;
   width: 80%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;

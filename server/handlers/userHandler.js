@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -14,8 +14,10 @@ const getUser = async (req, res) => {
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
-    //return null every time ? not sure why
-    const user = await db.collection("users").findOne({ _id: `${_id}` });
+    //get user based on the _id which is the string inside ObjectId
+    const user = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(`${_id}`) });
     return res
       .status(200)
       .json({ status: 200, data: user, message: "user found" });
@@ -31,16 +33,16 @@ const getUser = async (req, res) => {
 //adding artisan value to particular user
 const setArtisan = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  //might need to be an object?- not finding the person
   const _id = req.params.userId;
   const { artisan } = req.body;
 
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
+    //adding an artisan key value pair to the specific user document
     const data = await db
       .collection("users")
-      .updateOne({ _id }, { $set: { artisan } });
+      .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { artisan } });
 
     return res
       .status(200)
