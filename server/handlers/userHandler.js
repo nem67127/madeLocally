@@ -1,4 +1,5 @@
 const { MongoClient, ObjectId } = require("mongodb");
+const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -7,17 +8,16 @@ const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
+
 // get a user based on the userId in params
 const getUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  const _id = req.params.userId;
+  const email = req.params.email;
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
     //get user based on the _id which is the string inside ObjectId
-    const user = await db
-      .collection("users")
-      .findOne({ _id: ObjectId(`${_id}`) });
+    const user = await db.collection("users").findOne({ email });
     return res
       .status(200)
       .json({ status: 200, data: user, message: "user found" });
@@ -43,7 +43,6 @@ const setArtisan = async (req, res) => {
     const data = await db
       .collection("users")
       .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { artisan } });
-
     return res
       .status(200)
       .json({ status: 200, data, message: "artisan value added" });

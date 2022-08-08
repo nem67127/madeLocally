@@ -12,7 +12,10 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const { user } = useAuth0();
-  console.log(user);
+
+  const stringId = user.sub;
+  const _id = stringId.substring(stringId.indexOf("|") + 1);
+
   const handleChange = (ev) => {
     const { value } = ev.target;
     setRadioValue(value);
@@ -20,8 +23,8 @@ const SignIn = () => {
 
   const onSumbit = (ev) => {
     ev.preventDefault();
-    //I'm assuming sub will === to _id
-    fetch(`/api/users/${user.sub}`, {
+
+    fetch(`/api/users/${_id}`, {
       method: "PATCH",
       body: JSON.stringify({ artisan: radioValue }),
       headers: {
@@ -40,7 +43,7 @@ const SignIn = () => {
       navigate(`/`);
       //navigate to profile form for artisan
     } else {
-      navigate(`/profile-f/${user.sub}`);
+      navigate(`/profile-f/${_id}`);
     }
   };
 

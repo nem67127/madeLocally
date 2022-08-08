@@ -1,11 +1,12 @@
 const express = require("express");
-
-const PORT = 8000;
 const cors = require("cors");
-const path = require("path");
-const { auth } = require("express-openid-connect");
-const { getUser, setArtisan } = require("./handlers/userHandler");
+const dotenv = require("dotenv");
+
+const { getUser, setArtisan, createUser } = require("./handlers/userHandler");
 const { getLocations } = require("./handlers/locationHandler");
+const PORT = 8000;
+
+dotenv.config();
 
 express()
   .use(function (req, res, next) {
@@ -28,8 +29,8 @@ express()
   // parse requests of content-type - application/x-www-form-urlencoded
   .use(express.urlencoded({ extended: true }))
 
-  //get a single user based on their userId = _id
-  .get("/api/users/:userId", getUser)
+  //get a single user based on their _id
+  .get("/api/user/:email", getUser)
 
   //add the key value pair of aritsan to a specific user
   .patch("/api/users/:userId", setArtisan)
@@ -62,5 +63,5 @@ express()
   .get("/api/locations", getLocations)
 
   .listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`);
+    console.log(`Made Locally listening on port ${PORT}`);
   });

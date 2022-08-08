@@ -21,9 +21,8 @@ const Header = () => {
       <Link to="/events">Events</Link>
       {/* if a user is signed in it will show the message icon */}
       {isAuthenticated ? <Link to="">MessageIcon</Link> : <div></div>}
-
       <AuthNav />
-      {isAuthenticated && <Link to={`/profile/${user.sub}`}>Profile</Link>}
+      {isAuthenticated && <Link to={`/profile/`}>Profile</Link>}
     </Wrapper>
   );
 };
