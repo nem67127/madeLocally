@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 
 const { getUser, setArtisan, createUser } = require("./handlers/userHandler");
 const { getLocations } = require("./handlers/locationHandler");
+const { updateProfile } = require("./handlers/profileHandlers");
 const PORT = 8000;
 
 dotenv.config();
@@ -43,16 +44,10 @@ express()
     });
   })
 
-  //POST for siging in sends new users to user collection and would set current user to
-
-  //signout PATCH? DELETE? rmeoves user from current user
-
   // GET for profile to get the information based on userId params to show correct profile
 
-  // PUT/PATCH for profile takes infor from profile form and creates a new profile with usersID
-
   //PATCH to update the users profile will user profile form again - this will also insert a new document in locations collection
-
+  .patch("/api/profile/:userId", updateProfile)
   //GET events to retrieve all the events - i want them filtered by dates if i can i want current and upcoming dates
 
   // GET event:eventID to retrieve one event

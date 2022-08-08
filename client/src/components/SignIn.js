@@ -5,14 +5,11 @@ import { useState } from "react";
 
 const SignIn = () => {
   const [radioValue, setRadioValue] = useState(null);
-  //will get posted to their mongodb user
-  //get current user based on {user} from auth0
-  // once submit redirect to either homepage or profileform
-  //create onClick that will fetch POST into
+
   const navigate = useNavigate();
 
   const { user } = useAuth0();
-
+  //modifying the user.sub to work as _id
   const stringId = user.sub;
   const _id = stringId.substring(stringId.indexOf("|") + 1);
 
@@ -41,7 +38,7 @@ const SignIn = () => {
     //navigate to homepage - no profile setup
     if (radioValue === null) {
       navigate(`/`);
-      //navigate to profile form for artisan
+      //navigates to profile form for artisan
     } else {
       navigate(`/profile-f/${_id}`);
     }

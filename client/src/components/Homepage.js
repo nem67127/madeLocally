@@ -21,9 +21,7 @@ const HomePage = () => {
   //check if user is in users collection
   useEffect(() => {
     if (user) {
-      console.log(user.sub);
       const email = user.email;
-      console.log(email);
       fetch(`/api/user/${email}`)
         .then((res) => res.json())
         .then((data) => {

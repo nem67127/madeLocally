@@ -1,5 +1,4 @@
 const { MongoClient, ObjectId } = require("mongodb");
-const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
 const { MONGO_URI } = process.env;
