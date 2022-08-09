@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ItemImage = ({ image, removeImage }) => {
+const ItemImage = ({ image }) => {
   return (
     <Container>
       <Item alt="" src={image.src} />

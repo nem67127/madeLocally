@@ -3,7 +3,10 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 
 const { getUser, setArtisan, createUser } = require("./handlers/userHandler");
-const { getLocations } = require("./handlers/locationHandler");
+const {
+  getLocations,
+  createNewLocation,
+} = require("./handlers/locationHandler");
 const { updateProfile } = require("./handlers/profileHandlers");
 const PORT = 8000;
 
@@ -56,6 +59,8 @@ express()
 
   //GET to retrieve all the locations
   .get("/api/locations", getLocations)
+  //Add a new location
+  .post("/api/locations", createNewLocation)
 
   .listen(PORT, () => {
     console.log(`Made Locally listening on port ${PORT}`);

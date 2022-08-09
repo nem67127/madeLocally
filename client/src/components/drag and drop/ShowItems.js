@@ -20,7 +20,6 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   width: 100%;
-  border: 1px solid red;
   height: 100%;
 `;
 const Button = styled.button``;

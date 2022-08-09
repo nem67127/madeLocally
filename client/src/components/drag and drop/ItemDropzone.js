@@ -3,29 +3,23 @@ import { useCallback, useState } from "react";
 import styled from "styled-components";
 import ShowImage from "./ShowItems";
 
-const ItemsDropZone = ({ images, setImages }) => {
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      acceptedFiles.map((file, index) => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          setImages((prevState) => [
-            ...prevState,
-            { id: index, src: e.target.result },
-          ]);
-        };
-        reader.readAsDataURL(file);
-        return file;
-      });
-    },
-    [images]
-  );
+const ItemsDropZone = () => {
+  //for drag and drop of item images
+  const [images, setImages] = useState([]);
 
-  const removeImage = (image) => {
-    const newImages = [...images];
-    newImages.splice(newImages.indexOf(image, 1));
-    setImages(newImages);
-  };
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.map((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        setImages((prevState) => [
+          ...prevState,
+          { id: index, src: e.target.result },
+        ]);
+      };
+      reader.readAsDataURL(file);
+      return file;
+    });
+  }, []);
 
   const {
     getRootProps,
@@ -41,6 +35,19 @@ const ItemsDropZone = ({ images, setImages }) => {
     noClick: true,
     noKeyboard: true,
   });
+  //does not work for some reason
+  const removeImage = (image) => {
+    if (acceptedFiles.includes(image)) {
+      const newImages = [...acceptedFiles];
+      newImages.splice(newImages.indexOf(image, 1));
+      setImages(newImages);
+    }
+  };
+
+  const onSubmit = (ev) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+  };
 
   return (
     <>
@@ -52,6 +59,7 @@ const ItemsDropZone = ({ images, setImages }) => {
         </button>
       </Container>
       <ShowImage images={images} removeImage={removeImage} />
+      <button onClick={(ev) => onSubmit(ev)}>Save</button>
     </>
   );
 };

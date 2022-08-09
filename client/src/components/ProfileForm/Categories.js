@@ -1,6 +1,13 @@
 import styled from "styled-components";
+import { useState } from "react";
 
-const Categories = ({ handleChangeCategories }) => {
+const Categories = () => {
+  const [categories, setCategories] = useState([]);
+  //to put categories checked into an array
+  const handleChangeCategories = (ev) => {
+    setCategories([ev.target.value, ...categories]);
+  };
+  // fetch to patch categories to user
   return (
     <Cat>
       <p>Categories:</p>

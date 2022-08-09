@@ -40,7 +40,7 @@ const SignIn = () => {
       navigate(`/`);
       //navigates to profile form for artisan
     } else {
-      navigate(`/profile-f/${_id}`);
+      navigate(`/profile/${_id}`);
     }
   };
 

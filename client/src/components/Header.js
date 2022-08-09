@@ -25,7 +25,7 @@ const Header = () => {
       {currentUser ? <Link to="">MessageIcon</Link> : <div></div>}
       <AuthNav />
       {currentUser && currentUser.artisan ? (
-        <Link to={`/profile/`}>Profile</Link>
+        <Link to={`/profile/${currentUser._id}`}>Profile</Link>
       ) : currentUser && currentUser.artisan === null ? (
         <div>Profile</div>
       ) : (

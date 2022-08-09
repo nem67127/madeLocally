@@ -2,8 +2,18 @@ import styled from "styled-components";
 import { FiInstagram, FiPhone } from "react-icons/fi";
 import { FaFacebook } from "react-icons/fa";
 import { MdWebAsset, MdLocationPin } from "react-icons/md";
+import { useState } from "react";
 
-const SideInputs = (handleChangeProfile) => {
+const SideInputs = ({ profileId }) => {
+  const [profileData, setProfileData] = useState(null);
+  const [location, setLocation] = useState(null);
+  const handleChangeProfile = (value, name) => {
+    setProfileData({ ...profileData, [name]: value });
+    if (name === "location") {
+      setLocation({ user: profileId, location: value });
+    }
+  };
+  //fetch to patch and post after submit button
   return (
     <>
       <Box>
