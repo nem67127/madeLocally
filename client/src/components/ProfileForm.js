@@ -1,22 +1,43 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import { FiInstagram, FiPhone } from "react-icons/fi";
 import { FaFacebook } from "react-icons/fa";
 import { MdWebAsset, MdLocationPin } from "react-icons/md";
+import { Dropzone } from "react-dropzone";
 
 const ProfileForm = () => {
   //This is where artisans are directed to if they are new to the site to set up their profile
   const { profileId } = useParams();
   const { currentUser } = useContext(CurrentUserContext);
-  //need to create a patch that will update made on profileid = objectId
 
+  const [profileData, setProfileData] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [location, setLocation] = useState(null);
+  //need to create a patch that will update made on profileid = objectId
   //Handle change to set form data and thats what we send to backend
-  //need onlcik to submit form and navigate and post location and patch user
+  const handleChangeProfile = (value, name) => {
+    setProfileData({ ...profileData, [name]: value });
+    if (name === "location") {
+      setLocation({ user: profileId, location: value });
+    }
+  };
+  //to put categories checked into an array
+  const handleChangeCategories = (ev) => {
+    setCategories([ev.target.value, ...categories]);
+  };
+  //need onclick to submit form and navigate and post location and patch user
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    console.log(profileData);
+    console.log(categories);
+    console.log(location);
+  };
+
   return (
     <Wrapper>
-      <Form>
+      <Form onSubmit={(ev) => handleSubmit(ev)}>
         <Container>
           <ProfilePic name="profileSrc">
             Where the image src for the profile pic to input
@@ -26,6 +47,9 @@ const ProfileForm = () => {
               placeholder="Buisiness Name"
               name="businessName"
               type="text"
+              onChange={(ev) =>
+                handleChangeProfile(ev.target.value, "businessName")
+              }
             />
             <Description
               placeholder="Enter a description of your business here"
@@ -33,6 +57,9 @@ const ProfileForm = () => {
               type="text"
               multiline={true}
               rows={5}
+              onChange={(ev) =>
+                handleChangeProfile(ev.target.value, "businessDescrip")
+              }
             />
           </Div>
         </Container>
@@ -45,16 +72,31 @@ const ProfileForm = () => {
                 name="location"
                 placeholder="where are you located"
                 type="address"
+                onChange={(ev) =>
+                  handleChangeProfile(ev.target.value, "location")
+                }
               />
             </Box>
 
             <Box>
               <FiPhone style={{ height: "10%", width: "10%" }} />
-              <Input name="phone" placeholder="Contact number" type="tel" />
+              <Input
+                name="phone"
+                placeholder="Contact number"
+                type="tel"
+                onChange={(ev) => handleChangeProfile(ev.target.value, "phone")}
+              />
             </Box>
             <Box>
               <MdWebAsset style={{ height: "10%", width: "10%" }} />
-              <Input name="websiteUrl" placeholder="Website url" type="text" />
+              <Input
+                name="websiteUrl"
+                placeholder="Website url"
+                type="text"
+                onChange={(ev) =>
+                  handleChangeProfile(ev.target.value, "websiteUrl")
+                }
+              />
             </Box>
             <Box>
               <FaFacebook style={{ height: "10%", width: "10%" }} />
@@ -62,6 +104,9 @@ const ProfileForm = () => {
                 name="facebookUrl"
                 placeholder="Facebook url"
                 type="text"
+                onChange={(ev) =>
+                  handleChangeProfile(ev.target.value, "facebookUrl")
+                }
               />
             </Box>
             <Box>
@@ -70,62 +115,101 @@ const ProfileForm = () => {
                 name="instagramUrl"
                 placeholder="Instagram url"
                 type="text"
+                onChange={(ev) =>
+                  handleChangeProfile(ev.target.value, "instagramUrl")
+                }
               />
             </Box>
 
             <Categories>
+              <p>Categories:</p>
               <Box>
-                <Check type="checkbox" id="jewlery" value="jewlery" />
-                <Label htmlFor="jewlery">Jewlery</Label>
+                <Check
+                  type="checkbox"
+                  id="category"
+                  value="jewlery"
+                  onChange={(ev) => handleChangeCategories(ev)}
+                />
+                <Label htmlFor="category">Jewlery</Label>
               </Box>
               <Box>
                 <Check
                   type="checkbox"
-                  id="Pottery/Ceramics"
+                  id="category"
                   value="pottery/ceramics"
+                  onChange={(ev) => handleChangeCategories(ev)}
                 />
-                <Label htmlFor="Pottery/Ceramics">Pottery / Ceramics</Label>
-              </Box>
-              <Box>
-                <Check type="checkbox" id="food/drink" value="food/drink" />
-                <Label htmlFor="food/drink">Food/Drink</Label>
-              </Box>
-              <Box>
-                <Check type="checkbox" id="Woodwork" value="woodwork" />
-                <Label htmlFor="woodwork">Woodworking</Label>
-              </Box>
-              <Box>
-                <Check type="checkbox" id="Glasswork" value="glasswork" />
-                <Label htmlFor="Glasswork">Glasswork</Label>
+                <Label htmlFor="category">Pottery / Ceramics</Label>
               </Box>
               <Box>
                 <Check
                   type="checkbox"
-                  id="Graphic Design / Printing"
-                  value="graphicDesign/printing"
+                  id="category"
+                  value="food/drink"
+                  onChange={(ev) => handleChangeCategories(ev)}
                 />
-                <Label htmlFor="Graphic Design / Printing">
-                  Graphic Design / Printing
-                </Label>
+                <Label htmlFor="category">Food/Drink</Label>
               </Box>
               <Box>
-                <Check type="checkbox" id="Textiles" value="textiles" />
-                <Label htmlFor="Textiles">Textiles</Label>
+                <Check
+                  type="checkbox"
+                  id="category"
+                  value="woodwork"
+                  onChange={(ev) => handleChangeCategories(ev)}
+                />
+                <Label htmlFor="category">Woodworking</Label>
               </Box>
               <Box>
-                <Check type="checkbox" id="Fine Arts" value="fineArts" />
-                <Label htmlFor="Fine Arts">Fine Arts</Label>
+                <Check
+                  type="checkbox"
+                  id="category"
+                  value="glasswork"
+                  onChange={(ev) => handleChangeCategories(ev)}
+                />
+                <Label htmlFor="category">Glasswork</Label>
+              </Box>
+              <Box>
+                <Check
+                  type="checkbox"
+                  id="category"
+                  value="graphicDesign/printing"
+                  onChange={(ev) => handleChangeCategories(ev)}
+                />
+                <Label htmlFor="category">Graphic Design / Printing</Label>
+              </Box>
+              <Box>
+                <Check
+                  type="checkbox"
+                  id="category"
+                  value="textiles"
+                  onChange={(ev) => handleChangeCategories(ev)}
+                />
+                <Label htmlFor="category">Textiles</Label>
+              </Box>
+              <Box>
+                <Check
+                  type="checkbox"
+                  id="category"
+                  value="fineArts"
+                  onChange={(ev) => handleChangeCategories(ev)}
+                />
+                <Label htmlFor="category">Fine Arts</Label>
               </Box>
 
               <Box>
-                <Check type="checkbox" id="MetalWork" value="metalWork" />
-                <Label htmlFor="MetalWork">Metal Work</Label>
+                <Check
+                  type="checkbox"
+                  id="category"
+                  value="metalWork"
+                  onChange={(ev) => handleChangeCategories(ev)}
+                />
+                <Label htmlFor="category">Metal Work</Label>
               </Box>
             </Categories>
           </Info>
           <Items name="items" placeholder="Drag and drop for picture urls" />
         </Container>
-        <Button>Confirm</Button>
+        <Button type="submit">Confirm</Button>
       </Form>
     </Wrapper>
   );
@@ -134,7 +218,6 @@ const ProfileForm = () => {
 export default ProfileForm;
 
 const Wrapper = styled.div`
-  height: calc(100vh - 80px);
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -177,6 +260,7 @@ const Items = styled.input`
   margin-left: 20px;
   height: 45vh;
   width: 70%;
+  align-self: flex-start;
 `;
 const Input = styled.input`
   width: 100%;
