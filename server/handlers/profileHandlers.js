@@ -17,6 +17,11 @@ const updateProfile = async (req, res) => {
     const data = await db
       .collection("users")
       .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...req.body } });
+    //insert a new location the locations collection
+    // change address into lat and lng
+    const location = await db
+      .collection("locations")
+      .insertOne({ user: _id, lat, lng });
     return res
       .status(200)
       .json({ status: 200, data, message: "updated values" });

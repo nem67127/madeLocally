@@ -111,7 +111,7 @@ const HomePage = () => {
 
 export default HomePage;
 const Wrapper = styled.div`
-  height: calc(100vh - 50px);
+  height: calc(100vh - 80px);
   width: 100vw;
   display: flex;
   align-items: center;

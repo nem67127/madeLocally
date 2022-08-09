@@ -37,7 +37,7 @@ const Header = () => {
 export default Header;
 
 const Wrapper = styled.div`
-  height: 50px;
+  height: 80px;
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
