@@ -2,6 +2,9 @@ import { useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
+import { FiInstagram, FiPhone } from "react-icons/fi";
+import { FaFacebook } from "react-icons/fa";
+import { MdWebAsset, MdLocationPin } from "react-icons/md";
 
 const ProfileForm = () => {
   //This is where artisans are directed to if they are new to the site to set up their profile
@@ -10,6 +13,7 @@ const ProfileForm = () => {
   //need to create a patch that will update made on profileid = objectId
 
   //Handle change to set form data and thats what we send to backend
+  //need onlcik to submit form and navigate and post location and patch user
   return (
     <Wrapper>
       <Form>
@@ -35,46 +39,67 @@ const ProfileForm = () => {
 
         <Container>
           <Info>
-            <Input
-              name="location"
-              placeholder="where are you located"
-              type="address"
-            />
-            <Input name="phone" placeholder="Contact number" type="tel" />
-            <Input name="websiteUrl" placeholder="Website url" type="text" />
-            <Input name="facebookUrl" placeholder="Facebook url" type="text" />
-            <Input
-              name="instagramUrl"
-              placeholder="Instagram url"
-              type="text"
-            />
+            <Box>
+              <MdLocationPin style={{ height: "10%", width: "10%" }} />
+              <Input
+                name="location"
+                placeholder="where are you located"
+                type="address"
+              />
+            </Box>
+
+            <Box>
+              <FiPhone style={{ height: "10%", width: "10%" }} />
+              <Input name="phone" placeholder="Contact number" type="tel" />
+            </Box>
+            <Box>
+              <MdWebAsset style={{ height: "10%", width: "10%" }} />
+              <Input name="websiteUrl" placeholder="Website url" type="text" />
+            </Box>
+            <Box>
+              <FaFacebook style={{ height: "10%", width: "10%" }} />
+              <Input
+                name="facebookUrl"
+                placeholder="Facebook url"
+                type="text"
+              />
+            </Box>
+            <Box>
+              <FiInstagram style={{ height: "10%", width: "10%" }} />
+              <Input
+                name="instagramUrl"
+                placeholder="Instagram url"
+                type="text"
+              />
+            </Box>
+
             <Categories>
-              <span>
-                <Input type="checkbox" id="jewlery" value="jewlery" />
+              <Box>
+                <Check type="checkbox" id="jewlery" value="jewlery" />
                 <Label htmlFor="jewlery">Jewlery</Label>
-              </span>
-              <span>
-                <Input
+              </Box>
+              <Box>
+                <Check
                   type="checkbox"
                   id="Pottery/Ceramics"
                   value="pottery/ceramics"
                 />
                 <Label htmlFor="Pottery/Ceramics">Pottery / Ceramics</Label>
-              </span>
-              <span>
-                <Input type="checkbox" id="food/drink" value="food/drink" />
+              </Box>
+              <Box>
+                <Check type="checkbox" id="food/drink" value="food/drink" />
                 <Label htmlFor="food/drink">Food/Drink</Label>
-              </span>
-              <span>
-                <Input type="checkbox" id="Woodwork" value="woodwork" />
+              </Box>
+              <Box>
+                <Check type="checkbox" id="Woodwork" value="woodwork" />
                 <Label htmlFor="woodwork">Woodworking</Label>
-              </span>
-              <span>
-                <Input type="checkbox" id="Glasswork" value="glasswork" />
+              </Box>
+              <Box>
+                <Check type="checkbox" id="Glasswork" value="glasswork" />
                 <Label htmlFor="Glasswork">Glasswork</Label>
-              </span>
-              <span>
-                <Input
+              </Box>
+              <Box>
+                <Check
                   type="checkbox"
                   id="Graphic Design / Printing"
                   value="graphicDesign/printing"
@@ -82,19 +107,20 @@ const ProfileForm = () => {
                 <Label htmlFor="Graphic Design / Printing">
                   Graphic Design / Printing
                 </Label>
-              </span>
-              <span>
-                <Input type="checkbox" id="Textiles" value="textiles" />
+              </Box>
+              <Box>
+                <Check type="checkbox" id="Textiles" value="textiles" />
                 <Label htmlFor="Textiles">Textiles</Label>
-              </span>
-              <span>
-                <Input type="checkbox" id="Fine Arts" value="fineArts" />
+              </Box>
+              <Box>
+                <Check type="checkbox" id="Fine Arts" value="fineArts" />
                 <Label htmlFor="Fine Arts">Fine Arts</Label>
-              </span>
-              <span>
-                <Input type="checkbox" id="MetalWork" value="metalWork" />
+              </Box>
+
+              <Box>
+                <Check type="checkbox" id="MetalWork" value="metalWork" />
                 <Label htmlFor="MetalWork">Metal Work</Label>
-              </span>
+              </Box>
             </Categories>
           </Info>
           <Items name="items" placeholder="Drag and drop for picture urls" />
@@ -153,14 +179,17 @@ const Items = styled.input`
   width: 70%;
 `;
 const Input = styled.input`
-  margin-bottom: 10px;
+  width: 100%;
+  margin-left: 10px;
 `;
 const Categories = styled.div`
   display: flex;
   flex-direction: column;
   width: 15vw;
 `;
-const Label = styled.label``;
+const Label = styled.label`
+  width: 80%;
+`;
 const Div = styled.div`
   display: flex;
   flex-direction: column;
@@ -168,4 +197,18 @@ const Div = styled.div`
   height: 15vh;
   margin-left: 20px;
 `;
-const Button = styled.button``;
+const Button = styled.button`
+  position: absolute;
+  left: 80vw;
+  padding: 10px;
+`;
+
+const Box = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+`;
+
+const Check = styled.input`
+  margin-right: 10px;
+`;
