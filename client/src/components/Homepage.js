@@ -1,10 +1,22 @@
 import styled from "styled-components";
 import { useLoadScript, GoogleMap, Marker } from "@react-google-maps/api";
-import { mapStyles } from "./mapStyles";
-import { useContext, useEffect, useState } from "react";
+import { mapStyles } from "./map/mapStyles";
+import { useContext, useEffect, useRef, useState, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
+import LocationSearch from "./map/LocationSearch";
 
 //for the map
 const libraries = ["places"];
@@ -22,7 +34,7 @@ const center = {
 };
 
 const HomePage = () => {
-  //not sure how to implement search bar function
+  //not sure how to implement search bar function to find artisans by category
 
   //set state for markers and fetch locations and set array to markers
   const [markers, setMarkers] = useState(null);
@@ -72,6 +84,16 @@ const HomePage = () => {
     libraries,
   });
 
+  const mapRef = useRef();
+  const onMapLoad = useCallback((map) => {
+    mapRef.current = map;
+  }, []);
+
+  const panTo = ({ lat, lng }) => {
+    mapRef.current.panTo({ lat, lng });
+    mapRef.current.setZoom(13);
+  };
+
   if (loadError || error) {
     return <div>ErrorLoading Maps{error}</div>;
   }
@@ -83,11 +105,13 @@ const HomePage = () => {
   return (
     <Wrapper>
       <Map>
+        <LocationSearch panTo={panTo} />
         <GoogleMap
           center={center}
           zoom={10}
           mapContainerStyle={mapContainerStyle}
           options={options}
+          onLoad={onMapLoad}
         >
           {markers
             ? markers.map((marker) => {
