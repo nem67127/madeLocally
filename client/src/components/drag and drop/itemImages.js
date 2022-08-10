@@ -15,5 +15,3 @@ const Item = styled.img`
   height: 200px;
   margin: 10px;
 `;
-
-const Button = styled.button``;

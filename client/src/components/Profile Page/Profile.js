@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import ProfileDetails from "./ProfileDetails";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const Profile = () => {
   const { profileId } = useParams();

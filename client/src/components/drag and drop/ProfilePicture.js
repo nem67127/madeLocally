@@ -3,20 +3,22 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 const ProfilePicture = ({ profilePic, setProfilePic }) => {
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.map((file, index) => {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        setProfilePic({ id: index, src: e.target.result });
-      };
-      reader.readAsDataURL(file);
-      return file;
-    });
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      acceptedFiles.map((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          setProfilePic({ id: index, src: e.target.result });
+        };
+        reader.readAsDataURL(file);
+        return file;
+      });
+    },
+    [setProfilePic]
+  );
   const {
     getRootProps,
     getInputProps,
-    acceptedFiles,
     open,
     isDragAccept,
     isFocused,

@@ -6,7 +6,6 @@ const ShowImage = ({ images, removeImage }) => {
     return (
       <>
         <ItemImage image={image} imagesArr={images} removeImage={removeImage} />
-        {/* <Button onClick={removeImage(image)}>x</Button> */}
       </>
     );
   };
@@ -22,4 +21,3 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 `;
-const Button = styled.button``;

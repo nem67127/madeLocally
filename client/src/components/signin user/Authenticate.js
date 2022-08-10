@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
@@ -13,5 +12,3 @@ const AuthenticationButton = () => {
 };
 
 export default AuthenticationButton;
-
-const Span = styled.span``;

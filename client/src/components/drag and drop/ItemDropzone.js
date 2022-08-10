@@ -4,19 +4,22 @@ import styled from "styled-components";
 import ShowImage from "./ShowItems";
 
 const ItemsDropZone = ({ images, setImages }) => {
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.map((file, index) => {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        setImages((prevState) => [
-          ...prevState,
-          { id: index, src: e.target.result },
-        ]);
-      };
-      reader.readAsDataURL(file);
-      return file;
-    });
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      acceptedFiles.map((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          setImages((prevState) => [
+            ...prevState,
+            { id: index, src: e.target.result },
+          ]);
+        };
+        reader.readAsDataURL(file);
+        return file;
+      });
+    },
+    [setImages]
+  );
 
   const {
     getRootProps,

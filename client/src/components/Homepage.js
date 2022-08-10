@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useLoadScript, GoogleMap, Marker } from "@react-google-maps/api";
-import mapStyles from "./mapStyles";
+import { mapStyles } from "./mapStyles";
 import { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";

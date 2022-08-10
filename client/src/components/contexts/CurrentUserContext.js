@@ -1,5 +1,4 @@
-import { createContext, useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { createContext, useState } from "react";
 
 export const CurrentUserContext = createContext();
 
