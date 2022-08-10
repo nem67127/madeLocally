@@ -11,26 +11,94 @@ const options = {
 const updateProfile = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const _id = req.params.profileId;
-  const { lat, lng } = req.body;
+  const { profilePic, images, categories } = req.body;
 
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
-    //insert a new location the locations collection
-    // change address into lat and lng
-    if (req.body.location) {
-      await db.collection("locations").insertOne({ user: _id, lat, lng });
-      console.log("location added");
+    //if there is no new profile pic or categories or showcase images
+    if (profilePic === null && categories.length <= 0 && images.length <= 0) {
+      const { profilePic, categories, images, ...rest } = req.body;
+      const data = await db
+        .collection("users")
+        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: "updated values, not the profile pic, categories, or showcase",
+      });
+    }
+    //if there are no profilePic or categories
+    if (profilePic === null && categories.length <= 0) {
+      const { profilePic, categories, ...rest } = req.body;
+      const data = await db
+        .collection("users")
+        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: "updated values, not the profile pic or categories",
+      });
+    }
+    //if theres no profile pic or showcase images
+    if (profilePic === null && images.length <= 0) {
+      const { profilePic, images, ...rest } = req.body;
+      const data = await db
+        .collection("users")
+        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: "updated values, not the profile pic or showcase",
+      });
+    }
+    //if theres no showcase images or categories
+    if (images.length <= 0 && categories.length <= 0) {
+      const { images, categories, ...rest } = req.body;
+      const data = await db
+        .collection("users")
+        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: "updated values, not the showcase or categories",
+      });
     }
     //if there is no profilePic
-    if (req.body.profilePic === null) {
+    if (profilePic === null) {
       const { profilePic, ...rest } = req.body;
       const data = await db
         .collection("users")
         .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
-      return res
-        .status(200)
-        .json({ status: 200, data, message: "updated values, no profile pic" });
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: "updated values, not the profile pic",
+      });
+    }
+    //if there are now showcase images to update
+    if (images.length <= 0 || !images) {
+      const { images, ...rest } = req.body;
+      const data = await db
+        .collection("users")
+        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: "updated values, not the showcase images",
+      });
+    }
+    //if there are now categories to update
+    if (categories.length <= 0 || !categories) {
+      const { categories, ...rest } = req.body;
+      const data = await db
+        .collection("users")
+        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: "updated values, not the categories",
+      });
     }
     //if there is profile pic and showcase images
     const data = await db

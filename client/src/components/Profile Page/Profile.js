@@ -54,7 +54,7 @@ const Profile = () => {
                 profiles.categories.map((category) => (
                   <>
                     <div>Categories</div>
-                    <div>{category}</div>
+                    <div key={`${category}`}>{category}</div>
                   </>
                 ))
               ) : (

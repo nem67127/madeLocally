@@ -35,7 +35,6 @@ const getLocations = async (req, res) => {
 //get users information based on location clicked
 const createNewLocation = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  const { location, lat, lng } = req.body;
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
