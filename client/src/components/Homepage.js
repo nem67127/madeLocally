@@ -6,6 +6,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
 
+//for the map
+const libraries = ["places"];
+const mapContainerStyle = { width: "100%", height: "100%" };
+const options = {
+  //styling from snazzymaps: https://snazzymaps.com/style/77/clean-cut
+  styles: mapStyles,
+  disableDefaultUI: true,
+  zoomControl: true,
+};
+//where the map will populate at the start
+const center = {
+  lat: 48.528525,
+  lng: -123.39876,
+};
+
 const HomePage = () => {
   //not sure how to implement search bar function
 
@@ -51,20 +66,6 @@ const HomePage = () => {
 
   //get the user on the location clicked to show information
 
-  //for the map
-  const libraries = ["places"];
-  const mapContainerStyle = { width: "100%", height: "100%" };
-  const options = {
-    //styling from snazzymaps: https://snazzymaps.com/style/77/clean-cut
-    styles: mapStyles,
-    disableDefaultUI: true,
-    zoomControl: true,
-  };
-  //where the map will populate at the start
-  const center = {
-    lat: 48.528525,
-    lng: -123.39876,
-  };
   //checking if map is loaded or if there was an error
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,

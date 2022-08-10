@@ -53,8 +53,6 @@ const SideInputs = ({ handleChangeProfile }) => {
           }
         />
       </Box>
-      {/* <Button onClick={(ev) => handleSubmit(ev)}>Save</Button>
-      <Button onClick={(ev) => handleLocation(ev)}>Add location to Map</Button> */}
     </>
   );
 };
@@ -69,4 +67,3 @@ const Input = styled.input`
   width: 100%;
   margin-left: 10px;
 `;
-const Button = styled.button``;

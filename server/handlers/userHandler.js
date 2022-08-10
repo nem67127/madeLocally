@@ -31,7 +31,7 @@ const getUser = async (req, res) => {
 const getUserById = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const _id = req.params.userId;
-  console.log(_id);
+
   try {
     await client.connect();
     const db = await client.db("MadeLocally");

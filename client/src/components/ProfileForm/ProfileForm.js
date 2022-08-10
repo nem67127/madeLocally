@@ -6,6 +6,7 @@ import ItemsDropZone from "../drag and drop/ItemDropzone";
 import Categories from "./Categories";
 import SideInputs from "./SideInputs";
 import ProfilePicture from "../drag and drop/ProfilePicture";
+import Geocode from "react-geocode";
 
 const ProfileForm = () => {
   //This is where artisans are directed to if they are new to the site to set up their profile
@@ -23,7 +24,24 @@ const ProfileForm = () => {
   const handleChangeCategories = (ev) => {
     setCategories([ev.target.value, ...categories]);
   };
-
+  //change location to lat and lng with react-geocode
+  const getLatLng = () => {
+    Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
+    Geocode.setLanguage("en");
+    Geocode.setLocationType("ROOFTOP");
+    Geocode.enableDebug();
+    return Geocode.fromAddress(`${location.location}`).then(
+      (res) => {
+        console.log(res);
+        const { lat, lng } = res.results[0].geometry.location;
+        console.log(lat, lng);
+        return { lat, lng };
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
   //Handle change to set form data and thats what we send to backend
   const handleChangeProfile = (value, name) => {
     setProfileData({ ...profileData, [name]: value });
@@ -36,6 +54,7 @@ const ProfileForm = () => {
   const handleSubmit = async (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
+    console.log("hello");
 
     await fetch(`/api/profile/${profileId}`, {
       method: "PATCH",
@@ -51,20 +70,26 @@ const ProfileForm = () => {
         }
       })
       .catch((err) => console.log(err));
-    await fetch(`/api/locations`, {
-      method: "POST",
-      body: JSON.stringify(location),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === 200) {
-          console.log("user updated", data);
-        }
-      })
-      .catch((err) => console.log(err));
+    if (location) {
+      const latlng = await getLatLng();
+      if (latlng) {
+        await fetch(`/api/locations`, {
+          method: "POST",
+          body: JSON.stringify({ ...location, ...latlng }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status === 200) {
+              console.log("user's location updated", data);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    }
+
     await navigate(`/profile/${profileId}`);
   };
 

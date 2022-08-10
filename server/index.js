@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 
@@ -32,6 +33,7 @@ express()
   })
   // enable CORS
   .use(cors())
+  .use(morgan("tiny"))
   .use(bodyParser.json({ limit: "50mb" }))
   .use(bodyParser.urlencoded({ limit: "50mb", extended: true }))
   // parse requests of content-type - application/json

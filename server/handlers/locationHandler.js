@@ -35,17 +35,18 @@ const getLocations = async (req, res) => {
 //get users information based on location clicked
 const createNewLocation = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
+  const { location, lat, lng } = req.body;
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
     //find if user already exist in locations
     const { user } = req.body;
-    const foundUser = await db.collection("locations").find({ user }).toArray();
+    const foundUser = await db.collection("locations").findOne({ user });
     if (foundUser) {
       //update location
       const updateLocation = await db
         .collection("locations")
-        .updateOne({ user }, { $set: { location: req.body.location } });
+        .updateOne({ user }, { $set: { ...req.body } });
       return res.status(200).json({
         status: 200,
         data: updateLocation,

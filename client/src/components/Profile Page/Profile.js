@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ProfileDetails from "./ProfileDetails";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const Profile = () => {
   const { profileId } = useParams();
@@ -31,20 +32,53 @@ const Profile = () => {
       <Main>
         <Container>
           <ProfilePic>
-            <Img alt="profile picture" src={profiles.profilePic.src} />
+            {profiles.profilePic ? (
+              <Img alt="profile picture" src={profiles.profilePic.src} />
+            ) : (
+              <></>
+            )}
           </ProfilePic>
 
           <Div>
             <Name>{profiles.businessName}</Name>
             <Description>{profiles.businessDescrip}</Description>
+            <div>Upcoming Events:</div>
           </Div>
         </Container>
         <Container2>
           <Info>
             <ProfileDetails profiles={profiles} />
-            {/* <Categories /> categories in an array and will have to map */}
+
+            {profiles.categories ? (
+              profiles.categories.length > 0 ? (
+                profiles.categories.map((category) => (
+                  <>
+                    <div>Categories</div>
+                    <div>{category}</div>
+                  </>
+                ))
+              ) : (
+                <></>
+              )
+            ) : (
+              <></>
+            )}
           </Info>
-          <Items>{/* photos in an array and will have to map */}</Items>
+          <Items>
+            {profiles.images ? (
+              profiles.images.length > 0 ? (
+                profiles.images.map((image) => (
+                  <>
+                    <img alt="showcase" src={image.src} />
+                  </>
+                ))
+              ) : (
+                <></>
+              )
+            ) : (
+              <></>
+            )}
+          </Items>
         </Container2>
       </Main>
     </Wrapper>
@@ -90,8 +124,7 @@ const Name = styled.div`
   font-size: 5vh;
 `;
 const Description = styled.div`
-  margin-top: 10px;
-  height: 100px;
+  margin: 10px 0;
 `;
 
 const Container = styled.div`
@@ -103,7 +136,6 @@ const Container = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
 `;
 const Items = styled.div`
   margin-left: 20px;
@@ -111,17 +143,13 @@ const Items = styled.div`
   width: 70%;
   align-self: flex-start;
 `;
-const Input = styled.div`
-  width: 100%;
-  margin-left: 10px;
-`;
 
 const Div = styled.div`
   display: flex;
   flex-direction: column;
   width: 70%;
   height: 20vh;
-  margin-left: 20px;
+  margin-left: 50px;
 `;
 
 const Container2 = styled.div`
