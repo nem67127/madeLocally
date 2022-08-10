@@ -38,20 +38,19 @@ const createNewLocation = async (req, res) => {
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
+    //find if user already exist in locations
     const { user } = req.body;
-    const foundUser = await db.collections("locations").findOne({ user });
+    const foundUser = await db.collection("locations").find({ user }).toArray();
     if (foundUser) {
       //update location
       const updateLocation = await db
         .collection("locations")
         .updateOne({ user }, { $set: { location: req.body.location } });
-      return res
-        .status(200)
-        .json({
-          status: 200,
-          data: updateLocation,
-          message: "updated location",
-        });
+      return res.status(200).json({
+        status: 200,
+        data: updateLocation,
+        message: "updated location",
+      });
     }
     const locations = await db
       .collection("locations")

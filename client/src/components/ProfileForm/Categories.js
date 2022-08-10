@@ -1,13 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-const Categories = () => {
-  const [categories, setCategories] = useState([]);
-  //to put categories checked into an array
-  const handleChangeCategories = (ev) => {
-    setCategories([ev.target.value, ...categories]);
-  };
-  // fetch to patch categories to user
+const Categories = ({ profileId, handleChangeCategories }) => {
   return (
     <Cat>
       <p>Categories:</p>
@@ -93,6 +87,7 @@ const Categories = () => {
         />
         <Label htmlFor="category">Metal Work</Label>
       </Box>
+      {/* <Button onClick={(ev) => handleSubmit(ev)}>Save</Button> */}
     </Cat>
   );
 };
@@ -115,3 +110,4 @@ const Box = styled.div`
   margin-bottom: 10px;
   align-items: center;
 `;
+const Button = styled.button``;

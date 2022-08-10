@@ -6,7 +6,7 @@ import SignIn from "./components/SignIn";
 import Events from "./components/Events";
 import EventDetails from "./components/EventDetails";
 import ProfileForm from "./components/ProfileForm/ProfileForm";
-import Profile from "./components/Profile";
+import Profile from "./components/Profile Page/Profile";
 import GlobalStyles from "./GlobalStyles";
 import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history";
 

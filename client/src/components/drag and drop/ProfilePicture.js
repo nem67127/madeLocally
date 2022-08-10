@@ -1,13 +1,8 @@
 import styled from "styled-components";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const ProfilePicture = () => {
-  //drag and drop for profile picture
-  const [profilePic, setProfilePic] = useState(null);
-
-  //fetch to post profile picture to user
-
+const ProfilePicture = ({ profilePic, setProfilePic }) => {
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.map((file, index) => {
       const reader = new FileReader();
@@ -39,7 +34,7 @@ const ProfilePicture = () => {
       <button type="button" className="btn" onClick={open}>
         Click to select file
       </button>
-      {profilePic && <Img alt="" src={profilePic.src} />}
+      {profilePic && <Img alt="" src={`${profilePic.src}`} />}
     </ProfilePic>
   );
 };

@@ -13,19 +13,33 @@ const ProfileForm = () => {
   const { currentUser } = useContext(CurrentUserContext);
   //what the user will be set with
   const [profileData, setProfileData] = useState(null);
+  const [images, setImages] = useState([]);
+  const [profilePic, setProfilePic] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [location, setLocation] = useState(null);
+
+  const navigate = useNavigate();
+  //to put categories checked into an array
+  const handleChangeCategories = (ev) => {
+    setCategories([ev.target.value, ...categories]);
+  };
 
   //Handle change to set form data and thats what we send to backend
   const handleChangeProfile = (value, name) => {
     setProfileData({ ...profileData, [name]: value });
+    if (name === "location") {
+      setLocation({ user: profileId, location: value });
+    }
   };
 
   //need onclick to submit form and navigate and post location and patch user
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
-    fetch(`/api/users/${profileId}`, {
+
+    await fetch(`/api/profile/${profileId}`, {
       method: "PATCH",
-      body: JSON.stringify(profileData),
+      body: JSON.stringify({ ...profileData, categories, images, profilePic }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -33,17 +47,36 @@ const ProfileForm = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === 200) {
-          console.log("user updated");
+          console.log("user updated", data);
         }
       })
       .catch((err) => console.log(err));
+    await fetch(`/api/locations`, {
+      method: "POST",
+      body: JSON.stringify(location),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200) {
+          console.log("user updated", data);
+        }
+      })
+      .catch((err) => console.log(err));
+    await navigate(`/profile/${profileId}`);
   };
 
   return (
     <Wrapper>
-      <Form onSubmit={(ev) => handleSubmit(ev)}>
+      <Form>
         <Container>
-          <ProfilePicture />
+          <ProfilePicture
+            profileId={profileId}
+            profilePic={profilePic}
+            setProfilePic={setProfilePic}
+          />
           <Div>
             <Name
               placeholder="Buisiness Name"
@@ -67,13 +100,24 @@ const ProfileForm = () => {
         </Container>
         <Container>
           <Info>
-            <SideInputs profileId={profileId} />
-            <Categories />
+            <SideInputs
+              profileId={profileId}
+              handleChangeProfile={handleChangeProfile}
+            />
+            <Categories
+              profileId={profileId}
+              handleChangeCategories={handleChangeCategories}
+            />
           </Info>
           <Items>
-            <ItemsDropZone />
+            <ItemsDropZone
+              profileId={profileId}
+              images={images}
+              setImages={setImages}
+            />
           </Items>
         </Container>
+        <Button onClick={(ev) => handleSubmit(ev)}>Update/Save</Button>
       </Form>
     </Wrapper>
   );
@@ -128,14 +172,10 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   width: 70%;
-  height: 15vh;
+  height: 20vh;
   margin-left: 20px;
 `;
-const Button = styled.button`
-  position: absolute;
-  left: 80vw;
-  padding: 10px;
-`;
+const Button = styled.button``;
 
 const Box = styled.div`
   display: flex;

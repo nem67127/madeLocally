@@ -1,8 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
 
-const { getUser, setArtisan, createUser } = require("./handlers/userHandler");
+const {
+  getUser,
+  setArtisan,
+  createUser,
+  getUserById,
+} = require("./handlers/userHandler");
 const {
   getLocations,
   createNewLocation,
@@ -26,15 +32,17 @@ express()
   })
   // enable CORS
   .use(cors())
-
+  .use(bodyParser.json({ limit: "50mb" }))
+  .use(bodyParser.urlencoded({ limit: "50mb", extended: true }))
   // parse requests of content-type - application/json
   .use(express.json())
 
   // parse requests of content-type - application/x-www-form-urlencoded
   .use(express.urlencoded({ extended: true }))
 
-  //get a single user based on their _id
+  //get a single user based on their email
   .get("/api/user/:email", getUser)
+  .get("/api/users/:userId", getUserById)
 
   //add the key value pair of aritsan to a specific user
   .patch("/api/users/:userId", setArtisan)
@@ -50,7 +58,7 @@ express()
   // GET for profile to get the information based on userId params to show correct profile
 
   //PATCH to update the users profile will user profile form again - this will also insert a new document in locations collection
-  .patch("/api/profile/:userId", updateProfile)
+  .patch("/api/profile/:profileId", updateProfile)
   //GET events to retrieve all the events - i want them filtered by dates if i can i want current and upcoming dates
 
   // GET event:eventID to retrieve one event

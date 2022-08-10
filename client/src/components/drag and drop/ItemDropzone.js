@@ -1,12 +1,9 @@
 import { useDropzone } from "react-dropzone";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import styled from "styled-components";
 import ShowImage from "./ShowItems";
 
-const ItemsDropZone = () => {
-  //for drag and drop of item images
-  const [images, setImages] = useState([]);
-
+const ItemsDropZone = ({ images, setImages }) => {
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.map((file, index) => {
       const reader = new FileReader();
@@ -44,11 +41,6 @@ const ItemsDropZone = () => {
     }
   };
 
-  const onSubmit = (ev) => {
-    ev.stopPropagation();
-    ev.preventDefault();
-  };
-
   return (
     <>
       <Container {...getRootProps({ isDragAccept, isFocused, isDragReject })}>
@@ -59,7 +51,6 @@ const ItemsDropZone = () => {
         </button>
       </Container>
       <ShowImage images={images} removeImage={removeImage} />
-      <button onClick={(ev) => onSubmit(ev)}>Save</button>
     </>
   );
 };

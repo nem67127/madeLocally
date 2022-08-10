@@ -2,18 +2,8 @@ import styled from "styled-components";
 import { FiInstagram, FiPhone } from "react-icons/fi";
 import { FaFacebook } from "react-icons/fa";
 import { MdWebAsset, MdLocationPin } from "react-icons/md";
-import { useState } from "react";
 
-const SideInputs = ({ profileId }) => {
-  const [profileData, setProfileData] = useState(null);
-  const [location, setLocation] = useState(null);
-  const handleChangeProfile = (value, name) => {
-    setProfileData({ ...profileData, [name]: value });
-    if (name === "location") {
-      setLocation({ user: profileId, location: value });
-    }
-  };
-  //fetch to patch and post after submit button
+const SideInputs = ({ handleChangeProfile }) => {
   return (
     <>
       <Box>
@@ -63,6 +53,8 @@ const SideInputs = ({ profileId }) => {
           }
         />
       </Box>
+      {/* <Button onClick={(ev) => handleSubmit(ev)}>Save</Button>
+      <Button onClick={(ev) => handleLocation(ev)}>Add location to Map</Button> */}
     </>
   );
 };
@@ -77,3 +69,4 @@ const Input = styled.input`
   width: 100%;
   margin-left: 10px;
 `;
+const Button = styled.button``;

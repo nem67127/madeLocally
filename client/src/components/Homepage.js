@@ -36,7 +36,6 @@ const HomePage = () => {
         });
     }
   }, [user]);
-  console.log(currentUser);
 
   //get all the locations - should depend on if another profile is made
   useEffect(() => {
