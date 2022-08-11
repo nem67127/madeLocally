@@ -21,7 +21,7 @@ const LocationSearch = ({ panTo }) => {
     clearSuggestions,
   } = usePlacesAutocomplete({
     requestOptions: {
-      location: { lat: () => "", lng: () => "" },
+      location: { lat: () => 48.528525, lng: () => -123.39876 },
       radius: 200 * 1000,
     },
   });
@@ -57,10 +57,12 @@ const LocationSearch = ({ panTo }) => {
           }}
         />
         <ComboboxPopover>
-          {status === "OK" &&
-            data.map(({ id, description }) => (
-              <ComboboxOption key={id} value={description} />
-            ))}
+          <ComboboxList>
+            {status === "OK" &&
+              data.map(({ id, description }) => (
+                <ComboboxOption key={id} value={description} />
+              ))}
+          </ComboboxList>
         </ComboboxPopover>
       </Combobox>
     </Wrapper>

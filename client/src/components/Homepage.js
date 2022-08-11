@@ -17,6 +17,7 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import LocationSearch from "./map/LocationSearch";
+import UsersLocation from "./map/UsersLocation";
 
 //for the map
 const libraries = ["places"];
@@ -106,6 +107,8 @@ const HomePage = () => {
     <Wrapper>
       <Map>
         <LocationSearch panTo={panTo} />
+        <UsersLocation panTo={panTo} />
+
         <GoogleMap
           center={center}
           zoom={10}
