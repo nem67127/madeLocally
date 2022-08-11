@@ -1,9 +1,26 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import { UpdateEventContext } from "../contexts/UpdateEvents";
+import usePlacesAutocomplete from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
 
 const CreateEvent = () => {
-  const [createEvent, setCreateEvent] = useState(null);
+  const initialState = {
+    name: "",
+    location: null,
+    startTime: "",
+    endTime: "",
+    startDate: "",
+    endDate: "",
+  };
+  const [createEvent, setCreateEvent] = useState(initialState);
   const { eventUpdate, setEventUpdate } = useContext(UpdateEventContext);
   //onChange function
   const handleChange = (value, name) => {
@@ -25,6 +42,19 @@ const CreateEvent = () => {
       })
       .catch((err) => console.log(err));
   };
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location: { lat: () => 48.528525, lng: () => -123.39876 },
+      radius: 200 * 1000,
+    },
+  });
+  console.log(createEvent);
 
   return (
     <Wrapper>
@@ -39,12 +69,34 @@ const CreateEvent = () => {
         </Box>
         <Box>
           <Label>Where:</Label>
-          <Input
-            name="location"
-            placeholder="Where is it located"
-            type="address"
-            onChange={(ev) => handleChange(ev.target.value, "location")}
-          />
+          <Combobox
+            onSelect={async (address) => {
+              setValue(address, false);
+              clearSuggestions();
+              try {
+                handleChange(address, "location");
+              } catch (err) {
+                console.log(err);
+              }
+            }}
+            style={{ width: "85%" }}
+          >
+            <ComboboxInput
+              value={value}
+              onChange={(ev) => setValue(ev.target.value)}
+              disabled={!ready}
+              placeholder="Enter your location"
+              style={{ width: "100%" }}
+            />
+            <ComboboxPopover>
+              <ComboboxList>
+                {status === "OK" &&
+                  data.map(({ id, description }) => (
+                    <ComboboxOption key={id} value={description} />
+                  ))}
+              </ComboboxList>
+            </ComboboxPopover>
+          </Combobox>
         </Box>
 
         <Box>
@@ -95,11 +147,10 @@ const CreateEvent = () => {
             onChange={(ev) => handleChange(ev.target.value, "description")}
           />
         </Box>
-        {createEvent === null ||
-        createEvent.name === "" ||
+        {createEvent.name === "" ||
         createEvent.startDate === "" ||
         createEvent.startTime === "" ||
-        createEvent.location === "" ? (
+        createEvent.location === null ? (
           <Button type="submit" disabled={true}>
             Create Event
           </Button>
@@ -116,7 +167,6 @@ export default CreateEvent;
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  /* background-color: var(--main-background-color); */
 `;
 
 const Form = styled.form`

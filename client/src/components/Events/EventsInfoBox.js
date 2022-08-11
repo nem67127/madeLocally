@@ -3,6 +3,12 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import {
+  BsBookmarkHeart,
+  BsBookmarkHeartFill,
+  BsHeart,
+  BsHeartFill,
+} from "react-icons/bs";
 
 const EventsInfoBox = ({ event }) => {
   const { currentUser } = useContext(CurrentUserContext);
@@ -13,7 +19,6 @@ const EventsInfoBox = ({ event }) => {
 
   const startDate = format(evDate, "MMMM dd, yyyy");
   const endDate = event.endDate && format(evEndDate, "MMMM dd, yyyy");
-  console.log(event);
   //
   const navigate = useNavigate();
   //go to event detail page
@@ -21,15 +26,28 @@ const EventsInfoBox = ({ event }) => {
     ev.stopPropagation();
     navigate(`/event/${event._id}`);
   };
+
+  const handleClickJoin = (ev) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+    //patch adds vendor to vendors array in event and add event_id to vending array on user
+    //will remove if event id is in vendors or vending
+  };
+
+  const handleClickInterest = (ev) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+    //patch adds event id to user interested events array, will remove if already there
+  };
   return (
     <>
-      {evDate >= date || evEndDate >= date ? (
+      {evDate >= date || (evEndDate && evEndDate >= date) ? (
         <Wrapper>
           <Name onClick={(ev) => handleClickEvent(ev)}>{event.name}</Name>
           <EventDate>
             {startDate}
             <Span>
-              {event.startTime}am
+              {event.startTime}
               {event.endTime && <span>-{event.endTime}</span>}
             </Span>
             {event.endDate ? (
@@ -45,13 +63,28 @@ const EventsInfoBox = ({ event }) => {
             )}
           </EventDate>
           <Location>{event.location}</Location>
-          {/* if current user is an artisan have a button to join event, if not add button to say interested */}
-          {currentUser && currentUser.artisan ? (
-            <Button>Join</Button>
-          ) : currentUser === null ? (
+          {/* if current user is an artisan have a button to join event/unjoin, if not add button to say interested/uninterested */}
+          {!currentUser ? (
             <></>
+          ) : currentUser && currentUser.artisan ? (
+            currentUser.vending && currentUser.vending.includes(event._id) ? (
+              <Button onClick={(ev) => handleClickJoin(ev)}>
+                <BsBookmarkHeartFill />
+              </Button>
+            ) : (
+              <Button>
+                <BsBookmarkHeart onClick={(ev) => handleClickJoin(ev)} />
+              </Button>
+            )
+          ) : currentUser &&
+            currentUser.interestedEvents.includes(event._id) ? (
+            <Button onClick={(ev) => handleClickInterest(ev)}>
+              <BsHeartFill />
+            </Button>
           ) : (
-            <Button>Interested</Button>
+            <Button onClick={(ev) => handleClickInterest(ev)}>
+              <BsHeart />
+            </Button>
           )}
         </Wrapper>
       ) : (
@@ -83,4 +116,7 @@ const Span = styled.span`
 `;
 const Location = styled.p``;
 
-const Button = styled.button``;
+const Button = styled.button`
+  background-color: transparent;
+  border: none;
+`;

@@ -47,6 +47,8 @@ express()
   .get("/api/user/:email", getUser)
   //get a user based on thier id
   .get("/api/users/:userId", getUserById)
+  //update user interested event array
+  // .patch("api/user-interest/:userId/:eventId")
 
   //add the key value pair of aritsan to a specific user
   .patch("/api/users/:userId", setArtisan)
@@ -68,7 +70,8 @@ express()
 
   //POST to create a new event to the events collection
   .post("/api/events", createEvent)
-
+  // update event vendors and where user is vending
+  // .patch("/api/vendor-update/:eventId/:userId")
   //GET to retrieve all the locations
   .get("/api/locations", getLocations)
   //Add a new location

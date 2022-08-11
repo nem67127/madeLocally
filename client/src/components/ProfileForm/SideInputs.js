@@ -2,18 +2,59 @@ import styled from "styled-components";
 import { FiInstagram, FiPhone } from "react-icons/fi";
 import { FaFacebook } from "react-icons/fa";
 import { MdWebAsset, MdLocationPin } from "react-icons/md";
+import usePlacesAutocomplete from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
 
 const SideInputs = ({ handleChangeProfile }) => {
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location: { lat: () => 48.528525, lng: () => -123.39876 },
+      radius: 200 * 1000,
+    },
+  });
   return (
     <>
       <Box>
         <MdLocationPin style={{ height: "10%", width: "10%" }} />
-        <Input
-          name="location"
-          placeholder="where are you located"
-          type="address"
-          onChange={(ev) => handleChangeProfile(ev.target.value, "location")}
-        />
+        <Combobox
+          onSelect={async (address) => {
+            setValue(address, false);
+            clearSuggestions();
+            try {
+              handleChangeProfile(address, "location");
+            } catch (err) {
+              console.log(err);
+            }
+          }}
+        >
+          <ComboboxInput
+            value={value}
+            onChange={(ev) => setValue(ev.target.value)}
+            disabled={!ready}
+            placeholder="Enter your location"
+          />
+          <ComboboxPopover>
+            <ComboboxList>
+              {status === "OK" &&
+                data.map(({ id, description }) => (
+                  <ComboboxOption key={id} value={description} />
+                ))}
+            </ComboboxList>
+          </ComboboxPopover>
+        </Combobox>
       </Box>
       <Box>
         <FiPhone style={{ height: "10%", width: "10%" }} />
