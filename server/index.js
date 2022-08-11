@@ -15,6 +15,7 @@ const {
   createNewLocation,
 } = require("./handlers/locationHandler");
 const { updateProfile } = require("./handlers/profileHandlers");
+const { createEvent, getAllEvents } = require("./handlers/eventHandlers");
 const PORT = 8000;
 
 dotenv.config();
@@ -44,6 +45,7 @@ express()
 
   //get a single user based on their email
   .get("/api/user/:email", getUser)
+  //get a user based on thier id
   .get("/api/users/:userId", getUserById)
 
   //add the key value pair of aritsan to a specific user
@@ -57,15 +59,15 @@ express()
     });
   })
 
-  // GET for profile to get the information based on userId params to show correct profile
-
   //PATCH to update the users profile will user profile form again - this will also insert a new document in locations collection
   .patch("/api/profile/:profileId", updateProfile)
-  //GET events to retrieve all the events - i want them filtered by dates if i can i want current and upcoming dates
 
+  //GET events to retrieve all the events - i want them filtered by dates if i can i want current and upcoming dates
+  .get("/api/events", getAllEvents)
   // GET event:eventID to retrieve one event
 
   //POST to create a new event to the events collection
+  .post("/api/events", createEvent)
 
   //GET to retrieve all the locations
   .get("/api/locations", getLocations)

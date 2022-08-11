@@ -1,27 +1,81 @@
+import { useContext, useState } from "react";
 import styled from "styled-components";
+import { UpdateEventContext } from "../contexts/UpdateEvents";
 
 const CreateEvent = () => {
+  const [createEvent, setCreateEvent] = useState(null);
+  const { updateEvent, setEventUpdate } = useContext(UpdateEventContext);
   //onChange function
+  const handleChange = (value, name) => {
+    setCreateEvent({ ...createEvent, [name]: value });
+  };
   //on submit post to events
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    fetch("/api/events", {
+      method: "POST",
+      body: JSON.stringify({ ...createEvent }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setEventUpdate(!updateEvent);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Wrapper>
-      <Form>
+      <Form onSubmit={(ev) => handleSubmit(ev)}>
         <Box>
           <Label>Name of Event:</Label>
-          <Input name="name" placeholder="Enter name of the event" />
+          <Input
+            name="name"
+            placeholder="Enter name of the event"
+            onChange={(ev) => handleChange(ev.target.value, "name")}
+          />
         </Box>
         <Box>
           <Label>Where:</Label>
-          <Input name="location" placeholder="Where is it located" />
+          <Input
+            name="location"
+            placeholder="Where is it located"
+            type="address"
+            onChange={(ev) => handleChange(ev.target.value, "location")}
+          />
         </Box>
 
         <Box>
           <Label>Date:</Label>
-          <Input name="date" type="date" />
+          <div style={{ marginRight: "2.5%" }}>start:</div>
+          <Time
+            name="startDate"
+            type="date"
+            onChange={(ev) => handleChange(ev.target.value, "startDate")}
+          />
+          <div style={{ margin: " 0 2.5%" }}>end:</div>
+          <Time
+            name="endDate"
+            type="date"
+            onChange={(ev) => handleChange(ev.target.value, "endDate")}
+          />
         </Box>
         <Box>
           <Label>Time:</Label>
-          <Input name="time" placeholder="What time will it take place" />
+          <div style={{ marginRight: "2.5%" }}>start:</div>
+          <Time
+            name="startTime"
+            type="time"
+            onChange={(ev) => handleChange(ev.target.value, "startTime")}
+          />
+          <div style={{ margin: " 0 2.5%" }}>end:</div>
+          <Time
+            name="endTime"
+            type="time"
+            onChange={(ev) => handleChange(ev.target.value, "endTime")}
+          />
         </Box>
 
         <Box>
@@ -29,15 +83,29 @@ const CreateEvent = () => {
           <Input
             name="aritsans"
             placeholder="Add each artisan separating them with a comma"
+            onChange={(ev) => handleChange(ev.target.value, "vendors")}
           />
         </Box>
 
         <Box>
           <Label>Description:</Label>
-          <Input name="description" placeholder="Description" />
+          <Input
+            name="description"
+            placeholder="Description"
+            onChange={(ev) => handleChange(ev.target.value, "description")}
+          />
         </Box>
-
-        <Button>Create Event</Button>
+        {createEvent === null ||
+        createEvent.name === "" ||
+        createEvent.startDate === "" ||
+        createEvent.startTime === "" ||
+        createEvent.location === "" ? (
+          <Button type="submit" disabled={true}>
+            Create Event
+          </Button>
+        ) : (
+          <Button type="submit">Create Event</Button>
+        )}
       </Form>
     </Wrapper>
   );
@@ -79,4 +147,15 @@ const Button = styled.button`
   color: #2e6bc5;
   border-radius: 5px;
   background-color: transparent;
+  &:disabled {
+    opacity: 0.5;
+    background-color: #add6ff;
+  }
+  &:hover {
+    background-color: #add6ff;
+  }
+`;
+
+const Time = styled.input`
+  width: 36.25%;
 `;
