@@ -132,6 +132,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--main-background-color);
 `;
 const Map = styled.div`
   height: 70%;

@@ -18,7 +18,7 @@ const EventsInfoBox = ({ event }) => {
   };
   return (
     <>
-      {evDate >= date && (
+      {evDate >= date || evEndDate >= date ? (
         <Wrapper>
           <Name onClick={(ev) => handleClickEvent(ev)}>{event.name}</Name>
           <EventDate>
@@ -41,6 +41,8 @@ const EventsInfoBox = ({ event }) => {
           </EventDate>
           <Location>{event.location}</Location>
         </Wrapper>
+      ) : (
+        <></>
       )}
     </>
   );
@@ -53,6 +55,9 @@ const Wrapper = styled.div`
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   padding: 20px;
   border-radius: 10px;
+  width: 30%;
+  margin-bottom: 20px;
+  background-color: white;
 `;
 const Name = styled.h2`
   &:hover {

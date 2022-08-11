@@ -7,7 +7,7 @@ import { UpdateEventContext } from "../contexts/UpdateEvents";
 
 const Events = () => {
   const { currentUser } = useContext(CurrentUserContext);
-  const { updateEvent } = useContext(UpdateEventContext);
+  const { eventUpdate } = useContext(UpdateEventContext);
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
 
@@ -19,7 +19,7 @@ const Events = () => {
         setEvents(data.data);
       })
       .catch((err) => setError(err.message));
-  }, [updateEvent]);
+  }, [eventUpdate]);
 
   if (error !== null) {
     return <div>error</div>;
@@ -29,7 +29,7 @@ const Events = () => {
   }
 
   return (
-    <>
+    <Container>
       {/* artisans if logged in are able to create a new event */}
       {currentUser && currentUser.artisan ? <CreateEvent /> : <></>}
       <Wrapper>
@@ -43,17 +43,24 @@ const Events = () => {
           )}
         </EventsList>
       </Wrapper>
-    </>
+    </Container>
   );
 };
 export default Events;
+const Container = styled.div`
+  background-color: var(--main-background-color);
+`;
 const Wrapper = styled.div`
+  height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
 `;
 const EventsList = styled.div`
   width: 70%;
   padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
 `;

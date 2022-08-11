@@ -87,16 +87,21 @@ export default Profile;
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  min-height: calc(100vh - 80px);
+  background-color: var(--main-background-color);
 `;
 const Main = styled.form`
   height: 100%;
   width: 80%;
-  padding: 20px;
-  border: 1px solid black;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 const ProfilePic = styled.div`
   min-height: 30px;

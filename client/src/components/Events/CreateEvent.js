@@ -4,7 +4,7 @@ import { UpdateEventContext } from "../contexts/UpdateEvents";
 
 const CreateEvent = () => {
   const [createEvent, setCreateEvent] = useState(null);
-  const { updateEvent, setEventUpdate } = useContext(UpdateEventContext);
+  const { eventUpdate, setEventUpdate } = useContext(UpdateEventContext);
   //onChange function
   const handleChange = (value, name) => {
     setCreateEvent({ ...createEvent, [name]: value });
@@ -21,7 +21,7 @@ const CreateEvent = () => {
     })
       .then((res) => res.json())
       .then(() => {
-        setEventUpdate(!updateEvent);
+        setEventUpdate(!eventUpdate);
       })
       .catch((err) => console.log(err));
   };
@@ -116,6 +116,7 @@ export default CreateEvent;
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
+  /* background-color: var(--main-background-color); */
 `;
 
 const Form = styled.form`
@@ -127,6 +128,7 @@ const Form = styled.form`
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   margin-top: 30px;
   border-radius: 10px;
+  background-color: white;
 `;
 const Box = styled.div`
   display: flex;
