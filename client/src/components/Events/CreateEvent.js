@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 const CreateEvent = () => {
+  //onChange function
+  //on submit post to events
   return (
     <Wrapper>
       <Form>
@@ -14,11 +16,12 @@ const CreateEvent = () => {
         </Box>
 
         <Box>
-          <Label>When:</Label>
-          <Input
-            name="date"
-            placeholder="When and what time will it take place"
-          />
+          <Label>Date:</Label>
+          <Input name="date" type="date" />
+        </Box>
+        <Box>
+          <Label>Time:</Label>
+          <Input name="time" placeholder="What time will it take place" />
         </Box>
 
         <Box>
@@ -76,6 +79,4 @@ const Button = styled.button`
   color: #2e6bc5;
   border-radius: 5px;
   background-color: transparent;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
