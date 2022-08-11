@@ -1,9 +1,6 @@
 import styled from "styled-components";
 import { MdOutlineMyLocation } from "react-icons/md";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+
 const UsersLocation = ({ panTo }) => {
   return (
     <Button

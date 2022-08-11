@@ -14,13 +14,12 @@ const Header = () => {
   if (isLoading) {
     return <div>Loading</div>;
   }
-
   return (
     <Wrapper>
       <Link to="/">
         <h1>Made Locally</h1>
       </Link>
-      <Link to="/events">Events</Link>
+      <Link to={`/events`}>Events</Link>
       {/* if a user is signed in it will show the message icon */}
       {currentUser ? <Link to="">MessageIcon</Link> : <div></div>}
       <AuthNav />

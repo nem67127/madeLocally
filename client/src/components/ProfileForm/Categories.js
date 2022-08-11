@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
 
-const Categories = ({ profileId, handleChangeCategories }) => {
+const Categories = ({ handleChangeCategories }) => {
   return (
     <Cat>
       <p>Categories:</p>
@@ -87,7 +86,6 @@ const Categories = ({ profileId, handleChangeCategories }) => {
         />
         <Label htmlFor="category">Metal Work</Label>
       </Box>
-      {/* <Button onClick={(ev) => handleSubmit(ev)}>Save</Button> */}
     </Cat>
   );
 };
@@ -110,4 +108,3 @@ const Box = styled.div`
   margin-bottom: 10px;
   align-items: center;
 `;
-const Button = styled.button``;

@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
-import { useParams, useNavigate, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+
 import ItemsDropZone from "../drag and drop/ItemDropzone";
 import Categories from "./Categories";
 import SideInputs from "./SideInputs";
@@ -11,7 +11,6 @@ import Geocode from "react-geocode";
 const ProfileForm = () => {
   //This is where artisans are directed to if they are new to the site to set up their profile
   const { profileId } = useParams();
-  const { currentUser } = useContext(CurrentUserContext);
   //what the user will be set with
   const [profileData, setProfileData] = useState(null);
   const [images, setImages] = useState([]);
@@ -188,10 +187,6 @@ const Items = styled.div`
   width: 70%;
   align-self: flex-start;
 `;
-const Input = styled.input`
-  width: 100%;
-  margin-left: 10px;
-`;
 
 const Div = styled.div`
   display: flex;
@@ -201,9 +196,3 @@ const Div = styled.div`
   margin-left: 20px;
 `;
 const Button = styled.button``;
-
-const Box = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-  align-items: center;
-`;

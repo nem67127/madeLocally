@@ -5,17 +5,6 @@ import { useContext, useEffect, useRef, useState, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
 import LocationSearch from "./map/LocationSearch";
 import UsersLocation from "./map/UsersLocation";
 
@@ -63,7 +52,7 @@ const HomePage = () => {
           setError(err);
         });
     }
-  }, [user]);
+  }, [user, navigate, setCurrentUser]);
 
   //get all the locations - should depend on if another profile is made
   useEffect(() => {
