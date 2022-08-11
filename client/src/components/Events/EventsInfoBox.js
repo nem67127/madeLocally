@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const EventsInfoBox = ({ event }) => {
+  const { currentUser } = useContext(CurrentUserContext);
   //create current date
   const date = new Date();
   const evDate = new Date(event.startDate);
@@ -11,7 +14,9 @@ const EventsInfoBox = ({ event }) => {
   const startDate = format(evDate, "MMMM dd, yyyy");
   const endDate = event.endDate && format(evEndDate, "MMMM dd, yyyy");
   console.log(event);
+  //
   const navigate = useNavigate();
+  //go to event detail page
   const handleClickEvent = (ev) => {
     ev.stopPropagation();
     navigate(`/event/${event._id}`);
@@ -40,6 +45,14 @@ const EventsInfoBox = ({ event }) => {
             )}
           </EventDate>
           <Location>{event.location}</Location>
+          {/* if current user is an artisan have a button to join event, if not add button to say interested */}
+          {currentUser && currentUser.artisan ? (
+            <Button>Join</Button>
+          ) : currentUser === null ? (
+            <></>
+          ) : (
+            <Button>Interested</Button>
+          )}
         </Wrapper>
       ) : (
         <></>
@@ -69,3 +82,5 @@ const Span = styled.span`
   margin-left: 5px;
 `;
 const Location = styled.p``;
+
+const Button = styled.button``;

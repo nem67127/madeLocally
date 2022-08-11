@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <Wrapper>
       <Link to="/">
-        <h1>Made Locally</h1>
+        <Logo>Made Locally</Logo>
       </Link>
       <Link to={`/events`}>Events</Link>
       {/* if a user is signed in it will show the message icon */}
@@ -37,14 +37,27 @@ export default Header;
 
 const Wrapper = styled.div`
   height: 80px;
-  border-bottom: 1px solid black;
+  border-bottom: 5px solid var(--water-blue);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 5%;
+  font-size: 20px;
+`;
+const Logo = styled.h1`
+  font-family: var(--font-dm-serif);
+  color: black;
+  &:hover {
+    color: var(--dark-blue);
+  }
 `;
 
 const Link = styled(NavLink)`
   text-decoration: none;
   color: black;
+  font-family: var(--font--thasa);
+  color: var(--dark-blue);
+  &:hover {
+    opacity: 0.5;
+  }
 `;

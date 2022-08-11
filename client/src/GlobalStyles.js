@@ -3,13 +3,18 @@ import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
 :root{
   --main-background-color: #eff7ff;
+  --dark-blue: #2e6bc5;
+  --water-blue: #C6E2FF;
+  --font-dm-serif: 'DM Serif Display', serif;
+  --font-thasa: 'Thasadith', sans-serif;
 }
 *,
   *:before,
   *:after {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
-    font-family: sans-serif
+    font-family: 'Thasadith', sans-serif;
+    font-weight: bold;
   }
 
 html, body {

@@ -11,4 +11,8 @@ export default LoginButton;
 const Button = styled.button`
   border: none;
   background-color: transparent;
+  color: var(--dark-blue);
+  &:hover {
+    opacity: 0.5;
+  }
 `;
