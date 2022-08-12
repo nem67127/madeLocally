@@ -52,6 +52,36 @@ const createEvent = async (req, res) => {
   }
 };
 
+//get event based on the _id == eventId
+const getEvent = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const _id = req.params.eventId;
+  try {
+    await client.connect();
+    const db = await client.db("MadeLocally");
+    const result = await db
+      .collection("events")
+      .findOne({ _id: ObjectId(`${_id}`) });
+    if (!result) {
+      return res.status(404).json({
+        status: 404,
+        data: results,
+        message: "No events found",
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ status: 200, data: result, message: "event populated" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ status: 500, data: req.body, message: err.message });
+  } finally {
+    client.close();
+  }
+};
+
 // update event vendors and add/remove event from the artisan
 
 const updateVendorList = async (req, res) => {
@@ -143,4 +173,4 @@ const updateVendorList = async (req, res) => {
   }
 };
 
-module.exports = { getAllEvents, createEvent, updateVendorList };
+module.exports = { getAllEvents, createEvent, updateVendorList, getEvent };

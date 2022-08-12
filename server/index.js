@@ -19,6 +19,7 @@ const {
   createEvent,
   getAllEvents,
   updateVendorList,
+  getEvent,
 } = require("./handlers/eventHandlers");
 const PORT = 8000;
 
@@ -71,7 +72,7 @@ express()
   //GET events to retrieve all the events - i want them filtered by dates if i can i want current and upcoming dates
   .get("/api/events", getAllEvents)
   // GET event:eventID to retrieve one event
-
+  .get("/api/event/:eventId ", getEvent)
   //POST to create a new event to the events collection
   .post("/api/events", createEvent)
   // update event vendors and where user is vending
