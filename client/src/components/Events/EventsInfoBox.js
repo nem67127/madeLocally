@@ -12,8 +12,10 @@ const EventsInfoBox = ({ event }) => {
   const [interested, setInterested] = useState(false);
   //create current date
   const date = new Date();
-  const evDate = new Date(event.startDate);
-  const evEndDate = new Date(event.endDate);
+  const goodDate = event.startDate.replaceAll("-", "/");
+  const evDate = new Date(goodDate);
+  const goodEndDate = event.endDate.replaceAll("-", "/");
+  const evEndDate = new Date(goodEndDate);
 
   const startDate = format(evDate, "MMMM dd, yyyy");
   const endDate = event.endDate && format(evEndDate, "MMMM dd, yyyy");
@@ -55,53 +57,54 @@ const EventsInfoBox = ({ event }) => {
   };
   return (
     <>
-      {evDate >= date || (evEndDate && evEndDate >= date) ? (
-        <Wrapper>
-          <Name onClick={(ev) => handleClickEvent(ev)}>{event.name}</Name>
-          <EventDate>
-            {startDate}
-            <Span>
-              {event.startTime}
-              {event.endTime && <span>-{event.endTime}</span>}
-            </Span>
-            {event.endDate ? (
-              <>
-                <span> - {endDate}</span>
-                <Span>
-                  {event.startTime}
-                  {event.endTime && <span>-{event.endTime}</span>}
-                </Span>
-              </>
-            ) : (
-              <></>
-            )}
-          </EventDate>
-          <Location>{event.location}</Location>
-          {/* if current user is an artisan have a button to join event/unjoin, if not add button to say interested/uninterested */}
-          {/* if there is no currentUser */}
-          {currentUser === null ? (
-            <></>
-          ) : currentUser && currentUser.artisan ? (
-            <Button onClick={(ev) => handleClickJoin(ev)}>
-              {!joinToggle ? (
-                <IoMdAddCircleOutline style={{ height: "2vw", width: "2vw" }} />
-              ) : (
-                <IoMdRemoveCircle style={{ height: "2vw", width: "2vw" }} />
-              )}
-            </Button>
+      {/* {evDate >= date || (evEndDate && evEndDate >= date) ? ( */}
+      <Wrapper>
+        <Name onClick={(ev) => handleClickEvent(ev)}>{event.name}</Name>
+        <EventDate>
+          {startDate}
+          <Span>
+            {event.startTime}
+            {event.endTime && <span>-{event.endTime}</span>}
+          </Span>
+
+          {event.endDate ? (
+            <>
+              <span> - {endDate}</span>
+              <Span>
+                {event.startTime}
+                {event.endTime && <span>-{event.endTime}</span>}
+              </Span>
+            </>
           ) : (
-            <Button onClick={(ev) => handleClickInterest(ev)}>
-              {!interested ? (
-                <BsHeartFill style={{ height: "2vw", width: "2vw" }} />
-              ) : (
-                <BsHeart style={{ height: "2vw", width: "2vw" }} />
-              )}
-            </Button>
+            <></>
           )}
-        </Wrapper>
-      ) : (
+        </EventDate>
+        <Location>{event.location}</Location>
+        {/* if current user is an artisan have a button to join event/unjoin, if not add button to say interested/uninterested */}
+        {/* if there is no currentUser */}
+        {currentUser === null ? (
+          <></>
+        ) : currentUser && currentUser.artisan ? (
+          <Button onClick={(ev) => handleClickJoin(ev)}>
+            {!joinToggle ? (
+              <IoMdAddCircleOutline style={{ height: "2vw", width: "2vw" }} />
+            ) : (
+              <IoMdRemoveCircle style={{ height: "2vw", width: "2vw" }} />
+            )}
+          </Button>
+        ) : (
+          <Button onClick={(ev) => handleClickInterest(ev)}>
+            {!interested ? (
+              <BsHeartFill style={{ height: "2vw", width: "2vw" }} />
+            ) : (
+              <BsHeart style={{ height: "2vw", width: "2vw" }} />
+            )}
+          </Button>
+        )}
+      </Wrapper>
+      {/* ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 };

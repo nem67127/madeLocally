@@ -26,7 +26,7 @@ const Header = () => {
       {currentUser && currentUser.artisan ? (
         <Link to={`/profile/${currentUser._id}`}>Profile</Link>
       ) : currentUser && currentUser.artisan === null ? (
-        <div>Profile</div>
+        <Div>Profile</Div>
       ) : (
         <></>
       )}
@@ -49,6 +49,13 @@ const Logo = styled.h1`
   color: black;
   &:hover {
     color: var(--dark-blue);
+  }
+`;
+
+const Div = styled.div`
+  color: var(--dark-blue);
+  &:hover {
+    opacity: 0.5;
   }
 `;
 
