@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import AuthNav from "./signin user/AuthNav";
 import { useContext } from "react";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
+import Loading from "./Loading";
 
 const Header = () => {
   const { isLoading } = useAuth0();
@@ -12,7 +13,7 @@ const Header = () => {
   //check if signed in user has created a profile before of not
   //create a post fetch that send sthe users sub (specific id) to the backend to check has account if not add email/sub to create new users
   if (isLoading) {
-    return <div>Loading</div>;
+    return <Loading />;
   }
   return (
     <Wrapper>

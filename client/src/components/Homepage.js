@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import LocationSearch from "./map/LocationSearch";
 import UsersLocation from "./map/UsersLocation";
+import Loading from "./Loading";
 
 //for the map
 const libraries = ["places"];
@@ -89,7 +90,7 @@ const HomePage = () => {
   }
 
   if (!isLoaded) {
-    return <div>Loading Map</div>;
+    return <Loading />;
   }
 
   return (

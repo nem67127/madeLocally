@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { format } from "date-fns";
+import Loading from "../Loading";
 const EventDetails = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
@@ -41,7 +42,7 @@ const EventDetails = () => {
   }, [event]);
 
   if (status === "loading") {
-    return <div>loading</div>;
+    return <Loading />;
   }
 
   return (
@@ -83,7 +84,7 @@ const EventDetails = () => {
               );
             })
           ) : (
-            <div>loading</div>
+            <Loading />
           )}
         </Vendors>
 

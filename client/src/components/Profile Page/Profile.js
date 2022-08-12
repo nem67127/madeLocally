@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import ProfileDetails from "./ProfileDetails";
+import Loading from "../Loading";
 
 const Profile = () => {
   const { profileId } = useParams();
@@ -18,7 +19,7 @@ const Profile = () => {
   }, [profileId]);
 
   if (status === "loading") {
-    return <div>Loading</div>;
+    return <Loading />;
   }
 
   console.log(profiles);

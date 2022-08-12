@@ -4,6 +4,7 @@ import CreateEvent from "./CreateEvent";
 import styled from "styled-components";
 import EventsInfoBox from "./EventsInfoBox";
 import { UpdateEventContext } from "../contexts/UpdateEvents";
+import Loading from "../Loading";
 
 const Events = () => {
   const { currentUser } = useContext(CurrentUserContext);
@@ -25,7 +26,7 @@ const Events = () => {
     return <div>error</div>;
   }
   if (events === null) {
-    return <div> loading</div>;
+    return <Loading />;
   }
 
   return (

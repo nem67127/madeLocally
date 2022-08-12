@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
+import Loading from "./Loading";
 
 const SignIn = () => {
   const [radioValue, setRadioValue] = useState(null);
@@ -45,7 +46,7 @@ const SignIn = () => {
   };
 
   if (!user) {
-    return <div>Loading</div>;
+    return <Loading />;
   }
 
   return (
