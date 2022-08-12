@@ -15,7 +15,11 @@ const {
   createNewLocation,
 } = require("./handlers/locationHandler");
 const { updateProfile } = require("./handlers/profileHandlers");
-const { createEvent, getAllEvents } = require("./handlers/eventHandlers");
+const {
+  createEvent,
+  getAllEvents,
+  updateVendorList,
+} = require("./handlers/eventHandlers");
 const PORT = 8000;
 
 dotenv.config();
@@ -71,7 +75,7 @@ express()
   //POST to create a new event to the events collection
   .post("/api/events", createEvent)
   // update event vendors and where user is vending
-  // .patch("/api/vendor-update/:eventId/:userId")
+  .patch("/api/vendor-update/:eventId/:userId", updateVendorList)
   //GET to retrieve all the locations
   .get("/api/locations", getLocations)
   //Add a new location

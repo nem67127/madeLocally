@@ -54,7 +54,6 @@ const CreateEvent = () => {
       radius: 200 * 1000,
     },
   });
-  console.log(createEvent);
 
   return (
     <Wrapper>

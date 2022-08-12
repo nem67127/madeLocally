@@ -1,17 +1,15 @@
 import styled from "styled-components";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import {
-  BsBookmarkHeart,
-  BsBookmarkHeartFill,
-  BsHeart,
-  BsHeartFill,
-} from "react-icons/bs";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 
 const EventsInfoBox = ({ event }) => {
   const { currentUser } = useContext(CurrentUserContext);
+  const [joinToggle, setJoinToggle] = useState(false);
+  const [interested, setInterested] = useState(false);
   //create current date
   const date = new Date();
   const evDate = new Date(event.startDate);
@@ -30,6 +28,22 @@ const EventsInfoBox = ({ event }) => {
   const handleClickJoin = (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
+    fetch(`api/vendor-update/${event._id}/${currentUser._id}`, {
+      method: "PATCH",
+      body: JSON.stringify(),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200 && data.message === "removed") {
+          setJoinToggle(false);
+        } else {
+          setJoinToggle(true);
+        }
+      })
+      .catch((err) => console.log(err));
     //patch adds vendor to vendors array in event and add event_id to vending array on user
     //will remove if event id is in vendors or vending
   };
@@ -64,26 +78,24 @@ const EventsInfoBox = ({ event }) => {
           </EventDate>
           <Location>{event.location}</Location>
           {/* if current user is an artisan have a button to join event/unjoin, if not add button to say interested/uninterested */}
-          {!currentUser ? (
+          {/* if there is no currentUser */}
+          {currentUser === null ? (
             <></>
           ) : currentUser && currentUser.artisan ? (
-            currentUser.vending && currentUser.vending.includes(event._id) ? (
-              <Button onClick={(ev) => handleClickJoin(ev)}>
-                <BsBookmarkHeartFill />
-              </Button>
-            ) : (
-              <Button>
-                <BsBookmarkHeart onClick={(ev) => handleClickJoin(ev)} />
-              </Button>
-            )
-          ) : currentUser &&
-            currentUser.interestedEvents.includes(event._id) ? (
-            <Button onClick={(ev) => handleClickInterest(ev)}>
-              <BsHeartFill />
+            <Button onClick={(ev) => handleClickJoin(ev)}>
+              {!joinToggle ? (
+                <IoMdAddCircleOutline style={{ height: "2vw", width: "2vw" }} />
+              ) : (
+                <IoMdRemoveCircle style={{ height: "2vw", width: "2vw" }} />
+              )}
             </Button>
           ) : (
             <Button onClick={(ev) => handleClickInterest(ev)}>
-              <BsHeart />
+              {!interested ? (
+                <BsHeartFill style={{ height: "2vw", width: "2vw" }} />
+              ) : (
+                <BsHeart style={{ height: "2vw", width: "2vw" }} />
+              )}
             </Button>
           )}
         </Wrapper>
