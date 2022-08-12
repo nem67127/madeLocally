@@ -30,7 +30,9 @@ const EventsInfoBox = ({ event }) => {
   const handleClickJoin = (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
-    fetch(`api/vendor-update/${event._id}/${currentUser._id}`, {
+    //patch adds vendor to vendors array in event and add event_id to vending array on user
+    //will remove if event id is in vendors or vending
+    fetch(`/api/vendor-update/${event._id}/${currentUser._id}`, {
       method: "PATCH",
       body: JSON.stringify(),
       headers: {
@@ -46,14 +48,28 @@ const EventsInfoBox = ({ event }) => {
         }
       })
       .catch((err) => console.log(err));
-    //patch adds vendor to vendors array in event and add event_id to vending array on user
-    //will remove if event id is in vendors or vending
   };
 
   const handleClickInterest = (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
     //patch adds event id to user interested events array, will remove if already there
+    fetch(`/api/user-interest/${event._id}/${currentUser._id}`, {
+      method: "PATCH",
+      body: JSON.stringify(),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200 && data.message === "remove") {
+          setInterested(false);
+        } else {
+          setInterested(true);
+        }
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <>
@@ -94,7 +110,7 @@ const EventsInfoBox = ({ event }) => {
           </Button>
         ) : (
           <Button onClick={(ev) => handleClickInterest(ev)}>
-            {!interested ? (
+            {interested ? (
               <BsHeartFill style={{ height: "2vw", width: "2vw" }} />
             ) : (
               <BsHeart style={{ height: "2vw", width: "2vw" }} />

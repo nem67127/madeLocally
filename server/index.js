@@ -7,8 +7,8 @@ const bodyParser = require("body-parser");
 const {
   getUser,
   setArtisan,
-  createUser,
   getUserById,
+  updateInterest,
 } = require("./handlers/userHandler");
 const {
   getLocations,
@@ -52,7 +52,7 @@ express()
   //get a user based on thier id
   .get("/api/users/:userId", getUserById)
   //update user interested event array
-  // .patch("api/user-interest/:userId/:eventId")
+  .patch("/api/user-interest/:eventId/:userId", updateInterest)
 
   //add the key value pair of aritsan to a specific user
   .patch("/api/users/:userId", setArtisan)

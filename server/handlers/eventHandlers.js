@@ -21,7 +21,7 @@ const getAllEvents = async (req, res) => {
         message: "No events found",
       });
     }
-    console.log(results);
+
     return res
       .status(200)
       .json({ status: 200, data: results, message: "events populated" });
