@@ -5,21 +5,43 @@ import { useContext, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
+import moment from "moment";
 
 const EventsInfoBox = ({ event }) => {
   const { currentUser } = useContext(CurrentUserContext);
-  const [joinToggle, setJoinToggle] = useState(false);
-  const [interested, setInterested] = useState(false);
+  const [joinToggle, setJoinToggle] = useState(
+    currentUser.vending &&
+      currentUser.vending.some((ev) => {
+        if (ev.eventId === event._id) {
+          return true;
+        }
+        return false;
+      })
+  );
+  const [interested, setInterested] = useState(
+    currentUser.interestEvents &&
+      currentUser.interestEvents.some((ev) => {
+        if (ev.eventId === event._id) {
+          return true;
+        }
+        return false;
+      })
+  );
   //create current date
   const date = new Date();
+  const dayBefore = moment().subtract(1, "days");
+
   const goodDate = event.startDate.replaceAll("-", "/");
   const evDate = new Date(goodDate);
+
   const goodEndDate = event.endDate.replaceAll("-", "/");
   const evEndDate = new Date(goodEndDate);
 
+  //these dates are not for comparing
   const startDate = format(evDate, "MMMM dd, yyyy");
   const endDate = event.endDate && format(evEndDate, "MMMM dd, yyyy");
   //
+
   const navigate = useNavigate();
   //go to event detail page
   const handleClickEvent = (ev) => {
@@ -50,6 +72,8 @@ const EventsInfoBox = ({ event }) => {
       .catch((err) => console.log(err));
   };
 
+  console.log(currentUser);
+
   const handleClickInterest = (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
@@ -71,56 +95,79 @@ const EventsInfoBox = ({ event }) => {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <>
-      {/* {evDate >= date || (evEndDate && evEndDate >= date) ? ( */}
-      <Wrapper>
-        <Name onClick={(ev) => handleClickEvent(ev)}>{event.name}</Name>
-        <EventDate>
-          {startDate}
-          <Span>
-            {event.startTime}
-            {event.endTime && <span>-{event.endTime}</span>}
-          </Span>
+      {moment(event.startDate).isSameOrAfter(dayBefore) ||
+      (event.endDate && moment(event.endDate).isSameOrAfter(dayBefore)) ? (
+        <Wrapper>
+          <Name onClick={(ev) => handleClickEvent(ev)}>{event.name}</Name>
+          <EventDate>
+            {startDate}
+            <Span>
+              {event.startTime}
+              {event.endTime && <span>-{event.endTime}</span>}
+            </Span>
 
-          {event.endDate ? (
-            <>
-              <span> - {endDate}</span>
-              <Span>
-                {event.startTime}
-                {event.endTime && <span>-{event.endTime}</span>}
-              </Span>
-            </>
-          ) : (
+            {event.endDate ? (
+              <>
+                <span> - {endDate}</span>
+                <Span>
+                  {event.startTime}
+                  {event.endTime && <span>-{event.endTime}</span>}
+                </Span>
+              </>
+            ) : (
+              <></>
+            )}
+          </EventDate>
+          <Location>{event.location}</Location>
+          {/* if current user is an artisan have a button to join event/unjoin, if not add button to say interested/uninterested */}
+          {/* if there is no currentUser */}
+          {currentUser === null ? (
             <></>
+          ) : currentUser && currentUser.artisan ? (
+            <div>
+              <Button onClick={(ev) => handleClickJoin(ev)}>
+                {!joinToggle ? (
+                  <IoMdAddCircleOutline
+                    style={{ height: "2vw", width: "2vw", color: "#add6ff" }}
+                  />
+                ) : (
+                  <IoMdRemoveCircle
+                    style={{ height: "2vw", width: "2vw", color: "#add6ff" }}
+                  />
+                )}
+              </Button>
+              <Button onClick={(ev) => handleClickInterest(ev)}>
+                {interested ? (
+                  <BsHeartFill
+                    style={{ height: "2vw", width: "2vw", color: "#ffc6cb" }}
+                  />
+                ) : (
+                  <BsHeart
+                    style={{ height: "2vw", width: "2vw", color: "#ffc6cb" }}
+                  />
+                )}
+              </Button>
+            </div>
+          ) : (
+            <Button onClick={(ev) => handleClickInterest(ev)}>
+              {interested ? (
+                <BsHeartFill
+                  style={{ height: "2vw", width: "2vw", color: "#ffc6cb" }}
+                />
+              ) : (
+                <BsHeart
+                  style={{ height: "2vw", width: "2vw", color: "#ffc6cb" }}
+                />
+              )}
+            </Button>
           )}
-        </EventDate>
-        <Location>{event.location}</Location>
-        {/* if current user is an artisan have a button to join event/unjoin, if not add button to say interested/uninterested */}
-        {/* if there is no currentUser */}
-        {currentUser === null ? (
-          <></>
-        ) : currentUser && currentUser.artisan ? (
-          <Button onClick={(ev) => handleClickJoin(ev)}>
-            {!joinToggle ? (
-              <IoMdAddCircleOutline style={{ height: "2vw", width: "2vw" }} />
-            ) : (
-              <IoMdRemoveCircle style={{ height: "2vw", width: "2vw" }} />
-            )}
-          </Button>
-        ) : (
-          <Button onClick={(ev) => handleClickInterest(ev)}>
-            {interested ? (
-              <BsHeartFill style={{ height: "2vw", width: "2vw" }} />
-            ) : (
-              <BsHeart style={{ height: "2vw", width: "2vw" }} />
-            )}
-          </Button>
-        )}
-      </Wrapper>
-      {/* ) : (
+        </Wrapper>
+      ) : (
         <></>
-      )} */}
+      )}
     </>
   );
 };
@@ -150,4 +197,5 @@ const Location = styled.p``;
 const Button = styled.button`
   background-color: transparent;
   border: none;
+  margin-top: 10px;
 `;

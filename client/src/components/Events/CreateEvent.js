@@ -54,7 +54,6 @@ const CreateEvent = () => {
       radius: 200 * 1000,
     },
   });
-  console.log(createEvent);
 
   return (
     <Wrapper>
@@ -91,9 +90,9 @@ const CreateEvent = () => {
             <ComboboxPopover>
               <ComboboxList>
                 {status === "OK" &&
-                  data.map(({ id, description }) => (
-                    <ComboboxOption key={id} value={description} />
-                  ))}
+                  data.map(({ id, description }) => {
+                    return <ComboboxOption key={id} value={description} />;
+                  })}
               </ComboboxList>
             </ComboboxPopover>
           </Combobox>
