@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 import moment from "moment";
+import { UpdateEventContext } from "../contexts/UpdateEvents";
 
 const EventsInfoBox = ({ event }) => {
   const { currentUser } = useContext(CurrentUserContext);
@@ -30,19 +30,8 @@ const EventsInfoBox = ({ event }) => {
       })
   );
   //create current date
-  const date = new Date();
   const dayBefore = moment().subtract(1, "days");
-
-  const goodDate = event.startDate.replaceAll("-", "/");
-  const evDate = new Date(goodDate);
-
-  const goodEndDate = event.endDate.replaceAll("-", "/");
-  const evEndDate = new Date(goodEndDate);
-
-  //these dates are not for comparing
-  const startDate = format(evDate, "MMMM dd, yyyy");
-  const endDate = event.endDate && format(evEndDate, "MMMM dd, yyyy");
-  //
+  const { startDate, endDate } = useContext(UpdateEventContext);
 
   const navigate = useNavigate();
   //go to event detail page
