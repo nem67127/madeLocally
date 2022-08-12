@@ -3864,6 +3864,11 @@ domhandler@^4.0.0, domhandler@^4.2.0, domhandler@^4.3.1:
   dependencies:
     domelementtype "^2.2.0"
 
+domkit@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/domkit/-/domkit-0.0.1.tgz#88399d586794efc1154fec6c22cfe50f19bd4dbb"
+  integrity sha512-ZP3TLuRwBecjQgjbA2Q15Rv1dWaPdGYNgtjthgDID0Yh5vwPlJomKKfQeAnUlPKXTN2QKWZGp0uznIwQzFa9xQ==
+
 domutils@^1.7.0:
   version "1.7.0"
   resolved "https://registry.npmjs.org/domutils/-/domutils-1.7.0.tgz"
@@ -4809,6 +4814,13 @@ gzip-size@^6.0.0:
   integrity sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==
   dependencies:
     duplexer "^0.1.2"
+
+halogen@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/halogen/-/halogen-0.2.0.tgz#1c65a99a9352e6bf02f41beb7081852fce7e7473"
+  integrity sha512-BBIL1+xnoDwyQl6qzKejqxVILOayKUJVYPXp2CyjsgsQBjX9K9/1SlwV+R5XRWD6f6BIP6MWQtEOgfnUvIBqAA==
+  dependencies:
+    domkit "0.0.1"
 
 handle-thing@^2.0.0:
   version "2.0.1"

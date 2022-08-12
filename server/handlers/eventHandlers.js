@@ -95,7 +95,10 @@ const updateVendorList = async (req, res) => {
       .collection("events")
       .findOne({ _id: ObjectId(`${eventId}`) });
     //search if user is already vending
-
+    const user = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(`${userId}`) });
+    console.log(user);
     const isVending =
       currentEvent.vendor &&
       currentEvent.vendor.find((obj) => obj.userId === userId);

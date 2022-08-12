@@ -90,7 +90,7 @@ const Wrapper = styled.div`
   min-height: calc(100vh - 80px);
   background-color: var(--main-background-color);
 `;
-const Main = styled.form`
+const Main = styled.div`
   height: 100%;
   width: 80%;
   padding: 30px;

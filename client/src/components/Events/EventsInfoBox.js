@@ -10,7 +10,8 @@ import moment from "moment";
 const EventsInfoBox = ({ event }) => {
   const { currentUser } = useContext(CurrentUserContext);
   const [joinToggle, setJoinToggle] = useState(
-    currentUser.vending &&
+    currentUser &&
+      currentUser.vending &&
       currentUser.vending.some((ev) => {
         if (ev.eventId === event._id) {
           return true;
@@ -19,7 +20,8 @@ const EventsInfoBox = ({ event }) => {
       })
   );
   const [interested, setInterested] = useState(
-    currentUser.interestEvents &&
+    currentUser &&
+      currentUser.interestEvents &&
       currentUser.interestEvents.some((ev) => {
         if (ev.eventId === event._id) {
           return true;
@@ -71,8 +73,6 @@ const EventsInfoBox = ({ event }) => {
       })
       .catch((err) => console.log(err));
   };
-
-  console.log(currentUser);
 
   const handleClickInterest = (ev) => {
     ev.stopPropagation();
