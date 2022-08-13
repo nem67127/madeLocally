@@ -37,13 +37,12 @@ const HomePage = () => {
   const [error, setError] = useState(null);
   // selected marker that the user clicks on
   const [selectedMarker, setSelectedMarker] = useState(null);
-  // setting this user based on what selected with a fetch
-  const [selectedUser, setSelectedUser] = useState(null);
+
   // //get user
   const { user } = useAuth0();
   const navigate = useNavigate();
 
-  const { setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
   //check if user is in users collection
   useEffect(() => {
@@ -76,8 +75,6 @@ const HomePage = () => {
       });
   }, []);
 
-  //get the user on the location clicked to show information
-
   //checking if map is loaded or if there was an error
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -102,7 +99,6 @@ const HomePage = () => {
     // return <div>loading</div>;
     return <Loading />;
   }
-  console.log(selectedMarker);
   return (
     <Wrapper>
       <Map>
@@ -142,7 +138,28 @@ const HomePage = () => {
                 setSelectedMarker(null);
               }}
             >
-              <div>selected</div>
+              <Container>
+                {selectedMarker.artisan.businessName ? (
+                  <h1
+                    onClick={() => {
+                      if (currentUser) {
+                        navigate(`/profile/${selectedMarker.user}`);
+                      }
+                      return window.alert(
+                        "Please LOG IN / SIGN UP to view Artisan's profile."
+                      );
+                    }}
+                  >
+                    {selectedMarker.artisan.businessName}
+                  </h1>
+                ) : null}
+                {selectedMarker.artisan.businessDescrip ? (
+                  <div>{selectedMarker.artisan.businessDescrip}</div>
+                ) : null}
+                {selectedMarker.artisan.location ? (
+                  <div>{selectedMarker.artisan.location}</div>
+                ) : null}
+              </Container>
             </InfoWindow>
           ) : null}
         </GoogleMap>
@@ -166,3 +183,5 @@ const Map = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
+
+const Container = styled.div``;

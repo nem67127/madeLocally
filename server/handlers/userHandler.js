@@ -51,6 +51,27 @@ const getUserById = async (req, res) => {
   }
 };
 
+const getUserByLocation = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const location = req.params.location;
+
+  try {
+    await client.connect();
+    const db = await client.db("MadeLocally");
+    //get user based location
+    const user = await db.collection("users").find({ location }).toArray();
+    return res
+      .status(200)
+      .json({ status: 200, data: user, message: "user found" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ status: 500, data: req.body, message: err.message });
+  } finally {
+    client.close();
+  }
+};
+
 //adding artisan value to particular user
 const setArtisan = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
@@ -142,4 +163,10 @@ const updateInterest = async (req, res) => {
   }
 };
 
-module.exports = { getUser, setArtisan, getUserById, updateInterest };
+module.exports = {
+  getUser,
+  setArtisan,
+  getUserById,
+  updateInterest,
+  getUserByLocation,
+};

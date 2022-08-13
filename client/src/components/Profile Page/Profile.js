@@ -69,7 +69,7 @@ const Profile = () => {
               profiles.images.length > 0 ? (
                 profiles.images.map((image) => (
                   <>
-                    <img alt="showcase" src={image.src} />
+                    <img alt="showcase" src={image.src} key={image.src} />
                   </>
                 ))
               ) : (

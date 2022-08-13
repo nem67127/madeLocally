@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import Loading from "../Loading";
 import ItemsDropZone from "../drag and drop/ItemDropzone";
 import Categories from "./Categories";
 import SideInputs from "./SideInputs";
 import ProfilePicture from "../drag and drop/ProfilePicture";
 import Geocode from "react-geocode";
+import { useLoadScript } from "@react-google-maps/api";
 
+const libraries = ["places"];
 const ProfileForm = () => {
   //This is where artisans are directed to if they are new to the site to set up their profile
   const { profileId } = useParams();
@@ -23,6 +25,13 @@ const ProfileForm = () => {
   const handleChangeCategories = (ev) => {
     setCategories([ev.target.value, ...categories]);
   };
+
+  //checking if map is loaded or if there was an error
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries,
+  });
+
   //change location to lat and lng with react-geocode
   const getLatLng = () => {
     Geocode.setApiKey(`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
@@ -53,7 +62,6 @@ const ProfileForm = () => {
   const handleSubmit = async (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
-    console.log("hello");
 
     await fetch(`/api/profile/${profileId}`, {
       method: "PATCH",
@@ -74,7 +82,11 @@ const ProfileForm = () => {
       if (latlng) {
         await fetch(`/api/locations`, {
           method: "POST",
-          body: JSON.stringify({ ...location, ...latlng }),
+          body: JSON.stringify({
+            ...location,
+            ...latlng,
+            artisan: { ...profileData, categories, images, profilePic },
+          }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -91,6 +103,13 @@ const ProfileForm = () => {
 
     await navigate(`/profile/${profileId}`);
   };
+
+  if (loadError) {
+    return <div>ErrorLoading Maps</div>;
+  }
+  if (!isLoaded) {
+    return <Loading />;
+  }
 
   return (
     <Wrapper>
@@ -166,6 +185,7 @@ const Form = styled.form`
   border-radius: 10px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: white;
 `;
 
 const Name = styled.input`
