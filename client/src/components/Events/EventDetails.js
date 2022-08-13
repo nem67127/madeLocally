@@ -174,13 +174,11 @@ const EventDetails = () => {
         <Vendors>
           {event.vendor.map((user) => {
             return (
-              <>
-                <User to={`/profile/${user.userId}`} key={user.userId}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <VscCircleFilled /> <span>{user.businessName}</span>
-                  </div>
-                </User>
-              </>
+              <User to={`/profile/${user.userId}`} key={user.userId}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <VscCircleFilled /> <span>{user.businessName}</span>
+                </div>
+              </User>
             );
           })}
         </Vendors>
