@@ -22,8 +22,6 @@ const Profile = () => {
     return <Loading />;
   }
 
-  console.log(profiles);
-
   //where user will get linked to if they click on an artisan on the event page, event details, map
   //users are able to favourite them - goes to their favourited artisans page - toDo
   // users can rate them ?
@@ -34,9 +32,7 @@ const Profile = () => {
           <ProfilePic>
             {profiles.profilePic ? (
               <Img alt="profile picture" src={profiles.profilePic.src} />
-            ) : (
-              <></>
-            )}
+            ) : null}
           </ProfilePic>
 
           <Div>
@@ -44,10 +40,12 @@ const Profile = () => {
             <Description>{profiles.businessDescrip}</Description>
             <Market>
               <div>Upcoming Events:</div>
-              {profiles.vending.length > 0 ? (
+              {profiles && profiles.vending && profiles.vending.length > 0 ? (
                 profiles.vending.map((market) => {
                   // check if upcoming
-                  return <MDetails>{market.ev.name}</MDetails>;
+                  return (
+                    <MDetails key={market.eventId}>{market.ev.name}</MDetails>
+                  );
                 })
               ) : (
                 <div>No upcoming events</div>
@@ -59,35 +57,27 @@ const Profile = () => {
           <Info>
             <ProfileDetails profiles={profiles} />
 
-            {profiles.categories ? (
-              profiles.categories.length > 0 ? (
-                profiles.categories.map((category) => (
-                  <>
-                    <div>Categories</div>
-                    <div key={`${category}`}>{category}</div>
-                  </>
-                ))
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
+            {profiles.categories
+              ? profiles.categories.length > 0
+                ? profiles.categories.map((category) => (
+                    <>
+                      <div>Categories</div>
+                      <div key={category}>{category}</div>
+                    </>
+                  ))
+                : null
+              : null}
           </Info>
           <Items>
-            {profiles.images ? (
-              profiles.images.length > 0 ? (
-                profiles.images.map((image) => (
-                  <>
-                    <img alt="showcase" src={image.src} key={image.src} />
-                  </>
-                ))
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
+            {profiles.images
+              ? profiles.images.length > 0
+                ? profiles.images.map((image) => (
+                    <>
+                      <img alt="showcase" src={image.src} key={image.src} />
+                    </>
+                  ))
+                : null
+              : null}
           </Items>
         </Container2>
       </Main>

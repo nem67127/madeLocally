@@ -51,7 +51,7 @@ express()
 
   //get a single user based on their email
   .get("/api/user/:email", getUser)
-  //get a user based on thier id
+  //get a user profile based on thier id
   .get("/api/users/:userId", getUserById)
   //get user(s) by location
   .get("/api/user-location/:location", getUserByLocation)
@@ -59,8 +59,8 @@ express()
   //update user interested event array
   .patch("/api/user-interest/:eventId/:userId", updateInterest)
 
-  //add the key value pair of aritsan to a specific user
-  .patch("/api/users/:userId", setArtisan)
+  //add the key value pair of aritsan and create user profile in profiles collection
+  .post("/api/users/:userId", setArtisan)
 
   .get("/sign-up", (req, res) => {
     res.oidc.login({

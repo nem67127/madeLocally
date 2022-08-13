@@ -12,9 +12,7 @@ const ProfileDetails = ({ profiles }) => {
             <MdLocationPin style={{ height: "2vw", width: "2vw" }} />
             <Input>{profiles.location}</Input>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Box>
       <Box>
         {profiles.phone ? (
@@ -22,39 +20,31 @@ const ProfileDetails = ({ profiles }) => {
             <FiPhone style={{ height: "2vw", width: "2vw" }} />
             <Input>{profiles.phone}</Input>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Box>
       <Box>
         {profiles.websiteUrl ? (
           <>
             <MdWebAsset style={{ height: "2vw", width: "2vw" }} />
-            <Input>{profiles.websiteUrl}</Input>
+            <Url href={`${profiles.websiteUrl}`}>{profiles.websiteUrl}</Url>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Box>
       <Box>
         {profiles.facebookUrl ? (
           <>
             <FaFacebook style={{ height: "2vw", width: "2vw" }} />
-            <Input>{profiles.facebookUrl}</Input>
+            <Url href={`${profiles.facebookUrl}`}>{profiles.facebookUrl}</Url>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Box>
       <Box>
         {profiles.instagramUrl ? (
           <>
             <FiInstagram style={{ height: "2vw", width: "2vw" }} />
-            <Input>{profiles.instagramUrl}</Input>
+            <Url href={`${profiles.instagramUrl}`}>{profiles.instagramUrl}</Url>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Box>
     </>
   );
@@ -66,8 +56,19 @@ const Box = styled.div`
   display: flex;
   margin-bottom: 10px;
   align-items: center;
+  min-width: 30px;
+  width: 15vw;
 `;
 const Input = styled.div`
-  width: 100%;
   margin-left: 10px;
+  width: 100%;
+`;
+
+const Url = styled.a`
+  margin-left: 10px;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: var(--dark-blue);
+  }
 `;

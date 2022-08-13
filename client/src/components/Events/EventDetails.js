@@ -55,7 +55,7 @@ const EventDetails = () => {
     //will remove if event id is in vendors or vending
     fetch(`/api/vendor-update/${event._id}/${currentUser._id}`, {
       method: "PATCH",
-      body: JSON.stringify(currentUser),
+      body: JSON.stringify(),
       headers: {
         "Content-Type": "application/json",
       },

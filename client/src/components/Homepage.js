@@ -68,7 +68,11 @@ const HomePage = () => {
     fetch("api/locations")
       .then((res) => res.json())
       .then((data) => {
-        setMarkers(data.data);
+        if (data.status === 200) {
+          return setMarkers(data.data);
+        } else {
+          return null;
+        }
       })
       .catch((err) => {
         setError(err.message);

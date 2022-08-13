@@ -23,7 +23,7 @@ const SignIn = () => {
     ev.preventDefault();
 
     fetch(`/api/users/${_id}`, {
-      method: "PATCH",
+      method: "POST",
       body: JSON.stringify({ artisan: radioValue }),
       headers: {
         "Content-Type": "application/json",

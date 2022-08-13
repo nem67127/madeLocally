@@ -1,4 +1,4 @@
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient } = require("mongodb");
 
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -20,8 +20,8 @@ const updateProfile = async (req, res) => {
     if (profilePic === null && categories.length <= 0 && images.length <= 0) {
       const { profilePic, categories, images, ...rest } = req.body;
       const data = await db
-        .collection("users")
-        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+        .collection("profiles")
+        .updateOne({ _id }, { $set: { ...rest } });
       return res.status(200).json({
         status: 200,
         data,
@@ -32,8 +32,8 @@ const updateProfile = async (req, res) => {
     if (profilePic === null && categories.length <= 0) {
       const { profilePic, categories, ...rest } = req.body;
       const data = await db
-        .collection("users")
-        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+        .collection("profiles")
+        .updateOne({ _id }, { $set: { ...rest } });
       return res.status(200).json({
         status: 200,
         data,
@@ -44,8 +44,8 @@ const updateProfile = async (req, res) => {
     if (profilePic === null && images.length <= 0) {
       const { profilePic, images, ...rest } = req.body;
       const data = await db
-        .collection("users")
-        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+        .collection("profiles")
+        .updateOne({ _id }, { $set: { ...rest } });
       return res.status(200).json({
         status: 200,
         data,
@@ -56,8 +56,8 @@ const updateProfile = async (req, res) => {
     if (images.length <= 0 && categories.length <= 0) {
       const { images, categories, ...rest } = req.body;
       const data = await db
-        .collection("users")
-        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+        .collection("profiles")
+        .updateOne({ _id }, { $set: { ...rest } });
       return res.status(200).json({
         status: 200,
         data,
@@ -68,8 +68,8 @@ const updateProfile = async (req, res) => {
     if (profilePic === null) {
       const { profilePic, ...rest } = req.body;
       const data = await db
-        .collection("users")
-        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+        .collection("profiles")
+        .updateOne({ _id }, { $set: { ...rest } });
       return res.status(200).json({
         status: 200,
         data,
@@ -80,8 +80,8 @@ const updateProfile = async (req, res) => {
     if (images.length <= 0 || !images) {
       const { images, ...rest } = req.body;
       const data = await db
-        .collection("users")
-        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+        .collection("profiles")
+        .updateOne({ _id }, { $set: { ...rest } });
       return res.status(200).json({
         status: 200,
         data,
@@ -92,8 +92,8 @@ const updateProfile = async (req, res) => {
     if (categories.length <= 0 || !categories) {
       const { categories, ...rest } = req.body;
       const data = await db
-        .collection("users")
-        .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...rest } });
+        .collection("profiles")
+        .updateOne({ _id }, { $set: { ...rest } });
       return res.status(200).json({
         status: 200,
         data,
@@ -102,8 +102,8 @@ const updateProfile = async (req, res) => {
     }
     //if there is profile pic and showcase images
     const data = await db
-      .collection("users")
-      .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { ...req.body } });
+      .collection("profiles")
+      .updateOne({ _id }, { $set: { ...req.body } });
     return res
       .status(200)
       .json({ status: 200, data, message: "updated values" });

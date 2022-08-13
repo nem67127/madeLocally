@@ -36,9 +36,7 @@ const getUserById = async (req, res) => {
     await client.connect();
     const db = await client.db("MadeLocally");
     //get user based on the _id which is the string inside ObjectId
-    const user = await db
-      .collection("users")
-      .findOne({ _id: ObjectId(`${_id}`) });
+    const user = await db.collection("profiles").findOne({ _id });
     return res
       .status(200)
       .json({ status: 200, data: user, message: "user found" });
@@ -59,7 +57,7 @@ const getUserByLocation = async (req, res) => {
     await client.connect();
     const db = await client.db("MadeLocally");
     //get user based location
-    const user = await db.collection("users").find({ location }).toArray();
+    const user = await db.collection("profiles").find({ location }).toArray();
     return res
       .status(200)
       .json({ status: 200, data: user, message: "user found" });
@@ -72,7 +70,7 @@ const getUserByLocation = async (req, res) => {
   }
 };
 
-//adding artisan value to particular user
+//creating artisan value for user profile collection
 const setArtisan = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const _id = req.params.userId;
@@ -81,13 +79,15 @@ const setArtisan = async (req, res) => {
   try {
     await client.connect();
     const db = await client.db("MadeLocally");
-    //adding an artisan key value pair to the specific user document
-    const data = await db
+    //updating user to have artisan key value
+    const result = await db
       .collection("users")
       .updateOne({ _id: ObjectId(`${_id}`) }, { $set: { artisan } });
+    //adding an artisan key value pair to the specific profile user document
+    const data = await db.collection("profiles").insertOne({ _id, artisan });
     return res
       .status(200)
-      .json({ status: 200, data, message: "artisan value added" });
+      .json({ status: 200, data, message: "artisan value added and profile" });
   } catch (err) {
     return res
       .status(500)
@@ -106,9 +106,7 @@ const updateInterest = async (req, res) => {
     await client.connect();
     const db = await client.db("MadeLocally");
     //find the user
-    const user = await db
-      .collection("users")
-      .findOne({ _id: ObjectId(`${userId}`) });
+    const user = await db.collection("profiles").findOne({ _id: userId });
     //figure out if she has interestEvents and if the event is there
     const alreadyInterested =
       user.interestEvents &&
@@ -117,11 +115,8 @@ const updateInterest = async (req, res) => {
     if (alreadyInterested) {
       //remove event from user
       const removeEvent = await db
-        .collection("users")
-        .updateOne(
-          { _id: ObjectId(`${userId}`) },
-          { $pull: { interestEvents: { eventId } } }
-        );
+        .collection("profiles")
+        .updateOne({ _id: userId }, { $pull: { interestEvents: { eventId } } });
       return res
         .status(200)
         .json({ status: 200, data: removeEvent, message: "remove" });
@@ -129,11 +124,8 @@ const updateInterest = async (req, res) => {
     if (!alreadyInterested) {
       //add event to the user
       const addEvent = await db
-        .collection("users")
-        .updateOne(
-          { _id: ObjectId(`${userId}`) },
-          { $push: { interestEvents: { eventId } } }
-        );
+        .collection("profiles")
+        .updateOne({ _id: userId }, { $push: { interestEvents: { eventId } } });
       return res
         .status(200)
         .json({ status: 200, data: addEvent, message: "added event" });
@@ -141,11 +133,8 @@ const updateInterest = async (req, res) => {
     //if the user exists but theres no interestEvent array
     if (user) {
       const addEvent = await db
-        .collection("users")
-        .updateOne(
-          { _id: ObjectId(`${userId}`) },
-          { $set: { interestEvents: { eventId } } }
-        );
+        .collection("profiles")
+        .updateOne({ _id: userId }, { $set: { interestEvents: { eventId } } });
       return res
         .status(200)
         .json({ status: 200, data: addEvent, message: "added interestEvents" });

@@ -88,8 +88,6 @@ const updateVendorList = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const eventId = req.params.eventId;
   const userId = req.params.userId;
-  const { businessName } = req.body;
-  console.log(businessName);
   try {
     await client.connect;
     const db = await client.db("MadeLocally");
@@ -97,6 +95,9 @@ const updateVendorList = async (req, res) => {
       .collection("events")
       .findOne({ _id: ObjectId(`${eventId}`) });
 
+    const profile = await db.collection("profiles").findOne({ _id: userId });
+
+    const { businessName } = profile;
     const { name, startDate, endDate } = currentEvent;
     const isVending =
       currentEvent.vendor &&
@@ -111,11 +112,8 @@ const updateVendorList = async (req, res) => {
         );
       //remove event from vending
       const removeEvent = await db
-        .collection("users")
-        .updateOne(
-          { _id: ObjectId(`${userId}`) },
-          { $pull: { vending: { eventId } } }
-        );
+        .collection("profiles")
+        .updateOne({ _id: userId }, { $pull: { vending: { eventId } } });
       return res.status(200).json({
         status: 200,
         data: { removeVendor, removeEvent },
@@ -131,9 +129,9 @@ const updateVendorList = async (req, res) => {
           { $push: { vendor: { userId, businessName } } }
         );
       const addEvent = await db
-        .collection("users")
+        .collection("profiles")
         .updateOne(
-          { _id: ObjectId(`${userId}`) },
+          { _id: userId },
           { $push: { vending: { eventId, ev: { name, startDate, endDate } } } }
         );
       return res.status(200).json({
@@ -151,9 +149,9 @@ const updateVendorList = async (req, res) => {
           { $set: { vendor: [{ userId, businessName }] } }
         );
       const addVendingList = await db
-        .collection("users")
+        .collection("profiles")
         .updateOne(
-          { _id: ObjectId(`${userId}`) },
+          { _id: userId },
           { $set: { vending: [{ eventId, ev: { name, startDate, endDate } }] } }
         );
       return res.status(200).json({
