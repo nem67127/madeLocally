@@ -8,10 +8,8 @@ const Loading = () => {
         height="80"
         width="80"
         radius="9"
-        color={`var(--dark-blue)`}
+        color="#2e6bc5"
         ariaLabel="three-dots-loading"
-        wrapperStyle
-        wrapperClass
       />
     </Wrapper>
   );

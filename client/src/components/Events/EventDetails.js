@@ -5,6 +5,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { UpdateEventContext } from "../contexts/UpdateEvents";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
+import { VscCircleFilled } from "react-icons/vsc";
 
 import Loading from "../Loading";
 const EventDetails = () => {
@@ -13,7 +14,6 @@ const EventDetails = () => {
   const { event, setEvent, startDate, endDate } =
     useContext(UpdateEventContext);
   const [status, setStatus] = useState("loading");
-  const [vendors, setVendors] = useState([]);
   console.log(event);
 
   const [joinToggle, setJoinToggle] = useState(
@@ -46,21 +46,7 @@ const EventDetails = () => {
         setStatus("idle");
       })
       .catch((err) => console.log(err));
-  }, [eventId, setEvent]);
-
-  //get artisans based on id == userId in event.vendor array
-  useEffect(() => {
-    event &&
-      event.vendor &&
-      event.vendor.map((user) => {
-        fetch(`/api/users/${user.userId}`)
-          .then((res) => res.json())
-          .then((data) => {
-            return setVendors([data.data]);
-          })
-          .catch((err) => console.log(err));
-      });
-  }, [event]);
+  }, [eventId, setEvent, joinToggle]);
 
   const handleClickJoin = (ev) => {
     ev.stopPropagation();
@@ -69,7 +55,7 @@ const EventDetails = () => {
     //will remove if event id is in vendors or vending
     fetch(`/api/vendor-update/${event._id}/${currentUser._id}`, {
       method: "PATCH",
-      body: JSON.stringify(),
+      body: JSON.stringify(currentUser),
       headers: {
         "Content-Type": "application/json",
       },
@@ -186,22 +172,21 @@ const EventDetails = () => {
         <Div>{event.description}</Div>
         <Div>Vendors on MadeLocally:</Div>
         <Vendors>
-          {vendors.length > 0 ? (
-            vendors.map((user) => {
-              console.log(user.businessName);
-              return (
-                <User to={`/profile/${user._id}`} key={user._id}>
-                  {user.businessName}
+          {event.vendor.map((user) => {
+            return (
+              <>
+                <User to={`/profile/${user.userId}`} key={user.userId}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <VscCircleFilled /> <span>{user.businessName}</span>
+                  </div>
                 </User>
-              );
-            })
-          ) : (
-            <Loading />
-          )}
+              </>
+            );
+          })}
         </Vendors>
 
         <Vendors>
-          {event && event.vendors && (
+          {event.vendors && (
             <>
               <Div>Other Vendors:</Div>
               <Div>{event.vendors}</Div>
@@ -239,6 +224,7 @@ const Container = styled.div`
   display: flex;
   border-bottom: 1px solid var(--dark-blue);
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const Name = styled.h1`
@@ -247,12 +233,15 @@ const Name = styled.h1`
 const Div = styled.div``;
 const EventDate = styled.div`
   padding-bottom: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 const Span = styled.span`
   margin-left: 5px;
 `;
-const Vendors = styled.div``;
+const Vendors = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const User = styled(Link)`
   text-decoration: none;

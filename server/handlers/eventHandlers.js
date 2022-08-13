@@ -88,6 +88,8 @@ const updateVendorList = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const eventId = req.params.eventId;
   const userId = req.params.userId;
+  const { businessName } = req.body;
+  console.log(businessName);
   try {
     await client.connect;
     const db = await client.db("MadeLocally");
@@ -98,7 +100,7 @@ const updateVendorList = async (req, res) => {
     const user = await db
       .collection("users")
       .findOne({ _id: ObjectId(`${userId}`) });
-    console.log(user);
+    // console.log(user);
     const isVending =
       currentEvent.vendor &&
       currentEvent.vendor.find((obj) => obj.userId === userId);
@@ -129,7 +131,7 @@ const updateVendorList = async (req, res) => {
         .collection("events")
         .updateOne(
           { _id: ObjectId(`${eventId}`) },
-          { $push: { vendor: { userId } } }
+          { $push: { vendor: { userId, businessName } } }
         );
       const addEvent = await db
         .collection("users")
@@ -149,7 +151,7 @@ const updateVendorList = async (req, res) => {
         .collection("events")
         .updateOne(
           { _id: ObjectId(`${eventId}`) },
-          { $set: { vendor: [{ userId }] } }
+          { $set: { vendor: [{ userId, businessName }] } }
         );
       const addVendingList = await db
         .collection("users")

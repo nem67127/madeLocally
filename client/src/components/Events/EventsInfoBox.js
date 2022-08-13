@@ -47,7 +47,7 @@ const EventsInfoBox = ({ event }) => {
     //will remove if event id is in vendors or vending
     fetch(`/api/vendor-update/${event._id}/${currentUser._id}`, {
       method: "PATCH",
-      body: JSON.stringify(),
+      body: JSON.stringify(currentUser.businessName),
       headers: {
         "Content-Type": "application/json",
       },

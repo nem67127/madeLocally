@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { useLoadScript, GoogleMap, Marker } from "@react-google-maps/api";
+import {
+  useLoadScript,
+  GoogleMap,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
 import { mapStyles } from "./map/mapStyles";
 import { useContext, useEffect, useRef, useState, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -30,11 +35,15 @@ const HomePage = () => {
   //set state for markers and fetch locations and set array to markers
   const [markers, setMarkers] = useState(null);
   const [error, setError] = useState(null);
+  // selected marker that the user clicks on
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  // setting this user based on what selected with a fetch
+  const [selectedUser, setSelectedUser] = useState(null);
   // //get user
   const { user } = useAuth0();
   const navigate = useNavigate();
 
-  const { setCurrentUser, currentUser } = useContext(CurrentUserContext);
+  const { setCurrentUser } = useContext(CurrentUserContext);
 
   //check if user is in users collection
   useEffect(() => {
@@ -90,9 +99,10 @@ const HomePage = () => {
   }
 
   if (!isLoaded) {
+    // return <div>loading</div>;
     return <Loading />;
   }
-
+  console.log(selectedMarker);
   return (
     <Wrapper>
       <Map>
@@ -106,20 +116,35 @@ const HomePage = () => {
           options={options}
           onLoad={onMapLoad}
         >
-          {markers
-            ? markers.map((marker) => {
-                return (
-                  <Marker
-                    key={marker._id}
-                    //put in address as lat and lng or can markers use addresses
-                    position={{
-                      lat: Number(marker.lat),
-                      lng: Number(marker.lng),
-                    }}
-                  />
-                );
-              })
-            : null}
+          {markers &&
+            markers.map((marker) => {
+              return (
+                <Marker
+                  key={marker._id}
+                  //put in address as lat and lng or can markers use addresses
+                  position={{
+                    lat: Number(marker.lat),
+                    lng: Number(marker.lng),
+                  }}
+                  onClick={() => {
+                    setSelectedMarker(marker);
+                  }}
+                />
+              );
+            })}
+          {selectedMarker ? (
+            <InfoWindow
+              position={{
+                lat: Number(selectedMarker.lat),
+                lng: Number(selectedMarker.lng),
+              }}
+              onCloseClick={() => {
+                setSelectedMarker(null);
+              }}
+            >
+              <div>selected</div>
+            </InfoWindow>
+          ) : null}
         </GoogleMap>
       </Map>
     </Wrapper>
