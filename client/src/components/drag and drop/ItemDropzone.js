@@ -15,7 +15,7 @@ const ItemsDropZone = ({ images, setImages }) => {
           ]);
         };
         reader.readAsDataURL(file);
-        return file;
+        return <div>file</div>;
       });
     },
     [setImages]

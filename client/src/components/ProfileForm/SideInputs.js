@@ -28,7 +28,6 @@ const SideInputs = ({ handleChangeProfile }) => {
   return (
     <>
       <Box>
-        <MdLocationPin style={{ height: "10%", width: "10%" }} />
         <Combobox
           onSelect={async (address) => {
             setValue(address, false);
@@ -39,12 +38,15 @@ const SideInputs = ({ handleChangeProfile }) => {
               console.log(err);
             }
           }}
+          style={{ width: "100%", display: "flex" }}
         >
+          <MdLocationPin style={{ height: "10%", width: "10%" }} />
           <ComboboxInput
             value={value}
             onChange={(ev) => setValue(ev.target.value)}
             disabled={!ready}
             placeholder="Enter your location"
+            style={{ width: "100%", marginLeft: "10px" }}
           />
           <ComboboxPopover>
             <ComboboxList>
@@ -103,6 +105,7 @@ const Box = styled.div`
   display: flex;
   margin-bottom: 10px;
   align-items: center;
+  width: 100%;
 `;
 const Input = styled.input`
   width: 100%;

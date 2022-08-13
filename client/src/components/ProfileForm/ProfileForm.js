@@ -207,7 +207,7 @@ const Info = styled.div`
 `;
 const Items = styled.div`
   margin-left: 20px;
-  height: 45vh;
+
   width: 70%;
   align-self: flex-start;
 `;
