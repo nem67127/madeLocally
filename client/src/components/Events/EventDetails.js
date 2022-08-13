@@ -14,10 +14,10 @@ const EventDetails = () => {
   const { event, setEvent, startDate, endDate } =
     useContext(UpdateEventContext);
   const [status, setStatus] = useState("loading");
-  console.log(event);
 
   const [joinToggle, setJoinToggle] = useState(
     currentUser &&
+      event &&
       currentUser.vending &&
       currentUser.vending.some((ev) => {
         if (ev.eventId === event._id) {

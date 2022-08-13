@@ -96,11 +96,8 @@ const updateVendorList = async (req, res) => {
     const currentEvent = await db
       .collection("events")
       .findOne({ _id: ObjectId(`${eventId}`) });
-    //search if user is already vending
-    const user = await db
-      .collection("users")
-      .findOne({ _id: ObjectId(`${userId}`) });
-    // console.log(user);
+
+    const { name, startDate, endDate } = currentEvent;
     const isVending =
       currentEvent.vendor &&
       currentEvent.vendor.find((obj) => obj.userId === userId);
@@ -137,7 +134,7 @@ const updateVendorList = async (req, res) => {
         .collection("users")
         .updateOne(
           { _id: ObjectId(`${userId}`) },
-          { $push: { vending: { eventId } } }
+          { $push: { vending: { eventId, ev: { name, startDate, endDate } } } }
         );
       return res.status(200).json({
         status: 200,
@@ -157,7 +154,7 @@ const updateVendorList = async (req, res) => {
         .collection("users")
         .updateOne(
           { _id: ObjectId(`${userId}`) },
-          { $set: { vending: [{ eventId }] } }
+          { $set: { vending: [{ eventId, ev: { name, startDate, endDate } }] } }
         );
       return res.status(200).json({
         status: 200,

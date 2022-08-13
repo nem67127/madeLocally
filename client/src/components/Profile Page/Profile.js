@@ -42,7 +42,17 @@ const Profile = () => {
           <Div>
             <Name>{profiles.businessName}</Name>
             <Description>{profiles.businessDescrip}</Description>
-            <div>Upcoming Events:</div>
+            <Market>
+              <div>Upcoming Events:</div>
+              {profiles.vending.length > 0 ? (
+                profiles.vending.map((market) => {
+                  // check if upcoming
+                  return <MDetails>{market.ev.name}</MDetails>;
+                })
+              ) : (
+                <div>No upcoming events</div>
+              )}
+            </Market>
           </Div>
         </Container>
         <Container2>
@@ -144,7 +154,6 @@ const Info = styled.div`
 `;
 const Items = styled.div`
   margin-left: 20px;
-  height: 45vh;
   width: 70%;
   align-self: flex-start;
 `;
@@ -161,4 +170,11 @@ const Container2 = styled.div`
   display: flex;
   margin-bottom: 30px;
   width: 70%;
+`;
+const Market = styled.div`
+  display: flex;
+`;
+
+const MDetails = styled.div`
+  margin-left: 5px;
 `;
