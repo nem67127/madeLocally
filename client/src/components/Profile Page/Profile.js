@@ -1,13 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import ProfileDetails from "./ProfileDetails";
 import Loading from "../Loading";
+import { VscCircleFilled } from "react-icons/vsc";
 
 const Profile = () => {
   const { profileId } = useParams();
   const [profiles, setProfiles] = useState(null);
   const [status, setStatus] = useState("loading");
+
+  const navigate = useNavigate();
   //get user based on _id === profileId
   useEffect(() => {
     fetch(`/api/users/${profileId}`)
@@ -44,7 +47,15 @@ const Profile = () => {
                 profiles.vending.map((market) => {
                   // check if upcoming
                   return (
-                    <MDetails key={market.eventId}>{market.ev.name}</MDetails>
+                    <MDetails
+                      key={market.eventId}
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        navigate(`/event/${market.eventId}`);
+                      }}
+                    >
+                      {market.ev.name}
+                    </MDetails>
                   );
                 })
               ) : (
@@ -60,7 +71,10 @@ const Profile = () => {
             {profiles.categories
               ? profiles.categories.length > 0
                 ? profiles.categories.map((category) => (
-                    <div key={category}>{category}</div>
+                    <Market key={category}>
+                      <VscCircleFilled />
+                      <span>{category}</span>
+                    </Market>
                   ))
                 : null
               : null}
@@ -160,6 +174,7 @@ const Container2 = styled.div`
 `;
 const Market = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const MDetails = styled.div`

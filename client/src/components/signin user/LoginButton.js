@@ -10,6 +10,10 @@ const LoginButton = () => {
 export default LoginButton;
 const Button = styled.button`
   border: none;
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+  padding-top: 10px;
   background-color: transparent;
   color: var(--dark-blue);
   &:hover {

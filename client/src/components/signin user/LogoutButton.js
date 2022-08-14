@@ -20,6 +20,9 @@ const LogoutButton = () => {
 export default LogoutButton;
 const Button = styled.button`
   border: none;
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
   background-color: transparent;
   color: var(--dark-blue);
   &:hover {

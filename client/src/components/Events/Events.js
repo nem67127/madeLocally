@@ -25,7 +25,7 @@ const Events = () => {
   if (error !== null) {
     return <div>error</div>;
   }
-  if (events === null || !currentUser) {
+  if (events === null) {
     return <Loading />;
   }
 

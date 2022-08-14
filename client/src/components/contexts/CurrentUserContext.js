@@ -7,17 +7,17 @@ export const CurrentUserProvider = ({ children }) => {
 
   useEffect(() => {
     //if theres a currentUser fetch profile to set current user with that profile
-    if (currentUser) {
-      fetch(`/api/users/${currentUser._id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setCurrentUser(data.data);
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    }
-  }, [currentUser]);
+    // if (currentUser) {
+    // fetch(`/api/users/${currentUser._id}`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setCurrentUser(data.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.message);
+    //   });
+    // }
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>

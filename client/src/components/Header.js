@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import AuthNav from "./signin user/AuthNav";
+
 import { useContext } from "react";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import Loading from "./Loading";
+import Dropdown from "./Dropdown";
 
 const Header = () => {
   const { isLoading } = useAuth0();
@@ -22,15 +23,8 @@ const Header = () => {
       </Link>
       <Link to={`/events`}>Events</Link>
       {/* if a user is signed in it will show the message icon */}
-      {currentUser ? <Link to="">MessageIcon</Link> : <div></div>}
-      <AuthNav />
-      {currentUser && currentUser.artisan ? (
-        <Link to={`/profile/${currentUser._id}`}>Profile</Link>
-      ) : currentUser && currentUser.artisan === null ? (
-        <Div>Profile</Div>
-      ) : (
-        <></>
-      )}
+      {/* {currentUser ? <Link to="">MessageIcon</Link> : null} */}
+      <Dropdown currentUser={currentUser} />
     </Wrapper>
   );
 };
@@ -50,13 +44,6 @@ const Logo = styled.h1`
   color: black;
   &:hover {
     color: var(--dark-blue);
-  }
-`;
-
-const Div = styled.div`
-  color: var(--dark-blue);
-  &:hover {
-    opacity: 0.5;
   }
 `;
 

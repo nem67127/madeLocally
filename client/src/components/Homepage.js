@@ -45,7 +45,7 @@ const HomePage = () => {
 
   //check if user is in users collection
   useEffect(() => {
-    if (user) {
+    if (user && !currentUser) {
       const email = user.email;
       fetch(`/api/user/${email}`)
         .then((res) => res.json())
@@ -60,7 +60,17 @@ const HomePage = () => {
           console.log(err);
         });
     }
-  }, [user, navigate, setCurrentUser]);
+    if (currentUser) {
+      fetch(`/api/users/${currentUser._id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCurrentUser(data.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  }, [user, navigate]);
 
   //get all the locations - should depend on if another profile is made
   useEffect(() => {
@@ -144,12 +154,13 @@ const HomePage = () => {
                 {selectedMarker.artisan.businessName ? (
                   <h1
                     onClick={() => {
-                      if (currentUser) {
+                      if (currentUser || user) {
                         navigate(`/profile/${selectedMarker.user}`);
+                      } else {
+                        return window.alert(
+                          "Please LOG IN / SIGN UP to view Artisan's profile."
+                        );
                       }
-                      return window.alert(
-                        "Please LOG IN / SIGN UP to view Artisan's profile."
-                      );
                     }}
                   >
                     {selectedMarker.artisan.businessName}
