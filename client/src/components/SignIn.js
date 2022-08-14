@@ -11,7 +11,7 @@ const SignIn = () => {
 
   const { user } = useAuth0();
   //modifying the user.sub to work as _id
-  const stringId = user.sub;
+  const stringId = user && user.sub;
   const _id = stringId.substring(stringId.indexOf("|") + 1);
 
   const handleChange = (ev) => {

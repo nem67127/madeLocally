@@ -172,15 +172,16 @@ const EventDetails = () => {
         <Div>{event.description}</Div>
         <Div>Vendors on MadeLocally:</Div>
         <Vendors>
-          {event.vendor.map((user) => {
-            return (
-              <User to={`/profile/${user.userId}`} key={user.userId}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <VscCircleFilled /> <span>{user.businessName}</span>
-                </div>
-              </User>
-            );
-          })}
+          {event.vendor &&
+            event.vendor.map((user) => {
+              return (
+                <User to={`/profile/${user.userId}`} key={user.userId}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <VscCircleFilled /> <span>{user.businessName}</span>
+                  </div>
+                </User>
+              );
+            })}
         </Vendors>
 
         <Vendors>

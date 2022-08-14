@@ -34,7 +34,6 @@ const HomePage = () => {
 
   //set state for markers and fetch locations and set array to markers
   const [markers, setMarkers] = useState(null);
-  const [error, setError] = useState(null);
   // selected marker that the user clicks on
   const [selectedMarker, setSelectedMarker] = useState(null);
 
@@ -51,14 +50,14 @@ const HomePage = () => {
       fetch(`/api/user/${email}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data.data.artisan === undefined) {
+          if (data.data.artisan === null || data.data.artisan === undefined) {
             //if user does not have artisan attritube navigate to form
-            navigate("/sign-in");
+            return navigate("/sign-in");
           }
           setCurrentUser(data.data);
         })
         .catch((err) => {
-          setError(err);
+          console.log(err);
         });
     }
   }, [user, navigate, setCurrentUser]);
@@ -71,11 +70,11 @@ const HomePage = () => {
         if (data.status === 200) {
           return setMarkers(data.data);
         } else {
-          return null;
+          return setMarkers([]);
         }
       })
       .catch((err) => {
-        setError(err.message);
+        console.log(err.message);
       });
   }, []);
 
@@ -95,12 +94,11 @@ const HomePage = () => {
     mapRef.current.setZoom(13);
   };
 
-  if (loadError || error) {
-    return <div>ErrorLoading Maps{error}</div>;
+  if (loadError) {
+    return <div>ErrorLoading Maps</div>;
   }
 
   if (!isLoaded) {
-    // return <div>loading</div>;
     return <Loading />;
   }
   return (

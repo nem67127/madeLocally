@@ -56,14 +56,11 @@ const Profile = () => {
         <Container2>
           <Info>
             <ProfileDetails profiles={profiles} />
-
+            <div>Categories</div>
             {profiles.categories
               ? profiles.categories.length > 0
                 ? profiles.categories.map((category) => (
-                    <>
-                      <div>Categories</div>
-                      <div key={category}>{category}</div>
-                    </>
+                    <div key={category}>{category}</div>
                   ))
                 : null
               : null}
