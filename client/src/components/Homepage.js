@@ -50,7 +50,7 @@ const HomePage = () => {
       fetch(`/api/user/${email}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data.data.artisan === null || data.data.artisan === undefined) {
+          if (data.data.artisan === undefined) {
             //if user does not have artisan attritube navigate to form
             return navigate("/sign-in");
           }

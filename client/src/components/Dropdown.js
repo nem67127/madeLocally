@@ -3,26 +3,39 @@ import { CgMenu } from "react-icons/cg";
 import { NavLink } from "react-router-dom";
 import AuthNav from "./signin user/AuthNav";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from "react";
 
 const Dropdown = ({ currentUser }) => {
   const { user } = useAuth0();
+  const [toggle, setToggle] = useState(false);
+
   return (
     <Wrapper>
-      <Button>
+      <Button
+        onClick={(ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          setToggle(!toggle);
+        }}
+      >
         <CgMenu />
       </Button>
       <Div>
-        {(currentUser && currentUser.artisan) || (user && user.artisan) ? (
-          <Link to={`/profile/${currentUser._id}`}>Profile</Link>
-        ) : null}
-        {currentUser || user ? (
+        {toggle ? (
           <>
-            <Link to="">Fav Artisans</Link>
-            <Link to="">Interested Events</Link>
-            <Link to={`/profile-f/${currentUser._id}`}>Update Profile</Link>
+            {(currentUser && currentUser.artisan) || (user && user.artisan) ? (
+              <Link to={`/profile/${currentUser._id}`}>Profile</Link>
+            ) : null}
+            {currentUser || user ? (
+              <>
+                <Link to="">Fav Artisans</Link>
+                <Link to="">Interested Events</Link>
+                <Link to={`/profile-f/${currentUser._id}`}>Update Profile</Link>
+              </>
+            ) : null}
+            <AuthNav />
           </>
         ) : null}
-        <AuthNav />
       </Div>
     </Wrapper>
   );
@@ -58,8 +71,8 @@ const Div = styled.div`
   right: -100%;
   top: calc(100% + 10px);
   background-color: white;
-  padding: 0 20px;
-  padding-bottom: 10px;
+  padding: 10px 20px;
+
   border-radius: 10px;
   width: 9vw;
   z-index: 10;

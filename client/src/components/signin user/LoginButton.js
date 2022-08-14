@@ -13,7 +13,7 @@ const Button = styled.button`
   margin: 0;
   margin-bottom: 5px;
   padding: 0;
-  padding-top: 10px;
+
   background-color: transparent;
   color: var(--dark-blue);
   &:hover {
