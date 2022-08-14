@@ -9,6 +9,8 @@ import ProfileForm from "./components/ProfileForm/ProfileForm";
 import Profile from "./components/Profile Page/Profile";
 import GlobalStyles from "./GlobalStyles";
 import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history";
+import IntEvents from "./components/Events/IntEvents";
+import FavArtisans from "./components/FavArtisans";
 
 const App = () => {
   return (
@@ -24,6 +26,8 @@ const App = () => {
             <Route path="/event/:eventId" element={<EventDetails />} />
             <Route path="/profile-f/:profileId" element={<ProfileForm />} />
             <Route path="/profile/:profileId" element={<Profile />} />
+            <Route path="/fav-artisans" element={<FavArtisans />} />
+            <Route path="/intereted-events" element={<IntEvents />} />
           </Routes>
         </Auth0ProviderWithHistory>
       </Router>

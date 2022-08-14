@@ -20,23 +20,23 @@ const Dropdown = ({ currentUser }) => {
       >
         <CgMenu />
       </Button>
-      <Div>
-        {toggle ? (
-          <>
-            {(currentUser && currentUser.artisan) || (user && user.artisan) ? (
+      {toggle ? (
+        <Div>
+          {(currentUser && currentUser.artisan) || (user && user.artisan) ? (
+            <>
               <Link to={`/profile/${currentUser._id}`}>Profile</Link>
-            ) : null}
-            {currentUser || user ? (
-              <>
-                <Link to="">Fav Artisans</Link>
-                <Link to="">Interested Events</Link>
-                <Link to={`/profile-f/${currentUser._id}`}>Update Profile</Link>
-              </>
-            ) : null}
-            <AuthNav />
-          </>
-        ) : null}
-      </Div>
+              <Link to={`/profile-f/${currentUser._id}`}>Update Profile</Link>
+            </>
+          ) : null}
+          {currentUser || user ? (
+            <>
+              <Link to="/fav-artisans">Fav Artisans</Link>
+              <Link to="/intereted-events">Interested Events</Link>
+            </>
+          ) : null}
+          <AuthNav />
+        </Div>
+      ) : null}
     </Wrapper>
   );
 };
