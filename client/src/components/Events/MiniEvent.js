@@ -4,10 +4,18 @@ import Loading from "../Loading";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { UpdateEventContext } from "../contexts/UpdateEvents";
+import { format } from "date-fns";
 
 const MiniEvent = ({ market, currentUser }) => {
   const [event, setEvent] = useState(null);
+
+  // formating dates
+  const goodDate = event && event.startDate.replaceAll("-", "/");
+  const evDate = new Date(goodDate);
+  const goodEndDate = event && event.endDate.replaceAll("-", "/");
+  const evEndDate = new Date(goodEndDate);
+  const startDate = format(evDate, "MMMM dd, yyyy");
+  const endDate = event && event.endDate && format(evEndDate, "MMMM dd, yyyy");
 
   const [joinToggle, setJoinToggle] = useState(
     currentUser &&
@@ -40,8 +48,6 @@ const MiniEvent = ({ market, currentUser }) => {
         console.log(err);
       });
   });
-
-  const { startDate, endDate } = useContext(UpdateEventContext);
 
   const navigate = useNavigate();
   //go to event detail page

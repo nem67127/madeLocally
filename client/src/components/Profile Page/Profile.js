@@ -1,16 +1,24 @@
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ProfileDetails from "./ProfileDetails";
 import Loading from "../Loading";
 import { VscCircleFilled } from "react-icons/vsc";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const Profile = () => {
   const { profileId } = useParams();
   const [profiles, setProfiles] = useState(null);
   const [status, setStatus] = useState("loading");
 
+  const { currentUser } = useContext(CurrentUserContext);
+
   const navigate = useNavigate();
+  //need to create a patch to update user when clicking fav
+  //then fetch
+  const [favourite, setFavourite] = useState(
+    currentUser && currentUser._id === profileId ? false : true
+  );
   //get user based on _id === profileId
   useEffect(() => {
     fetch(`/api/users/${profileId}`)
@@ -63,6 +71,7 @@ const Profile = () => {
               )}
             </Market>
           </Div>
+          <div>button</div>
         </Container>
         <Container2>
           <Info>

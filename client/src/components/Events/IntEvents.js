@@ -15,7 +15,13 @@ const IntEvents = () => {
     <Wrapper>
       {currentUser.interestEvents ? (
         currentUser.interestEvents.map((market) => {
-          return <MiniEvent market={market} currentUser={currentUser} />;
+          return (
+            <MiniEvent
+              market={market}
+              currentUser={currentUser}
+              key={market._id}
+            />
+          );
         })
       ) : (
         <div>You have no Events that you're interested in.</div>

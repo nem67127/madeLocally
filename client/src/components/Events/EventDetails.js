@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { UpdateEventContext } from "../contexts/UpdateEvents";
+import { format } from "date-fns";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 import { VscCircleFilled } from "react-icons/vsc";
@@ -11,9 +11,16 @@ import Loading from "../Loading";
 const EventDetails = () => {
   const { eventId } = useParams();
   const { currentUser } = useContext(CurrentUserContext);
-  const { event, setEvent, startDate, endDate } =
-    useContext(UpdateEventContext);
+  const [event, setEvent] = useState(null);
   const [status, setStatus] = useState("loading");
+
+  // formating dates
+  const goodDate = event && event.startDate.replaceAll("-", "/");
+  const evDate = new Date(goodDate);
+  const goodEndDate = event && event.endDate.replaceAll("-", "/");
+  const evEndDate = new Date(goodEndDate);
+  const startDate = format(evDate, "MMMM dd, yyyy");
+  const endDate = event && event.endDate && format(evEndDate, "MMMM dd, yyyy");
 
   const [joinToggle, setJoinToggle] = useState(
     currentUser &&
@@ -110,9 +117,9 @@ const EventDetails = () => {
                 {event.endTime && <span>-{event.endTime}</span>}
               </Span>
 
-              {event.endDate ? (
+              {endDate ? (
                 <>
-                  <span> - {endDate}</span>
+                  <span> - {event.endDate}</span>
                   <Span>
                     {event.startTime}
                     {event.endTime && <span>-{event.endTime}</span>}

@@ -8,8 +8,8 @@ import Loading from "../Loading";
 
 const Events = () => {
   const { currentUser } = useContext(CurrentUserContext);
-  const { eventUpdate } = useContext(UpdateEventContext);
-  const [events, setEvents] = useState([]);
+  const { eventUpdate, setEvent, event } = useContext(UpdateEventContext);
+
   const [error, setError] = useState(null);
 
   //list of all the upcoming/ current events
@@ -17,7 +17,7 @@ const Events = () => {
     fetch("/api/events")
       .then((res) => res.json())
       .then((data) => {
-        setEvents(data.data);
+        setEvent(data.data);
       })
       .catch((err) => setError(err.message));
   }, [eventUpdate]);
@@ -25,7 +25,7 @@ const Events = () => {
   if (error !== null) {
     return <div>error</div>;
   }
-  if (events === null) {
+  if (event === null) {
     return <Loading />;
   }
 
@@ -35,8 +35,8 @@ const Events = () => {
       {currentUser && currentUser.artisan ? <CreateEvent /> : <></>}
       <Wrapper>
         <EventsList>
-          {events && events.length > 0 ? (
-            events.map((event) => {
+          {event && event.length > 0 ? (
+            event.map((event) => {
               return <EventsInfoBox event={event} key={event._id} />;
             })
           ) : (

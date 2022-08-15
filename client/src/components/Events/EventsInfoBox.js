@@ -5,10 +5,18 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 import moment from "moment";
-import { UpdateEventContext } from "../contexts/UpdateEvents";
+import { format } from "date-fns";
 
 const EventsInfoBox = ({ event }) => {
   const { currentUser } = useContext(CurrentUserContext);
+
+  //formating dates
+  const goodDate = event && event.startDate.replaceAll("-", "/");
+  const evDate = new Date(goodDate);
+  const goodEndDate = event && event.endDate.replaceAll("-", "/");
+  const evEndDate = new Date(goodEndDate);
+  const startDate = format(evDate, "MMMM dd, yyyy");
+  const endDate = event && event.endDate && format(evEndDate, "MMMM dd, yyyy");
 
   const [joinToggle, setJoinToggle] = useState(
     currentUser &&
@@ -32,7 +40,6 @@ const EventsInfoBox = ({ event }) => {
   );
   //create current date
   const dayBefore = moment().subtract(1, "days");
-  const { startDate, endDate } = useContext(UpdateEventContext);
 
   const navigate = useNavigate();
   //go to event detail page
