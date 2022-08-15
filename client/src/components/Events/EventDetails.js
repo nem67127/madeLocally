@@ -8,6 +8,7 @@ import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 import { VscCircleFilled } from "react-icons/vsc";
 
 import Loading from "../Loading";
+
 const EventDetails = () => {
   const { eventId } = useParams();
   const { currentUser } = useContext(CurrentUserContext);
@@ -24,10 +25,9 @@ const EventDetails = () => {
 
   const [joinToggle, setJoinToggle] = useState(
     currentUser &&
-      event &&
       currentUser.vending &&
       currentUser.vending.some((ev) => {
-        if (ev.eventId === event._id) {
+        if (ev.eventId === eventId) {
           return true;
         }
         return false;
@@ -37,7 +37,7 @@ const EventDetails = () => {
     currentUser &&
       currentUser.interestEvents &&
       currentUser.interestEvents.some((ev) => {
-        if (ev.eventId === event._id) {
+        if (ev.eventId === eventId) {
           return true;
         }
         return false;

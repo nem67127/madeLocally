@@ -81,6 +81,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--main-background-color);
+  font-size: 30px;
 `;
 const Form = styled.form`
   display: flex;
@@ -89,7 +91,10 @@ const Form = styled.form`
   align-items: center;
   width: 60%;
   height: 50%;
-  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: white;
 `;
 const Choice = styled.p`
   margin-bottom: 30px;
@@ -99,6 +104,14 @@ const Button = styled.button`
   border: none;
   padding: 10px;
   margin-top: 30px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: 2px solid var(--dark-blue);
+  color: var(--dark-blue);
+  &:hover {
+    background-color: var(--dark-blue);
+    color: white;
+  }
 `;
 const Input = styled.input`
   margin-right: 5px;

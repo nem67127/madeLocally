@@ -53,7 +53,7 @@ const MiniEvent = ({ market, currentUser, key }) => {
   //go to event detail page
   const handleClickEvent = (ev) => {
     ev.stopPropagation();
-    navigate(`/event/${event._id}`);
+    navigate(`/event/${market.eventId}`);
   };
 
   const handleClickJoin = (ev) => {

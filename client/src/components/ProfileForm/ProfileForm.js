@@ -65,7 +65,7 @@ const ProfileForm = () => {
 
     await fetch(`/api/profile/${profileId}`, {
       method: "PATCH",
-      body: JSON.stringify({ ...profileData, categories, images, profilePic }),
+      body: JSON.stringify({ ...profileData, categories }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -85,7 +85,7 @@ const ProfileForm = () => {
           body: JSON.stringify({
             ...location,
             ...latlng,
-            artisan: { ...profileData, categories, images, profilePic },
+            artisan: { ...profileData, categories },
           }),
           headers: {
             "Content-Type": "application/json",
