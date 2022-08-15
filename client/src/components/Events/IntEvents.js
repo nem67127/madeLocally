@@ -1,4 +1,3 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";

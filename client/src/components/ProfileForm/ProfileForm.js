@@ -62,10 +62,16 @@ const ProfileForm = () => {
   const handleSubmit = async (ev) => {
     ev.stopPropagation();
     ev.preventDefault();
-
+    //create an arr of the public ids for each image
+    const imagesPublicIdArr = images.map((image) => image.public_id);
     await fetch(`/api/profile/${profileId}`, {
       method: "PATCH",
-      body: JSON.stringify({ ...profileData, categories }),
+      body: JSON.stringify({
+        ...profileData,
+        categories,
+        profilePic: profilePic.public_id,
+        images: imagesPublicIdArr,
+      }),
       headers: {
         "Content-Type": "application/json",
       },

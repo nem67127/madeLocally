@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Loading from "../Loading";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
@@ -6,7 +6,7 @@ import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
-const MiniEvent = ({ market, currentUser, key }) => {
+const MiniEvent = ({ market, currentUser }) => {
   const [event, setEvent] = useState(null);
 
   // formating dates

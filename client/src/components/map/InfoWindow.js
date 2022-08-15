@@ -20,7 +20,7 @@ const InfoWindowComponent = ({
     >
       <Container>
         {/* user has to be signed in to click link */}
-        {selectedMarker.artisan.businessName ? (
+        {!!selectedMarker.artisan.businessName ? (
           <h1
             onClick={() => {
               if (currentUser || user) {
@@ -47,4 +47,7 @@ const InfoWindowComponent = ({
 };
 export default InfoWindowComponent;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 20vw;
+  min-width: 50px;
+`;

@@ -1,21 +1,24 @@
 import { useDropzone } from "react-dropzone";
 import { useCallback } from "react";
 import styled from "styled-components";
-import ShowImage from "./ShowItems";
+import { Image } from "cloudinary-react";
 
 const ItemsDropZone = ({ images, setImages }) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
-      acceptedFiles.map((file, index) => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          setImages((prevState) => [
-            ...prevState,
-            { id: index, src: e.target.result },
-          ]);
-        };
-        reader.readAsDataURL(file);
-        return <div>file</div>;
+      const url = `https://api.cloudinary.com/v1_1/dqvrktiam/upload`;
+
+      acceptedFiles.map(async (acceptedFile) => {
+        const formData = new FormData();
+        formData.append("file", acceptedFile);
+        formData.append("upload_preset", "gx7mguox");
+        const response = await fetch(url, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        setImages((old) => [...old, data]);
+        console.log(data);
       });
     },
     [setImages]
@@ -32,9 +35,11 @@ const ItemsDropZone = ({ images, setImages }) => {
   } = useDropzone({
     accept: "image/*",
     onDrop,
+    multiple: true,
     noClick: true,
     noKeyboard: true,
   });
+
   //does not work for some reason
   const removeImage = (image) => {
     if (acceptedFiles.includes(image)) {
@@ -53,7 +58,20 @@ const ItemsDropZone = ({ images, setImages }) => {
           Click to select file
         </button>
       </Container>
-      <ShowImage images={images} removeImage={removeImage} />
+      <Box>
+        {images &&
+          images.map((image) => (
+            <Div>
+              <Image
+                cloudName="dqvrktiam"
+                publicId={image.public_id}
+                width="300"
+                crop="fill"
+                key={image.public_id}
+              />
+            </Div>
+          ))}
+      </Box>
     </>
   );
 };
@@ -67,4 +85,14 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
+`;
+const Div = styled.div`
+  width: 40%;
+  margin: 10px;
+`;
+const Box = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 `;

@@ -121,22 +121,20 @@ const HomePage = () => {
           onLoad={onMapLoad}
         >
           {markers &&
-            markers.map((marker) => {
-              return (
-                <Marker
-                  key={marker._id}
-                  //put in address as lat and lng or can markers use addresses
-                  position={{
-                    lat: Number(marker.lat),
-                    lng: Number(marker.lng),
-                  }}
-                  onClick={() => {
-                    setSelectedMarker(marker);
-                  }}
-                />
-              );
-            })}
-          {selectedMarker && (
+            markers.map((marker) => (
+              <Marker
+                key={marker._id}
+                //put in address as lat and lng or can markers use addresses
+                position={{
+                  lat: Number(marker.lat),
+                  lng: Number(marker.lng),
+                }}
+                onClick={() => {
+                  setSelectedMarker(marker);
+                }}
+              />
+            ))}
+          {selectedMarker ? (
             <InfoWindowComponent
               selectedMarker={selectedMarker}
               setSelectedMarker={setSelectedMarker}
@@ -144,7 +142,8 @@ const HomePage = () => {
               currentUser={currentUser}
               navigate={navigate}
             />
-          )}
+          ) : null}
+          {console.log(selectedMarker)}
         </GoogleMap>
       </Map>
     </Wrapper>

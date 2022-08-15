@@ -41,8 +41,8 @@ express()
   // enable CORS
   .use(cors())
   .use(morgan("tiny"))
-  .use(bodyParser.json({ limit: "50mb" }))
-  .use(bodyParser.urlencoded({ limit: "50mb", extended: true }))
+  .use(bodyParser.json({ limit: "30mb", extended: true }))
+  .use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
   // parse requests of content-type - application/json
   .use(express.json())
 
