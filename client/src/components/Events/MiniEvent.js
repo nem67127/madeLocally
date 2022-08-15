@@ -6,7 +6,7 @@ import { IoMdAddCircleOutline, IoMdRemoveCircle } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
-const MiniEvent = ({ market, currentUser }) => {
+const MiniEvent = ({ market, currentUser, key }) => {
   const [event, setEvent] = useState(null);
 
   // formating dates
@@ -104,7 +104,7 @@ const MiniEvent = ({ market, currentUser }) => {
     return <Loading />;
   }
   return (
-    <Wrapper>
+    <Wrapper key={market._id}>
       <Name onClick={(ev) => handleClickEvent(ev)}>{event.name}</Name>
       <EventDate>
         {startDate}

@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import {
-  useLoadScript,
-  GoogleMap,
-  Marker,
-  InfoWindow,
-} from "@react-google-maps/api";
+import { useLoadScript, GoogleMap, Marker } from "@react-google-maps/api";
 import { mapStyles } from "./map/mapStyles";
 import { useContext, useEffect, useRef, useState, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -13,6 +8,7 @@ import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import LocationSearch from "./map/LocationSearch";
 import UsersLocation from "./map/UsersLocation";
 import Loading from "./Loading";
+import InfoWindowComponent from "./map/InfoWindow";
 
 //for the map
 const libraries = ["places"];
@@ -70,7 +66,7 @@ const HomePage = () => {
           console.log(err.message);
         });
     }
-  }, [user, navigate]);
+  }, [user]);
 
   //get all the locations - should depend on if another profile is made
   useEffect(() => {
@@ -140,41 +136,15 @@ const HomePage = () => {
                 />
               );
             })}
-          {selectedMarker ? (
-            <InfoWindow
-              position={{
-                lat: Number(selectedMarker.lat),
-                lng: Number(selectedMarker.lng),
-              }}
-              onCloseClick={() => {
-                setSelectedMarker(null);
-              }}
-            >
-              <Container>
-                {selectedMarker.artisan.businessName ? (
-                  <h1
-                    onClick={() => {
-                      if (currentUser || user) {
-                        navigate(`/profile/${selectedMarker.user}`);
-                      } else {
-                        return window.alert(
-                          "Please LOG IN / SIGN UP to view Artisan's profile."
-                        );
-                      }
-                    }}
-                  >
-                    {selectedMarker.artisan.businessName}
-                  </h1>
-                ) : null}
-                {selectedMarker.artisan.businessDescrip ? (
-                  <div>{selectedMarker.artisan.businessDescrip}</div>
-                ) : null}
-                {selectedMarker.artisan.location ? (
-                  <div>{selectedMarker.artisan.location}</div>
-                ) : null}
-              </Container>
-            </InfoWindow>
-          ) : null}
+          {selectedMarker && (
+            <InfoWindowComponent
+              selectedMarker={selectedMarker}
+              setSelectedMarker={setSelectedMarker}
+              user={user}
+              currentUser={currentUser}
+              navigate={navigate}
+            />
+          )}
         </GoogleMap>
       </Map>
     </Wrapper>
@@ -196,5 +166,3 @@ const Map = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
-
-const Container = styled.div``;

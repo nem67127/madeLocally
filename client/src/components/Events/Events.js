@@ -7,10 +7,23 @@ import { UpdateEventContext } from "../contexts/UpdateEvents";
 import Loading from "../Loading";
 
 const Events = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const { eventUpdate, setEvent, event } = useContext(UpdateEventContext);
 
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetch(`/api/users/${currentUser._id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCurrentUser(data.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  }, [currentUser]);
 
   //list of all the upcoming/ current events
   useEffect(() => {

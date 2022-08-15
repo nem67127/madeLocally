@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Loading from "../Loading";
@@ -6,7 +7,20 @@ import MiniEvent from "./MiniEvent";
 
 const IntEvents = () => {
   //get current user and show events in interested events array
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetch(`/api/users/${currentUser._id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCurrentUser(data.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  }, []);
 
   if (!currentUser) {
     return <Loading />;
@@ -24,7 +38,7 @@ const IntEvents = () => {
           );
         })
       ) : (
-        <div>You have no Events that you're interested in.</div>
+        <div key={1}>You have no Events that you're interested in.</div>
       )}
     </Wrapper>
   );
