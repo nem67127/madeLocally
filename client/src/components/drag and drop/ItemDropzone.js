@@ -27,7 +27,6 @@ const ItemsDropZone = ({ images, setImages }) => {
   const {
     getRootProps,
     getInputProps,
-    acceptedFiles,
     open,
     isDragAccept,
     isFocused,
@@ -40,7 +39,6 @@ const ItemsDropZone = ({ images, setImages }) => {
     noKeyboard: true,
   });
 
-  //does not work for some reason
   const removeImage = (image, ev) => {
     ev.stopPropagation();
     ev.preventDefault();

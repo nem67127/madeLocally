@@ -84,6 +84,26 @@ const HomePage = () => {
       });
   }, []);
 
+  //for search bar to filter markers
+  const [searchBar, setSearchBar] = useState("");
+  const filteredMarkers =
+    markers &&
+    markers.filter((marker) => {
+      if (
+        marker &&
+        marker.artisan &&
+        marker.artisan.businessName &&
+        marker.artisan.businessDescrip
+      ) {
+        if (
+          marker.artisan.businessName.toLowerCase().includes(searchBar) ||
+          marker.artisan.businessDescrip.toLowerCase().includes(searchBar)
+        ) {
+          return marker;
+        }
+      }
+    });
+
   //checking if map is loaded or if there was an error
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -112,7 +132,13 @@ const HomePage = () => {
       <Map>
         <LocationSearch panTo={panTo} />
         <UsersLocation panTo={panTo} />
-
+        <SearchBar
+          value={searchBar}
+          placeholder="Search"
+          onChange={(e) => {
+            setSearchBar(e.target.value.toLowerCase());
+          }}
+        />
         <GoogleMap
           center={center}
           zoom={10}
@@ -120,8 +146,8 @@ const HomePage = () => {
           options={options}
           onLoad={onMapLoad}
         >
-          {markers &&
-            markers.map((marker) => (
+          {filteredMarkers &&
+            filteredMarkers.map((marker) => (
               <Marker
                 key={marker._id}
                 //put in address as lat and lng or can markers use addresses
@@ -143,7 +169,6 @@ const HomePage = () => {
               navigate={navigate}
             />
           ) : null}
-          {console.log(selectedMarker)}
         </GoogleMap>
       </Map>
     </Wrapper>
@@ -155,6 +180,7 @@ const Wrapper = styled.div`
   height: calc(100vh - 80px);
   width: 100vw;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: var(--main-background-color);
@@ -164,4 +190,10 @@ const Map = styled.div`
   width: 80%;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+`;
+
+const SearchBar = styled.input`
+  position: absolute;
+  z-index: 5;
+  top: 30vh;
 `;

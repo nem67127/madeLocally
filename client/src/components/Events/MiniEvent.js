@@ -182,7 +182,7 @@ const Wrapper = styled.div`
   width: 30%;
   margin-bottom: 20px;
   background-color: white;
-  margin-top: 20px;
+  margin: 20px;
   height: 25vh;
 `;
 const Name = styled.h2`

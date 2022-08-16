@@ -23,7 +23,7 @@ const Events = () => {
           console.log(err.message);
         });
     }
-  }, [currentUser]);
+  }, []);
 
   //list of all the upcoming/ current events
   useEffect(() => {
