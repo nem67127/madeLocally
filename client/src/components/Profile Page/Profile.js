@@ -7,8 +7,9 @@ import { VscCircleFilled } from "react-icons/vsc";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
-import { Transformation } from "@cloudinary/url-gen";
 import { fill } from "@cloudinary/url-gen/actions/resize";
+import moment from "moment";
+import { format } from "date-fns";
 
 const Profile = () => {
   const { profileId } = useParams();
@@ -54,11 +55,12 @@ const Profile = () => {
       });
   }, [profileId]);
 
+  //for upcoming events
+  const dayBefore = moment().subtract(1, "days");
+
   if (status === "loading") {
     return <Loading />;
   }
-
-  console.log(profiles);
 
   //users are able to favourite them - goes to their favourited artisans page - toDo
   // users can rate them ?
@@ -70,7 +72,10 @@ const Profile = () => {
             {profiles.profilePic ? (
               <AdvancedImage
                 cldImg={usersProfilePic}
-                style={{ borderRadius: "50%" }}
+                style={{
+                  borderRadius: "50%",
+                  border: "10px solid var(--water-blue)",
+                }}
               />
             ) : null}
           </ProfilePic>
@@ -82,21 +87,27 @@ const Profile = () => {
               <div>Upcoming Events:</div>
               {profiles && profiles.vending && profiles.vending.length > 0 ? (
                 profiles.vending.map((market) => {
-                  // check if upcoming
-                  return (
-                    <MDetails
-                      key={market.eventId}
-                      onClick={(ev) => {
-                        ev.stopPropagation();
-                        navigate(`/event/${market.eventId}`);
-                      }}
-                    >
-                      {market.ev.name}
-                    </MDetails>
-                  );
+                  console.log(market);
+                  if (
+                    moment(market.ev.startDate).isSameOrAfter(dayBefore) ||
+                    (market.ev.endDate &&
+                      moment(market.ev.endDate).isSameOrAfter(dayBefore))
+                  ) {
+                    return (
+                      <MDetails
+                        key={market.eventId}
+                        onClick={(ev) => {
+                          ev.stopPropagation();
+                          navigate(`/event/${market.eventId}`);
+                        }}
+                      >
+                        | {market.ev.name} |
+                      </MDetails>
+                    );
+                  }
                 })
               ) : (
-                <div>No upcoming events</div>
+                <div style={{ marginLeft: "5px" }}>No upcoming events</div>
               )}
             </Market>
           </Div>
@@ -181,6 +192,8 @@ const Container = styled.div`
   align-items: center;
   margin-bottom: 30px;
   width: 70%;
+  padding-bottom: 20px;
+  border-bottom: 5px solid var(--water-blue);
 `;
 const Info = styled.div`
   display: flex;
@@ -194,6 +207,9 @@ const Items = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   width: 100%;
+  background-color: #e3f1ff;
+  padding: 20px;
+  border-radius: 10px;
 `;
 
 const Div = styled.div`
@@ -212,8 +228,12 @@ const Container2 = styled.div`
 const Market = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 20px;
 `;
 
 const MDetails = styled.div`
   margin-left: 5px;
+  &:hover {
+    color: var(--dark-blue);
+  }
 `;

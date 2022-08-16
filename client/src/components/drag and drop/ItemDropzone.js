@@ -63,7 +63,7 @@ const ItemsDropZone = ({ images, setImages }) => {
       <Box>
         {images &&
           images.map((image) => (
-            <Div key={image.public_id}>
+            <div key={image.public_id}>
               <Image
                 cloudName="dqvrktiam"
                 publicId={image.public_id}
@@ -74,7 +74,7 @@ const ItemsDropZone = ({ images, setImages }) => {
                 style={{ margin: "10px" }}
               />
               <Remove onClick={(ev) => removeImage(image, ev)}>x</Remove>
-            </Div>
+            </div>
           ))}
       </Box>
     </>
@@ -93,7 +93,7 @@ const Container = styled.div`
   margin-bottom: 10px;
   z-index: 2;
 `;
-const Div = styled.div``;
+
 const Button = styled.button`
   border: none;
   background-color: var(--dark-blue);
