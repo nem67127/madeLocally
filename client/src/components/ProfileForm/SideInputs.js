@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FiInstagram, FiPhone } from "react-icons/fi";
 import { FaFacebook } from "react-icons/fa";
-import { MdWebAsset, MdLocationPin } from "react-icons/md";
+import { MdWebAsset, MdLocationPin, MdOutlineEmail } from "react-icons/md";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import {
   Combobox,
@@ -68,6 +68,16 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           type="tel"
           onChange={(ev) => handleChangeProfile(ev.target.value, "phone")}
           value={currentUser && currentUser.phone ? currentUser.phone : null}
+        />
+      </Box>
+      <Box>
+        <MdOutlineEmail style={{ height: "10%", width: "10%" }} />
+        <Input
+          name="email"
+          placeholder="Contact email"
+          type="email"
+          onChange={(ev) => handleChangeProfile(ev.target.value, "email")}
+          value={currentUser && currentUser.email ? currentUser.email : null}
         />
       </Box>
       <Box>

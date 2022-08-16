@@ -38,7 +38,9 @@ const ProfilePicture = ({ profilePic, setProfilePic }) => {
   return (
     <ProfilePic {...getRootProps({ isDragAccept, isFocused, isDragReject })}>
       <input {...getInputProps()} />
-      <p style={{ width: "70%" }}>Drag 'n' drop some files here</p>
+      <p style={{ width: "70%", textAlign: "center" }}>
+        Drag 'n' drop your Profile Picture or click the upload button
+      </p>
       <Button type="button" className="btn" onClick={open}>
         <BiUpload style={{ width: "20px", height: "20px", color: "white" }} />
       </Button>

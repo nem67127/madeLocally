@@ -86,6 +86,15 @@ const Categories = ({ handleChangeCategories }) => {
         />
         <Label htmlFor="category">Metal Work</Label>
       </Box>
+      <Box>
+        <Check
+          type="checkbox"
+          id="category"
+          value="clothing"
+          onChange={(ev) => handleChangeCategories(ev)}
+        />
+        <Label htmlFor="clothing">Clothing / Shoes</Label>
+      </Box>
     </Cat>
   );
 };

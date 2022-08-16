@@ -53,7 +53,7 @@ const ItemsDropZone = ({ images, setImages }) => {
     <>
       <Container {...getRootProps({ isDragAccept, isFocused, isDragReject })}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some images here</p>
+        <p>Drag 'n' drop some images to showcase here</p>
         <Button type="button" className="btn" onClick={open}>
           Click to select images
         </Button>

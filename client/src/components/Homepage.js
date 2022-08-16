@@ -26,8 +26,6 @@ const center = {
 };
 
 const HomePage = () => {
-  //not sure how to implement search bar function to find artisans by category
-
   //set state for markers and fetch locations and set array to markers
   const [markers, setMarkers] = useState(null);
   // selected marker that the user clicks on
@@ -130,15 +128,13 @@ const HomePage = () => {
   return (
     <Wrapper>
       <Map>
-        <LocationSearch panTo={panTo} />
-        <UsersLocation panTo={panTo} />
-        <SearchBar
-          value={searchBar}
-          placeholder="Search"
-          onChange={(e) => {
-            setSearchBar(e.target.value.toLowerCase());
-          }}
+        <LocationSearch
+          panTo={panTo}
+          setSearchBar={setSearchBar}
+          searchBar={searchBar}
         />
+        <UsersLocation panTo={panTo} />
+
         <GoogleMap
           center={center}
           zoom={10}
@@ -190,10 +186,4 @@ const Map = styled.div`
   width: 80%;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-`;
-
-const SearchBar = styled.input`
-  position: absolute;
-  z-index: 5;
-  top: 30vh;
 `;

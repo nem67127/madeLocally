@@ -16,14 +16,15 @@ const ProfileForm = () => {
   const { profileId } = useParams();
   //get current User
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-
   //fetch upadted verson of currentUser
   useEffect(() => {
-    fetch(`/api/users/${profileId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCurrentUser(data.data);
-      });
+    if (currentUser) {
+      fetch(`/api/users/${profileId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCurrentUser(data.data);
+        });
+    }
   }, []);
 
   //what the user will be set with
@@ -137,7 +138,7 @@ const ProfileForm = () => {
   if (loadError) {
     return <div>ErrorLoading Maps</div>;
   }
-  if (!isLoaded || !currentUser) {
+  if (!isLoaded) {
     return <Loading />;
   }
 
