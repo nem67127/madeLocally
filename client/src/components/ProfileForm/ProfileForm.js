@@ -119,7 +119,7 @@ const ProfileForm = () => {
 
   return (
     <Wrapper>
-      <Form>
+      <Form onSubmit={(ev) => handleSubmit(ev)}>
         <Container>
           <ProfilePicture
             profileId={profileId}
@@ -159,14 +159,10 @@ const ProfileForm = () => {
             />
           </Info>
           <Items>
-            <ItemsDropZone
-              profileId={profileId}
-              images={images}
-              setImages={setImages}
-            />
+            <ItemsDropZone images={images} setImages={setImages} />
           </Items>
         </Container>
-        <Button onClick={(ev) => handleSubmit(ev)}>Update/Save</Button>
+        <Button>Update/Save</Button>
       </Form>
     </Wrapper>
   );

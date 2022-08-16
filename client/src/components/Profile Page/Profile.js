@@ -5,6 +5,9 @@ import ProfileDetails from "./ProfileDetails";
 import Loading from "../Loading";
 import { VscCircleFilled } from "react-icons/vsc";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { Transformation } from "@cloudinary/url-gen";
 
 const Profile = () => {
   const { profileId } = useParams();
@@ -12,6 +15,20 @@ const Profile = () => {
   const [status, setStatus] = useState("loading");
 
   const { currentUser } = useContext(CurrentUserContext);
+
+  //config cloudinary
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: "dqvrktiam",
+    },
+  });
+  //turning images to cloudinary
+  const usersProfilePic = profiles && cld.image(`${profiles.profilePic}`);
+  const showcaseImgArr =
+    profiles &&
+    profiles.images.map((image) => {
+      return cld.image(`${image}`);
+    });
 
   const navigate = useNavigate();
   //need to create a patch to update user when clicking fav
@@ -33,7 +50,8 @@ const Profile = () => {
     return <Loading />;
   }
 
-  //where user will get linked to if they click on an artisan on the event page, event details, map
+  console.log(profiles);
+
   //users are able to favourite them - goes to their favourited artisans page - toDo
   // users can rate them ?
   return (
@@ -42,7 +60,7 @@ const Profile = () => {
         <Container>
           <ProfilePic>
             {profiles.profilePic ? (
-              <Img alt="profile picture" src={profiles.profilePic.src} />
+              <AdvancedImage cldImg={usersProfilePic} />
             ) : null}
           </ProfilePic>
 
@@ -91,9 +109,9 @@ const Profile = () => {
           <Items>
             {profiles.images
               ? profiles.images.length > 0
-                ? profiles.images.map((image) => (
+                ? showcaseImgArr.map((image) => (
                     <>
-                      <img alt="showcase" src={image.src} key={image.src} />
+                      <AdvancedImage cldImg={image} />
                     </>
                   ))
                 : null

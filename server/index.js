@@ -3,6 +3,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const cloudinary = require("./cloudinary/cloudinary");
 
 const {
   getUser,
@@ -41,13 +42,35 @@ express()
   // enable CORS
   .use(cors())
   .use(morgan("tiny"))
-  .use(bodyParser.json({ limit: "30mb", extended: true }))
-  .use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
+  .use(bodyParser.json({ limit: "50mb" }))
+  .use(bodyParser.urlencoded({ limit: "50mb", extended: true }))
   // parse requests of content-type - application/json
   .use(express.json())
 
   // parse requests of content-type - application/x-www-form-urlencoded
   .use(express.urlencoded({ extended: true }))
+
+  // .post("/", async (req, res) => {
+  //   const { image } = req.body;
+  //   const uploadedImage = await cloudinary.uploader.upload(
+  //     image,
+  //     {
+  //       upload_preset: "unsigned_upload",
+  //       allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+  //     },
+  //     function (error, result) {
+  //       if (error) {
+  //         console.log(error);
+  //       }
+  //       console.log(result);
+  //     }
+  //   );
+  //   try {
+  //     res.status(200).json(uploadedImage);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // })
 
   //get a single user based on their email
   .get("/api/user/:email", getUser)

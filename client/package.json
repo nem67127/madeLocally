@@ -5,6 +5,8 @@
   "proxy": "http://localhost:8000",
   "dependencies": {
     "@auth0/auth0-react": "^1.10.2",
+    "@cloudinary/react": "^1.4.2",
+    "@cloudinary/url-gen": "^1.8.5",
     "@reach/combobox": "^0.17.0",
     "@react-google-maps/api": "^2.12.1",
     "@testing-library/jest-dom": "^5.16.5",

@@ -55,7 +55,7 @@ const ProfilePicture = ({ profilePic, setProfilePic }) => {
 };
 
 export default ProfilePicture;
-// add styling to p and button
+
 const ProfilePic = styled.div`
   min-height: 30px;
   min-width: 30px;
