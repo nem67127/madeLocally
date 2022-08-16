@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Image } from "cloudinary-react";
-
+import { BiUpload } from "react-icons/bi";
 const ProfilePicture = ({ profilePic, setProfilePic }) => {
   const onDrop = useCallback((acceptedFiles) => {
     const url = `https://api.cloudinary.com/v1_1/dqvrktiam/upload`;
@@ -34,20 +34,22 @@ const ProfilePicture = ({ profilePic, setProfilePic }) => {
     noClick: true,
     noKeyboard: true,
   });
-  console.log(profilePic);
+
   return (
     <ProfilePic {...getRootProps({ isDragAccept, isFocused, isDragReject })}>
       <input {...getInputProps()} />
       <p style={{ width: "70%" }}>Drag 'n' drop some files here</p>
-      <button type="button" className="btn" onClick={open}>
-        Click to select file
-      </button>
+      <Button type="button" className="btn" onClick={open}>
+        <BiUpload style={{ width: "20px", height: "20px", color: "white" }} />
+      </Button>
       {profilePic && (
         <Image
           cloudName="dqvrktiam"
           publicId={profilePic.public_id}
           width="300"
+          height="300"
           crop="fill"
+          style={{ borderRadius: "50%", position: "absolute" }}
         />
       )}
     </ProfilePic>
@@ -61,7 +63,7 @@ const ProfilePic = styled.div`
   min-width: 30px;
   height: 15vw;
   width: 15vw;
-  border: 1px solid black;
+  background-color: var(--water-blue);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -69,11 +71,16 @@ const ProfilePic = styled.div`
   align-items: center;
 `;
 
-const Img = styled.div`
-  position: absolute;
-  min-height: 30px;
-  min-width: 30px;
-  height: 15vw;
-  width: 15vw;
+const Button = styled.button`
+  position: relative;
+  z-index: 5;
+  top: 120px;
+  left: 80px;
+  padding: 10px;
   border-radius: 50%;
+  border: none;
+  background-color: var(--dark-blue);
+  &:hover {
+    cursor: pointer;
+  }
 `;

@@ -50,28 +50,6 @@ express()
   // parse requests of content-type - application/x-www-form-urlencoded
   .use(express.urlencoded({ extended: true }))
 
-  // .post("/", async (req, res) => {
-  //   const { image } = req.body;
-  //   const uploadedImage = await cloudinary.uploader.upload(
-  //     image,
-  //     {
-  //       upload_preset: "unsigned_upload",
-  //       allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
-  //     },
-  //     function (error, result) {
-  //       if (error) {
-  //         console.log(error);
-  //       }
-  //       console.log(result);
-  //     }
-  //   );
-  //   try {
-  //     res.status(200).json(uploadedImage);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // })
-
   //get a single user based on their email
   .get("/api/user/:email", getUser)
   //get a user profile based on thier id

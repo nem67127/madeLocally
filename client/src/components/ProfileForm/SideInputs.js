@@ -12,7 +12,7 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
-const SideInputs = ({ handleChangeProfile }) => {
+const SideInputs = ({ handleChangeProfile, currentUser }) => {
   const {
     ready,
     value,
@@ -42,7 +42,9 @@ const SideInputs = ({ handleChangeProfile }) => {
         >
           <MdLocationPin style={{ height: "10%", width: "10%" }} />
           <ComboboxInput
-            value={value}
+            value={
+              currentUser && currentUser.location ? currentUser.location : value
+            }
             onChange={(ev) => setValue(ev.target.value)}
             disabled={!ready}
             placeholder="Enter your location"
@@ -65,6 +67,7 @@ const SideInputs = ({ handleChangeProfile }) => {
           placeholder="Contact number"
           type="tel"
           onChange={(ev) => handleChangeProfile(ev.target.value, "phone")}
+          value={currentUser && currentUser.phone ? currentUser.phone : null}
         />
       </Box>
       <Box>
@@ -74,6 +77,11 @@ const SideInputs = ({ handleChangeProfile }) => {
           placeholder="Website url"
           type="text"
           onChange={(ev) => handleChangeProfile(ev.target.value, "websiteUrl")}
+          value={
+            currentUser && currentUser.websiteUrl
+              ? currentUser.websiteUrl
+              : null
+          }
         />
       </Box>
       <Box>
@@ -83,6 +91,11 @@ const SideInputs = ({ handleChangeProfile }) => {
           placeholder="Facebook url"
           type="text"
           onChange={(ev) => handleChangeProfile(ev.target.value, "facebookUrl")}
+          value={
+            currentUser && currentUser.facebookUrl
+              ? currentUser.facebookUrl
+              : null
+          }
         />
       </Box>
       <Box>
@@ -93,6 +106,11 @@ const SideInputs = ({ handleChangeProfile }) => {
           type="text"
           onChange={(ev) =>
             handleChangeProfile(ev.target.value, "instagramUrl")
+          }
+          value={
+            currentUser && currentUser.instagramUrl
+              ? currentUser.instagramUrl
+              : null
           }
         />
       </Box>

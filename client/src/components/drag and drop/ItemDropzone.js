@@ -41,9 +41,11 @@ const ItemsDropZone = ({ images, setImages }) => {
   });
 
   //does not work for some reason
-  const removeImage = (image) => {
-    if (acceptedFiles.includes(image)) {
-      const newImages = [...acceptedFiles];
+  const removeImage = (image, ev) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+    if (images.includes(image)) {
+      const newImages = [...images];
       newImages.splice(newImages.indexOf(image, 1));
       setImages(newImages);
     }
@@ -53,22 +55,25 @@ const ItemsDropZone = ({ images, setImages }) => {
     <>
       <Container {...getRootProps({ isDragAccept, isFocused, isDragReject })}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here</p>
-        <button type="button" className="btn" onClick={open}>
-          Click to select file
-        </button>
+        <p>Drag 'n' drop some images here</p>
+        <Button type="button" className="btn" onClick={open}>
+          Click to select images
+        </Button>
       </Container>
       <Box>
         {images &&
           images.map((image) => (
-            <Div>
+            <Div key={image.public_id}>
               <Image
                 cloudName="dqvrktiam"
                 publicId={image.public_id}
-                width="300"
+                width="250"
+                height="250"
                 crop="fill"
                 key={image.public_id}
+                style={{ margin: "10px" }}
               />
+              <Remove onClick={(ev) => removeImage(image, ev)}>x</Remove>
             </Div>
           ))}
       </Box>
@@ -79,20 +84,53 @@ export default ItemsDropZone;
 
 const Container = styled.div`
   width: 100%;
-  border: 1px solid green;
+  background-color: var(--water-blue);
+  border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
+  z-index: 2;
 `;
-const Div = styled.div`
-  width: 40%;
-  margin: 10px;
+const Div = styled.div``;
+const Button = styled.button`
+  border: none;
+  background-color: var(--dark-blue);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+  z-index: 2;
 `;
 const Box = styled.div`
   width: 100%;
+  min-height: 450px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  z-index: 2;
+  position: relative;
+  background-color: #e3f1ff;
+`;
+
+const Remove = styled.button`
+  border: none;
+  background-color: var(--dark-blue);
+  color: white;
+  position: relative;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  top: -30px;
+  padding: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Loading from "../Loading";
@@ -8,15 +8,39 @@ import SideInputs from "./SideInputs";
 import ProfilePicture from "../drag and drop/ProfilePicture";
 import Geocode from "react-geocode";
 import { useLoadScript } from "@react-google-maps/api";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const libraries = ["places"];
 const ProfileForm = () => {
   //This is where artisans are directed to if they are new to the site to set up their profile
   const { profileId } = useParams();
+  //get current User
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+
+  //fetch upadted verson of currentUser
+  useEffect(() => {
+    fetch(`/api/users/${profileId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCurrentUser(data.data);
+      });
+  }, []);
+
   //what the user will be set with
   const [profileData, setProfileData] = useState(null);
-  const [images, setImages] = useState([]);
-  const [profilePic, setProfilePic] = useState(null);
+
+  const [images, setImages] = useState(
+    currentUser && currentUser.images
+      ? currentUser.images.map((image) => {
+          return { public_id: image };
+        })
+      : []
+  );
+  const [profilePic, setProfilePic] = useState(
+    currentUser && currentUser.profilePic
+      ? { public_id: currentUser.profilePic }
+      : null
+  );
   const [categories, setCategories] = useState([]);
   const [location, setLocation] = useState(null);
 
@@ -113,7 +137,7 @@ const ProfileForm = () => {
   if (loadError) {
     return <div>ErrorLoading Maps</div>;
   }
-  if (!isLoaded) {
+  if (!isLoaded || !currentUser) {
     return <Loading />;
   }
 
@@ -125,6 +149,7 @@ const ProfileForm = () => {
             profileId={profileId}
             profilePic={profilePic}
             setProfilePic={setProfilePic}
+            currentUser={currentUser}
           />
           <Div>
             <Name
@@ -133,6 +158,11 @@ const ProfileForm = () => {
               type="text"
               onChange={(ev) =>
                 handleChangeProfile(ev.target.value, "businessName")
+              }
+              value={
+                currentUser && currentUser.businessName
+                  ? currentUser.businessName
+                  : null
               }
             />
             <Description
@@ -144,6 +174,11 @@ const ProfileForm = () => {
               onChange={(ev) =>
                 handleChangeProfile(ev.target.value, "businessDescrip")
               }
+              value={
+                currentUser && currentUser.businessDescrip
+                  ? currentUser.businessDescrip
+                  : null
+              }
             />
           </Div>
         </Container>
@@ -152,6 +187,7 @@ const ProfileForm = () => {
             <SideInputs
               profileId={profileId}
               handleChangeProfile={handleChangeProfile}
+              currentUser={currentUser}
             />
             <Categories
               profileId={profileId}
@@ -221,4 +257,14 @@ const Div = styled.div`
   height: 20vh;
   margin-left: 20px;
 `;
-const Button = styled.button``;
+const Button = styled.button`
+  z-index: 2;
+  border: none;
+  background-color: var(--dark-blue);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+`;

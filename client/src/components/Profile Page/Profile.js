@@ -8,6 +8,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Transformation } from "@cloudinary/url-gen";
+import { fill } from "@cloudinary/url-gen/actions/resize";
 
 const Profile = () => {
   const { profileId } = useParams();
@@ -24,10 +25,17 @@ const Profile = () => {
   });
   //turning images to cloudinary
   const usersProfilePic = profiles && cld.image(`${profiles.profilePic}`);
+  usersProfilePic && usersProfilePic.resize(fill().width(300).height(300));
+
   const showcaseImgArr =
     profiles &&
+    profiles.images &&
     profiles.images.map((image) => {
       return cld.image(`${image}`);
+    });
+  showcaseImgArr &&
+    showcaseImgArr.map((image) => {
+      return image.resize(fill().width(250).height(250));
     });
 
   const navigate = useNavigate();
@@ -60,7 +68,10 @@ const Profile = () => {
         <Container>
           <ProfilePic>
             {profiles.profilePic ? (
-              <AdvancedImage cldImg={usersProfilePic} />
+              <AdvancedImage
+                cldImg={usersProfilePic}
+                style={{ borderRadius: "50%" }}
+              />
             ) : null}
           </ProfilePic>
 
@@ -111,7 +122,11 @@ const Profile = () => {
               ? profiles.images.length > 0
                 ? showcaseImgArr.map((image) => (
                     <>
-                      <AdvancedImage cldImg={image} />
+                      <AdvancedImage
+                        cldImg={image}
+                        style={{ margin: "10px" }}
+                        key={image}
+                      />
                     </>
                   ))
                 : null
@@ -147,20 +162,11 @@ const ProfilePic = styled.div`
   min-width: 30px;
   height: 15vw;
   width: 15vw;
-  border: 1px solid black;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-const Img = styled.img`
-  position: absolute;
-  min-height: 30px;
-  min-width: 30px;
-  height: 15vw;
-  width: 15vw;
-  border-radius: 50%;
 `;
 
 const Name = styled.div`
@@ -184,6 +190,10 @@ const Items = styled.div`
   margin-left: 20px;
   width: 70%;
   align-self: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%;
 `;
 
 const Div = styled.div`
