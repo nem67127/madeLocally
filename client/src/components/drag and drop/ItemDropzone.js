@@ -18,7 +18,6 @@ const ItemsDropZone = ({ images, setImages }) => {
         });
         const data = await response.json();
         setImages((old) => [...old, data]);
-        console.log(data);
       });
     },
     [setImages]
@@ -42,9 +41,11 @@ const ItemsDropZone = ({ images, setImages }) => {
   const removeImage = (image, ev) => {
     ev.stopPropagation();
     ev.preventDefault();
+
     if (images.includes(image)) {
       const newImages = [...images];
-      newImages.splice(newImages.indexOf(image, 1));
+      const index = newImages.indexOf(image);
+      newImages.splice(index, 1);
       setImages(newImages);
     }
   };

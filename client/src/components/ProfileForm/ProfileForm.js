@@ -163,7 +163,7 @@ const ProfileForm = () => {
               value={
                 currentUser && currentUser.businessName
                   ? currentUser.businessName
-                  : null
+                  : ""
               }
             />
             <Description
@@ -178,7 +178,7 @@ const ProfileForm = () => {
               value={
                 currentUser && currentUser.businessDescrip
                   ? currentUser.businessDescrip
-                  : null
+                  : ""
               }
             />
           </Div>

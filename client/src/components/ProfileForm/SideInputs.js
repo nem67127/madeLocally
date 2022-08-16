@@ -67,7 +67,7 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           placeholder="Contact number"
           type="tel"
           onChange={(ev) => handleChangeProfile(ev.target.value, "phone")}
-          value={currentUser && currentUser.phone ? currentUser.phone : null}
+          value={currentUser && currentUser.phone ? currentUser.phone : ""}
         />
       </Box>
       <Box>
@@ -77,7 +77,7 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           placeholder="Contact email"
           type="email"
           onChange={(ev) => handleChangeProfile(ev.target.value, "email")}
-          value={currentUser && currentUser.email ? currentUser.email : null}
+          value={currentUser && currentUser.email ? currentUser.email : ""}
         />
       </Box>
       <Box>
@@ -88,9 +88,7 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           type="text"
           onChange={(ev) => handleChangeProfile(ev.target.value, "websiteUrl")}
           value={
-            currentUser && currentUser.websiteUrl
-              ? currentUser.websiteUrl
-              : null
+            currentUser && currentUser.websiteUrl ? currentUser.websiteUrl : ""
           }
         />
       </Box>
@@ -104,7 +102,7 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           value={
             currentUser && currentUser.facebookUrl
               ? currentUser.facebookUrl
-              : null
+              : ""
           }
         />
       </Box>
@@ -120,7 +118,7 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           value={
             currentUser && currentUser.instagramUrl
               ? currentUser.instagramUrl
-              : null
+              : ""
           }
         />
       </Box>

@@ -135,7 +135,11 @@ const Profile = () => {
                     <>
                       <AdvancedImage
                         cldImg={image}
-                        style={{ margin: "10px" }}
+                        style={{
+                          margin: "10px",
+                          border: "3px solid var(--water-blue)",
+                          borderRadius: "10px",
+                        }}
                         key={image}
                       />
                     </>
@@ -198,6 +202,7 @@ const Container = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
+  width: 15vw;
 `;
 const Items = styled.div`
   margin-left: 20px;
