@@ -42,6 +42,8 @@ const ProfileForm = () => {
       ? { public_id: currentUser.profilePic }
       : null
   );
+
+  console.log(currentUser);
   const [categories, setCategories] = useState([]);
   const [location, setLocation] = useState(null);
 
