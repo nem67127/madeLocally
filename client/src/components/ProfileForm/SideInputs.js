@@ -11,6 +11,7 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import { useState } from "react";
 
 const SideInputs = ({ handleChangeProfile, currentUser }) => {
   const {
@@ -25,6 +26,22 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
       radius: 200 * 1000,
     },
   });
+
+  const [phone, setPhone] = useState(
+    currentUser && currentUser.phone ? currentUser.phone : null
+  );
+  const [email, setEmail] = useState(
+    currentUser && currentUser.email ? currentUser.email : null
+  );
+  const [websiteUrl, setWebsiteUrl] = useState(
+    currentUser && currentUser.websiteUrl ? currentUser.websiteUrl : null
+  );
+  const [facebookUrl, setFacebookUrl] = useState(
+    currentUser && currentUser.facebookUrl ? currentUser.facebookUrl : null
+  );
+  const [instagramUrl, setInstagramUrl] = useState(
+    currentUser && currentUser.instagramUrl ? currentUser.instagramUrl : null
+  );
   return (
     <>
       <Box>
@@ -66,8 +83,11 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           name="phone"
           placeholder="Contact number"
           type="tel"
-          onChange={(ev) => handleChangeProfile(ev.target.value, "phone")}
-          value={currentUser && currentUser.phone ? currentUser.phone : ""}
+          onChange={(ev) => {
+            handleChangeProfile(ev.target.value, "phone");
+            setPhone(ev.target.value);
+          }}
+          value={phone}
         />
       </Box>
       <Box>
@@ -76,8 +96,11 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           name="email"
           placeholder="Contact email"
           type="email"
-          onChange={(ev) => handleChangeProfile(ev.target.value, "email")}
-          value={currentUser && currentUser.email ? currentUser.email : ""}
+          onChange={(ev) => {
+            handleChangeProfile(ev.target.value, "email");
+            setEmail(ev.target.value);
+          }}
+          value={email}
         />
       </Box>
       <Box>
@@ -86,10 +109,11 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           name="websiteUrl"
           placeholder="Website url"
           type="text"
-          onChange={(ev) => handleChangeProfile(ev.target.value, "websiteUrl")}
-          value={
-            currentUser && currentUser.websiteUrl ? currentUser.websiteUrl : ""
-          }
+          onChange={(ev) => {
+            handleChangeProfile(ev.target.value, "websiteUrl");
+            setWebsiteUrl(ev.target.value);
+          }}
+          value={websiteUrl}
         />
       </Box>
       <Box>
@@ -98,12 +122,11 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           name="facebookUrl"
           placeholder="Facebook url"
           type="text"
-          onChange={(ev) => handleChangeProfile(ev.target.value, "facebookUrl")}
-          value={
-            currentUser && currentUser.facebookUrl
-              ? currentUser.facebookUrl
-              : ""
-          }
+          onChange={(ev) => {
+            handleChangeProfile(ev.target.value, "facebookUrl");
+            setFacebookUrl(ev.target.value);
+          }}
+          value={facebookUrl}
         />
       </Box>
       <Box>
@@ -112,14 +135,11 @@ const SideInputs = ({ handleChangeProfile, currentUser }) => {
           name="instagramUrl"
           placeholder="Instagram url"
           type="text"
-          onChange={(ev) =>
-            handleChangeProfile(ev.target.value, "instagramUrl")
-          }
-          value={
-            currentUser && currentUser.instagramUrl
-              ? currentUser.instagramUrl
-              : ""
-          }
+          onChange={(ev) => {
+            handleChangeProfile(ev.target.value, "instagramUrl");
+            setInstagramUrl(ev.target.value);
+          }}
+          value={instagramUrl}
         />
       </Box>
     </>
