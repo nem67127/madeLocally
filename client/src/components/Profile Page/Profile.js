@@ -9,14 +9,27 @@ import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { fill } from "@cloudinary/url-gen/actions/resize";
 import moment from "moment";
-import { format } from "date-fns";
+import { BsStar, BsStarFill } from "react-icons/bs";
 
 const Profile = () => {
   const { profileId } = useParams();
   const [profiles, setProfiles] = useState(null);
   const [status, setStatus] = useState("loading");
 
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetch(`/api/users/${currentUser._id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setCurrentUser(data.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  }, []);
 
   //config cloudinary
   const cld = new Cloudinary({
@@ -43,7 +56,14 @@ const Profile = () => {
   //need to create a patch to update user when clicking fav
   //then fetch
   const [favourite, setFavourite] = useState(
-    currentUser && currentUser._id === profileId ? false : true
+    currentUser &&
+      currentUser.favArtisan &&
+      currentUser.favArtisan.some((art) => {
+        if (art.artisanId === profileId) {
+          return true;
+        }
+        return false;
+      })
   );
   //get user based on _id === profileId
   useEffect(() => {
@@ -54,6 +74,32 @@ const Profile = () => {
         setStatus("idle");
       });
   }, [profileId]);
+  //users are able to favourite them - goes to their favourited artisans page
+
+  const handleFav = (ev) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+
+    fetch(`/api/fav-artisan/${currentUser._id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ artisan: profileId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status === 200 && data.message === "removed") {
+          setFavourite(false);
+          console.log("remove");
+        } else {
+          setFavourite(true);
+          console.log("set");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   //for upcoming events
   const dayBefore = moment().subtract(1, "days");
@@ -61,8 +107,6 @@ const Profile = () => {
   if (status === "loading") {
     return <Loading />;
   }
-
-  //users are able to favourite them - goes to their favourited artisans page - toDo
   // users can rate them ?
   return (
     <Wrapper>
@@ -81,13 +125,40 @@ const Profile = () => {
           </ProfilePic>
 
           <Div>
-            <Name>{profiles.businessName}</Name>
+            <Fav>
+              <Name>{profiles.businessName}</Name>
+              {currentUser &&
+              currentUser._id === profileId ? null : currentUser &&
+                currentUser._id !== profileId ? (
+                <Button
+                  style={{ marginLeft: "50px" }}
+                  onClick={(ev) => handleFav(ev)}
+                >
+                  {favourite ? (
+                    <BsStarFill
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        color: "#ffdb7a",
+                      }}
+                    />
+                  ) : (
+                    <BsStar
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        color: "#ffdb7a",
+                      }}
+                    />
+                  )}
+                </Button>
+              ) : null}
+            </Fav>
             <Description>{profiles.businessDescrip}</Description>
             <Market>
               <div>Upcoming Events:</div>
               {profiles && profiles.vending && profiles.vending.length > 0 ? (
                 profiles.vending.map((market) => {
-                  console.log(market);
                   if (
                     moment(market.ev.startDate).isSameOrAfter(dayBefore) ||
                     (market.ev.endDate &&
@@ -111,7 +182,6 @@ const Profile = () => {
               )}
             </Market>
           </Div>
-          <div>button</div>
         </Container>
         <Container2>
           <Info>
@@ -241,4 +311,14 @@ const MDetails = styled.div`
   &:hover {
     color: var(--dark-blue);
   }
+`;
+
+const Fav = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Button = styled.button`
+  border: none;
+  background-color: transparent;
 `;

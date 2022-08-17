@@ -11,7 +11,7 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { FaFilter, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 
 const LocationSearch = ({ panTo, setSearchBar, searchBar }) => {

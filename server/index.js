@@ -23,6 +23,7 @@ const {
   updateVendorList,
   getEvent,
 } = require("./handlers/eventHandlers");
+const { updateFavourite } = require("./handlers/favouriteHandler");
 const PORT = 8000;
 
 dotenv.config();
@@ -73,6 +74,9 @@ express()
 
   //PATCH to update the users profile will user profile form again - this will also insert a new document in locations collection
   .patch("/api/profile/:profileId", updateProfile)
+
+  //PATCH to update users favourite artisans
+  .patch("/api/fav-artisan/:userId", updateFavourite)
 
   //GET events to retrieve all the events - i want them filtered by dates if i can i want current and upcoming dates
   .get("/api/events", getAllEvents)

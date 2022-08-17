@@ -81,6 +81,7 @@ const HomePage = () => {
         console.log(err.message);
       });
   }, []);
+  console.log(currentUser);
 
   //for search bar to filter markers
   const [searchBar, setSearchBar] = useState("");
