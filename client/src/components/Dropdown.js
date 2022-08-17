@@ -26,6 +26,10 @@ const Dropdown = ({ currentUser }) => {
             <>
               <Link to={`/profile/${currentUser._id}`}>Profile</Link>
               <Link to={`/profile-f/${currentUser._id}`}>Update Profile</Link>
+            </>
+          ) : null}
+          {currentUser || user ? (
+            <>
               <Link to="/fav-artisans">Fav Artisans</Link>
               <Link to="/intereted-events">Interested Events</Link>
             </>

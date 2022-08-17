@@ -18,8 +18,6 @@ const FavArtisans = () => {
     },
   });
 
-  console.log(currentUser);
-
   useEffect(() => {
     if (currentUser) {
       fetch(`/api/users/${currentUser._id}`)
